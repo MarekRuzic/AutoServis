@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AutoServis.Views.Desktop.Pages.Login.DesktopLogin"
+             xmlns:components="clr-namespace:AutoServis.Components.Buttons"
+             Title="DesktopLogin">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="0" Background="Purple">
+            
+        </Grid>
+        <Grid Grid.Column="0" Grid.Row="1" Background="Purple">
+            <Image Source="car.png" HeightRequest="200"/>
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="2" BackgroundColor="White">
+            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <!-- Název -->
+                <Label Text="Název stránky" FontSize="20" HorizontalOptions="Center" Margin="0,0,0,10"/>
+
+                <!-- Tlačítko -->
+                <Button Text="Mé tlačítko"  Margin="0,0,0,10"/>
+
+                <!-- Label pod tlačítkem -->
+                <Label Text="Můj popisek" HorizontalOptions="Center"/>
+
+                <components:LoginButton/>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>
