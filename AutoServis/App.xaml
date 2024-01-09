@@ -5,6 +5,11 @@
              x:Class="AutoServis.App">
     <Application.Resources>
         <ResourceDictionary>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource MyPrimary}" />
+                <Setter Property="BarTextColor" Value="White"/>
+                <!-- Další vlastnosti stylu pro NavigationPage můžete přidat zde -->
+            </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />

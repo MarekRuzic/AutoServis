@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AutoServis.Views.Desktop.Pages.Login.DesktopLogin"
+             x:Class="AutoServis.Views.Desktop.Pages.Registration.DesktopRegistration"
              xmlns:components="clr-namespace:AutoServis.Components.Buttons"
-             Title="Přihlášení">
+             Title="Registrace">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -14,18 +14,18 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0" Grid.Row="0" Background="{StaticResource MyLightBlue}">
-            
+        <Grid Grid.Column="1" Grid.Row="0" Background="{StaticResource MyLightBlue}">
+
         </Grid>
-        <Grid Grid.Column="0" Grid.Row="1" Background="{StaticResource MyLightBlue}">
-            <Image Source="car.png" Aspect="AspectFit" Margin="40" HeightRequest="400"/>
+        <Grid Grid.Column="1" Grid.Row="1" Background="{StaticResource MyLightBlue}">
+            <Image Source="registation.png" Aspect="AspectFit" Margin="50" HeightRequest="400"/>
         </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="2" BackgroundColor="White">
+        <Grid Grid.Column="0" Grid.Row="2" BackgroundColor="White">
             <ScrollView>
                 <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                    <components:LoginButton Margin="20"/>
-            </StackLayout>
+                    <components:Registration Margin="20"/>
+                </StackLayout>
             </ScrollView>
         </Grid>
     </Grid>

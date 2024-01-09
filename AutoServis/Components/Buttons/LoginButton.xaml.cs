@@ -2,6 +2,8 @@ using AutoServis.Model.API;
 using AutoServis.Model;
 using System.Text.Json.Nodes;
 using System.Text.Json;
+using AutoServis.Views.Desktop.Pages.Registration;
+using AutoServis.Views.Mobile.Pages.Registration;
 
 namespace AutoServis.Components.Buttons;
 
@@ -74,5 +76,15 @@ public partial class LoginButton : ContentView
     private void OnPasswordCompleted(object sender, EventArgs e)
     {
 		password.Unfocus();
+    }
+
+    private async void OpenRegistration(object sender, EventArgs e)
+    {
+#if ANDROID || IOS
+        await Navigation.PushAsync(new MobileRegistration());
+#else
+        await Navigation.PushAsync(new DesktopRegistration());
+#endif
+
     }
 }

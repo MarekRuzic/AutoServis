@@ -4,7 +4,7 @@
              x:Class="AutoServis.MainPage">
 
     <ScrollView>
-        <VerticalStackLayout
+        <VerticalStackLayout x:Name="allUsers"
             Padding="30,0"
             Spacing="25">
             <Image
@@ -29,7 +29,8 @@
                 Text="Click me" 
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />
+                HorizontalOptions="Fill" />            
+            
         </VerticalStackLayout>
     </ScrollView>
 

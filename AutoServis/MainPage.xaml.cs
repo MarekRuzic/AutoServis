@@ -1,4 +1,8 @@
-﻿namespace AutoServis
+﻿using AutoServis.Model;
+using AutoServis.Model.API;
+using System.Text.Json;
+
+namespace AutoServis
 {
     public partial class MainPage : ContentPage
     {
@@ -7,6 +11,51 @@
         public MainPage()
         {
             InitializeComponent();
+            zobraz();
+        }
+
+        private async void zobraz()
+        {
+            API api = new API();
+
+            HttpResponseMessage response = await api.client.GetAsync("user/list?limit=99999");
+            if (response.IsSuccessStatusCode)
+            {
+                string getResponsestring = await response.Content.ReadAsStringAsync();
+                List<User> users = JsonSerializer.Deserialize<List<User>>(getResponsestring);
+                allUsers.Children.Clear();
+                foreach (User user in users)
+                {
+                    // Vytvoření borderu s červenou čárou o tloušťce 3
+                    Frame borderFrame = new Frame
+                    {
+                        StyleId = user.ID.ToString(),
+                        BorderColor = Color.FromRgb(255, 0, 0),
+                        CornerRadius = 5,
+                        Padding = new Thickness(10),
+                        HasShadow = false,
+                        Content = new StackLayout
+                        {
+                            Children =
+                            {
+                                new Label { Text = $"Id uživatele: {user.ID}" },
+                                new Label { Text = user.firstname },
+                                new Label { Text = user.lastname },
+                                new Label { Text = user.email },
+                                // Další labely můžete přidat podle potřeby
+                            }
+                        }
+                    };
+
+                    // Přidání vytvořeného borderu do existujícího kontejneru (např. StackLayout)
+                    // Zde předpokládám, že máte StackLayout s názvem "myStackLayout"
+                    allUsers.Children.Add(borderFrame);
+                }
+            }
+            else
+            {
+                await DisplayAlert("Fuj", "No fuj co se to stalo", "Yes", "No");
+            }
         }
 
         private void OnCounterClicked(object sender, EventArgs e)
