@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Views.Desktop.Pages.Registration.DesktopRegistration"
-             xmlns:components="clr-namespace:AutoServis.Components.Buttons"
+             xmlns:components="clr-namespace:AutoServis.Components.Forms"
              Title="Registrace">
 
     <Grid>
@@ -24,7 +24,7 @@
         <Grid Grid.Column="0" Grid.Row="2" BackgroundColor="White">
             <ScrollView>
                 <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                    <components:Registration Margin="20"/>
+                    <components:RegistrationForm Margin="20"/>
                 </StackLayout>
             </ScrollView>
         </Grid>

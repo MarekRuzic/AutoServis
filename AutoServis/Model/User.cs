@@ -8,7 +8,7 @@ namespace AutoServis.Model
 {
     internal class User
     {
-        public int ID { get; set; }
+        public int id { get; set; }
         public string firstname { get; set; }
         public string lastname { get; set; }
         public string email { get; set; }
@@ -19,7 +19,7 @@ namespace AutoServis.Model
 
         public User(int iD, string firstname, string lastname, string email, string password, int admin)
         {
-            ID = iD;
+            id = iD;
             this.firstname = firstname;
             this.lastname = lastname;
             this.email = email;

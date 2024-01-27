@@ -1,13 +1,13 @@
-namespace AutoServis.Components.Buttons;
 using AutoServis.Model;
 using AutoServis.Model.API;
-using Microsoft.Maui.Animations;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-public partial class Registration : ContentView
+namespace AutoServis.Components.Forms;
+
+public partial class RegistrationForm : ContentView
 {
-	public Registration()
+	public RegistrationForm()
 	{
 		InitializeComponent();
 	}
@@ -36,11 +36,11 @@ public partial class Registration : ContentView
         string firstname = FirstnameInput.Text.Trim();
         string lastname = lastnameInput.Text.Trim();
         string email = emailInput.Text.Trim();
-        string password = passwordInput.Text.Trim();        
+        string password = passwordInput.Text.Trim();
 
         API api = new API();
 
-        
+
         if (api.checkConnectivity())
         {
             showDialog("Chyba", "Nejste pøipojeni k internetu.\n\n" +
@@ -103,7 +103,7 @@ public partial class Registration : ContentView
     }
 
     private void InputComplete(object sender, EventArgs e)
-    {        
+    {
         Entry entry = (Entry)sender;
         if (entry == null) return;
         if (entry.ReturnType == ReturnType.Done)
@@ -112,7 +112,7 @@ public partial class Registration : ContentView
         }
         else if (entry.ReturnType == ReturnType.Next)
         {
-            
+
         }
     }
 }

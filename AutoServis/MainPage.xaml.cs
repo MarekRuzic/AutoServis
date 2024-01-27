@@ -29,7 +29,7 @@ namespace AutoServis
                     // Vytvoření borderu s červenou čárou o tloušťce 3
                     Frame borderFrame = new Frame
                     {
-                        StyleId = user.ID.ToString(),
+                        StyleId = user.id.ToString(),
                         BorderColor = Color.FromRgb(255, 0, 0),
                         CornerRadius = 5,
                         Padding = new Thickness(10),
@@ -38,7 +38,7 @@ namespace AutoServis
                         {
                             Children =
                             {
-                                new Label { Text = $"Id uživatele: {user.ID}" },
+                                new Label { Text = $"Id uživatele: {user.id}" },
                                 new Label { Text = user.firstname },
                                 new Label { Text = user.lastname },
                                 new Label { Text = user.email },

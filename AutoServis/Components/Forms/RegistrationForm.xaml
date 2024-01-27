@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AutoServis.Components.Forms.RegistrationForm">
+    <ScrollView BackgroundColor="White">
+        <VerticalStackLayout x:Name="inputs" VerticalOptions="Center">
+            <Label 
+        Margin="0,20,0,20"
+        FontSize="36"
+        Text="Nová registrace"
+        VerticalOptions="Center" 
+        HorizontalOptions="Center"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Jméno*" Margin="0,0,0,5"/>
+                    <Frame
+                    
+                    Padding="0"
+                    Margin="0,0,5,0">
+                        <Entry 
+                        x:Name="FirstnameInput"
+                        Placeholder="Jméno"
+                        Keyboard="Default"
+                        ReturnType="Next"
+                        Completed="InputComplete"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"
+                        />
+                    </Frame>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Přijmení*" Margin="5,0,0,5"/>
+                    <Frame                        
+                    Padding="0"
+                    Margin="5,0,0,0">
+                        <Entry 
+                        x:Name="lastnameInput" 
+                        Placeholder="Přijmení"
+                        Keyboard="Default"
+                        ReturnType="Next"
+                        Completed="InputComplete"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+            <VerticalStackLayout Margin="0,12,0,0">
+                <Label Text="Email*" Margin="0,0,0,5"/>
+                <Frame                    
+                Padding="0">
+                    <Entry
+                    x:Name="emailInput" 
+                    Placeholder="Email"
+                    Keyboard="Email"
+                    ReturnType="Next"
+                    ClearButtonVisibility="WhileEditing"
+                    HorizontalTextAlignment="Center"/>
+                </Frame>
+            </VerticalStackLayout>
+
+            <Grid Margin="0, 12, 0, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Heslo*" Margin="0,0,0,5"/>
+                    <Frame                        
+                    Padding="0"
+                    Margin="0,0,5,0">
+                        <Entry 
+                        x:Name="passwordInput" 
+                        Placeholder="Heslo"
+                        Keyboard="Default"
+                        ReturnType="Next"
+                        IsPassword="True"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Heslo znovu*" Margin="5,0,0,5"/>
+                    <Frame                        
+                    Padding="0"
+                    Margin="5,0,0,0">
+                        <Entry 
+                        x:Name="passwordRepeatInput" 
+                        Placeholder="Heslo znovu"
+                        Keyboard="Default"
+                        ReturnType="Done"
+                        IsPassword="True"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </VerticalStackLayout>
+
+            </Grid>
+
+            <Button 
+            Text="Registrovat se" 
+            Clicked="Restration" 
+            Margin="0, 12, 0, 20"
+            TextColor="White"
+            BackgroundColor="{StaticResource MySecondPrimary}">
+                <Button.Shadow>
+                    <Shadow 
+                    Brush="Black"
+                    Offset="{OnPlatform Android='0,12', Default='0,4'}"
+                    Radius="{OnPlatform Android='20', Default='8'}"
+                    Opacity="0.4" />
+                </Button.Shadow>
+            </Button>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

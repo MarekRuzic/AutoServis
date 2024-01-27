@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Views.Mobile.Pages.Login.MobileLogin"
-             xmlns:components="clr-namespace:AutoServis.Components.Buttons"
+             xmlns:components="clr-namespace:AutoServis.Components.Forms"
              Title="">
     <Grid RowDefinitions=".1*,.35*,.6*" Padding="0" Margin="0">
         <Grid Grid.Row="0" Padding="0" Margin="0">
@@ -59,7 +59,7 @@
             <!--<Line Grid.ColumnSpan="2" Grid.Row="3" Stroke="Black" StrokeThickness="5" X1="0" Y1="0" X2="1000" Y2="0"/>-->
         </Grid>
         <Grid Grid.Row="2">
-            <components:LoginButton Margin="20"/>
+            <components:LoginForm Margin="20"/>
         </Grid>        
 
     </Grid>

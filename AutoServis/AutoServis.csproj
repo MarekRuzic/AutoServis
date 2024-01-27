@@ -68,10 +68,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Components\Buttons\LoginButton.xaml">
+	  <MauiXaml Update="Components\Forms\LoginForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Components\Buttons\Registration.xaml">
+	  <MauiXaml Update="Components\Forms\NewCarForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Forms\RegistrationForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Desktop\Pages\Login\DesktopLogin.xaml">
