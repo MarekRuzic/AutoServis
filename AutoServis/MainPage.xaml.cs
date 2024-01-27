@@ -1,5 +1,6 @@
 ﻿using AutoServis.Model;
 using AutoServis.Model.API;
+using Microsoft.Maui.Controls.Compatibility;
 using System.Text.Json;
 
 namespace AutoServis
@@ -34,7 +35,7 @@ namespace AutoServis
                         CornerRadius = 5,
                         Padding = new Thickness(10),
                         HasShadow = false,
-                        Content = new StackLayout
+                        Content = new Microsoft.Maui.Controls.StackLayout
                         {
                             Children =
                             {
@@ -49,8 +50,9 @@ namespace AutoServis
 
                     // Přidání vytvořeného borderu do existujícího kontejneru (např. StackLayout)
                     // Zde předpokládám, že máte StackLayout s názvem "myStackLayout"
-                    allUsers.Children.Add(borderFrame);
+                    allUsers.Children.Add(borderFrame);                    
                 }
+                allUsers.Children.Add(form2);
             }
             else
             {

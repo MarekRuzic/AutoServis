@@ -2,10 +2,276 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Components.Forms.NewCarForm">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
+    <ScrollView>
+        <VerticalStackLayout VerticalOptions="Center">
+            <Label
+            Text="Přídání nového auta"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+            HorizontalOptions="Center"
+            FontSize="Header"/>
+            <!-- Značka a model -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- Značka-->
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Značka*" Margin="0,0,0,5"/>
+                    <Frame        
+                    Padding="0"
+                    Margin="0,0,5,0">
+                        <Entry 
+                        x:Name="brandInput"
+                        Placeholder="Značka"
+                        Keyboard="Default"
+                        ReturnType="Next"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"
+                        />
+                    </Frame>
+                </VerticalStackLayout>
+                <!-- Model -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Model*" Margin="5,0,0,5"/>
+                    <Frame                          
+                    Padding="0"
+                    Margin="5,0,0,0">
+                        <Entry 
+                        x:Name="modelInput" 
+                        Placeholder="Model"
+                        Keyboard="Default"
+                        ReturnType="Next"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+            <!-- Email -->
+            <VerticalStackLayout Margin="0,12,0,0">
+                <Label Text="SPZ*" Margin="0,0,0,5"/>
+                <Frame                    
+                Padding="0">
+                    <Entry
+                    x:Name="spzInput" 
+                    Placeholder="SPZ"
+                    Keyboard="Default"
+                    ReturnType="Next"
+                    ClearButtonVisibility="WhileEditing"
+                    HorizontalTextAlignment="Center"
+                        MaxLength="7"/>
+                </Frame>
+            </VerticalStackLayout>
+            <!-- Rok výroby a stav tachometru -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- Rok výroby -->
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Rok výroky*" Margin="0,0,0,5"/>
+                    <DatePicker x:Name="manufactureDate" HorizontalOptions="FillAndExpand"/>
+                </VerticalStackLayout>
+                <!-- Stav tachometru -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Stav tachometru*" Margin="5,0,0,5"/>
+                    <Frame                         
+                    Padding="0"
+                    Margin="5,0,0,0">
+                        <Entry 
+                        x:Name="mileageInput" 
+                        Placeholder="Stav tachometru"
+                        Keyboard="Default"
+                        ReturnType="Next"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+            <!-- Palivo a karosérie -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- Palivo -->
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Palivo*" Margin="0,0,0,5"/>
+                    <Frame        
+                    Padding="0"
+                    Margin="0,0,5,0">
+                        <Picker 
+                        x:Name="fuelPicker"
+                        HorizontalTextAlignment="Center">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Benzín</x:String>
+                                    <x:String>Diesel</x:String>
+                                    <x:String>Benzín + LPG</x:String>
+                                    <x:String>Benzín + CNG</x:String>
+                                    <x:String>Hybrid</x:String>
+                                    <x:String>Elektro</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </Frame>
+                </VerticalStackLayout>
+                <!-- Karoserie -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Karosérie*" Margin="5,0,0,5"/>
+                    <Frame                         
+                    Padding="0"
+                    Margin="5,0,0,0">
+                        <Picker 
+                        x:Name="bodyPicker"
+                        HorizontalTextAlignment="Center">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Kombi</x:String>
+                                    <x:String>Hatchback</x:String>
+                                    <x:String>Sedan</x:String>
+                                    <x:String>MPV</x:String>
+                                    <x:String>SUV</x:String>
+                                    <x:String>Kupé</x:String>
+                                    <x:String>Kabriolet</x:String>
+                                    <x:String>Pickup</x:String>
+                                    <x:String>Dodávka</x:String>
+                                    <x:String>Obytný vůz</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+            <!-- Počet dveří a barva -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- Počet dveří -->
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Počet dveří*" Margin="0,0,0,5"/>
+                    <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap">
+                        <RadioButton 
+                        Content="2"                            
+                        GroupName="doors" />
+                        <RadioButton 
+                        Content="3"
+                        GroupName="doors" />
+                        <RadioButton 
+                        Content="4"    
+                        GroupName="doors" />
+                        <RadioButton 
+                        Content="5"
+                        GroupName="doors"
+                        IsChecked="True"/>
+                    </FlexLayout>
+                </VerticalStackLayout>
+                <!-- Barva -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Barva" Margin="5,0,0,5"/>
+                    <Frame                          
+                    Padding="0"
+                    Margin="5,0,0,0">
+                        <Entry
+                        x:Name="colorInput" 
+                        Placeholder="Barva"             
+                        Keyboard="Default"
+                        ReturnType="Next"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"
+                            MaxLength="30"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+            <!-- Počet míst k sezení -->
+            <VerticalStackLayout Margin="0,12,0,0">
+                <Label Text="Počet míst k sezení*" Margin="0,0,0,5"/>
+                <Slider 
+                x:Name="sliderSeat"
+                Minimum="2"
+                Maximum="9"
+                Value="5"
+                MinimumTrackColor="Black"
+                ThumbColor="{x:StaticResource MySecondPrimary}"
+                ValueChanged="OnSliderValueChanged" />
+                <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap" Margin="0,12,0,0">
+                    <Button 
+                    Text="Ubrat"
+                    Clicked="seatButtonClick"
+                    BackgroundColor="{x:StaticResource MySecondPrimary}"/>
+                    <Label 
+                    x:Name="displayLabel"
+                    Text="Počet míst k sezení: 5"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+                    <Button 
+                    Text="Přidat"
+                    Clicked="seatButtonClick"
+                    BackgroundColor="{x:StaticResource MySecondPrimary}"/>
+                </FlexLayout>
+            </VerticalStackLayout>
+            <!-- Klimatizace a Pohon -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Klimatizace a pohon 4x4*" Margin="0,0,0,5"/>
+                    <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap">
+                        <!-- Klimatizace -->
+                        <HorizontalStackLayout>
+                            <Label x:Name="airConditioningLabel" Text="Ne" Padding="0,10,10,0"/>
+                            <Switch 
+                                x:Name="airConditioningSwitch"
+                                Toggled="SwitchChange"/>                            
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout>
+                            <Label Text="Pohon 4x4:"
+                                Margin="0,12,0,0"/>
+                            <CheckBox
+                                x:Name="checkbox_4x4"
+                                Color="{x:StaticResource MySecondPrimary}"/>
+                        </HorizontalStackLayout>
+                        <!-- Pohon 4x4 -->
+                    </FlexLayout>
+                </VerticalStackLayout>
+                <!-- Přezdívka -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Přezdívka" Margin="5,0,0,5"/>
+                    <Frame                        
+                        Padding="0"
+                        Margin="5,0,0,0">
+                        <Entry
+                            x:Name="nicknameInput" 
+                            Placeholder="Přezdívka"
+                            Keyboard="Default"
+                            ReturnType="Next"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+            <!-- Email -->
+            <VerticalStackLayout Margin="0,12,0,0">
+                <Label Text="VIN*" Margin="0,0,0,5"/>
+                <Frame                   
+                    Padding="0">
+                    <Entry
+        x:Name="vinInput" 
+        Placeholder="VIN"
+        Keyboard="Default"
+        ReturnType="Next"
+        ClearButtonVisibility="WhileEditing"
+        HorizontalTextAlignment="Center"
+                        MaxLength="17"/>
+                </Frame>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentView>
