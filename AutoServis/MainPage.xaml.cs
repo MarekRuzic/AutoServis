@@ -1,5 +1,8 @@
 ﻿using AutoServis.Model;
 using AutoServis.Model.API;
+using AutoServis.Model.JSON;
+using AutoServis.Views.Mobile.Pages.Login;
+using AutoServis.Views.Desktop.Pages.Login;
 using Microsoft.Maui.Controls.Compatibility;
 using System.Text.Json;
 
@@ -12,7 +15,57 @@ namespace AutoServis
         public MainPage()
         {
             InitializeComponent();
-            zobraz();
+            //zobraz();
+            zobraz2();
+        }
+
+        private async void zobraz2()
+        {
+            API api = new API();
+
+            HttpResponseMessage responseMessage = await api.client.GetAsync("car/list?limit=99999");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    Converters = { new BoolConverter() },
+                };
+                string getResponseString = await responseMessage.Content.ReadAsStringAsync();
+                List<Car> cars = JsonSerializer.Deserialize<List<Car>>(getResponseString, options);
+                allUsers.Children.Clear();
+                foreach (Car car in cars)
+                {
+                    // Vytvoření borderu s červenou čárou o tloušťce 3
+                    Frame borderFrame = new Frame
+                    {
+                        StyleId = car.id.ToString(),
+                        BorderColor = Color.FromRgb(255, 0, 0),
+                        CornerRadius = 5,
+                        Padding = new Thickness(10),
+                        HasShadow = false,
+                        Content = new Microsoft.Maui.Controls.StackLayout
+                        {
+                            Children =
+                            {
+                                new Label { Text = $"Id uživatele: {car.id}" },
+                                new Label { Text = car.brand },
+                                new Label { Text = car.model },
+                                new Label { Text = car.manufacture.ToString() },
+                                // Další labely můžete přidat podle potřeby
+                            }
+                        }
+                    };
+
+                    // Přidání vytvořeného borderu do existujícího kontejneru (např. StackLayout)
+                    // Zde předpokládám, že máte StackLayout s názvem "myStackLayout"
+                    allUsers.Children.Add(borderFrame);
+                }
+                allUsers.Children.Add(form2);
+            }
+            else
+            {
+                await DisplayAlert("Fuj", "No fuj co se to stalo", "Yes", "No");
+            }
         }
 
         private async void zobraz()
@@ -70,6 +123,15 @@ namespace AutoServis
                 CounterBtn.Text = $"Clicked {count} times";
 
             SemanticScreenReader.Announce(CounterBtn.Text);
+        }
+
+        private void LogOut(object sender, EventArgs e)
+        {
+#if ANDROID || IOS
+            App.Current.MainPage = new NavigationPage(new MobileLogin());
+#else
+            App.Current.MainPage = new NavigationPage(new DesktopLogin());
+#endif
         }
     }
 

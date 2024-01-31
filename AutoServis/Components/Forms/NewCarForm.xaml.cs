@@ -1,3 +1,7 @@
+using Microsoft.Maui.Controls.Internals;
+using AutoServis.Model;
+using AutoServis.Model.API;
+using System.Net.Http.Json;
 namespace AutoServis.Components.Forms;
 
 public partial class NewCarForm : ContentView
@@ -6,6 +10,15 @@ public partial class NewCarForm : ContentView
 	{
 		InitializeComponent();
 	}
+
+    private char doors = '5';
+    private string transmition = "Manuální";
+
+    private bool IsInputEmpty(String text)
+    {
+        if (text == null || text.Trim() == "") return true;
+        return false;
+    }
 
     private void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
@@ -36,5 +49,101 @@ public partial class NewCarForm : ContentView
     {
         if (airConditioningSwitch.IsToggled) airConditioningLabel.Text = "Ano";
         else airConditioningLabel.Text = "Ne";
+    }
+
+    private async void newCar(object sender, EventArgs e)
+    {
+        if (IsInputEmpty(brandInput.Text) &&
+            IsInputEmpty(modelInput.Text) &&
+            IsInputEmpty(vinInput.Text) &&
+            IsInputEmpty(spzInput.Text) &&
+            IsInputEmpty(nameEngineInput.Text) &&
+            IsInputEmpty(powerInput.Text))
+        {
+            App.Current.MainPage.DisplayAlert("Oznámení", "Nìjaký z povinných údajù nebyl vyplnìn.", "Ok");
+            return;
+        }
+
+        double mileage = 0;
+        if (!Double.TryParse(mileageInput.Text, out mileage))
+        {
+            App.Current.MainPage.DisplayAlert("Oznámení", "Údaj stav kilometrù je špatnì vyplnìn", "Ok");
+            return;
+        }
+
+        if (fuelPicker.SelectedIndex == -1 || bodyPicker.SelectedIndex == -1)
+        {
+            App.Current.MainPage.DisplayAlert("Oznámení", "Nebyly vyplnìny všechny údaje", "Ok");
+            return;
+        }
+
+        string brand = brandInput.Text.Trim();
+        string model = modelInput.Text.Trim();
+        DateTime manufature = manufactureDate.Date;
+        string fuel = fuelPicker.ItemsSource[fuelPicker.SelectedIndex].ToString();
+        string body = bodyPicker.ItemsSource[bodyPicker.SelectedIndex].ToString();
+        string color = "";
+        if (!IsInputEmpty(colorInput.Text)) color = colorInput.Text.Trim();
+        bool drive4x4 = checkbox_4x4.IsChecked;
+        char seats = sliderSeat.Value.ToString()[0];
+        bool airCondition = airConditioningSwitch.IsToggled;
+        string vin = vinInput.Text.Trim();
+        string spz = spzInput.Text.Trim();
+        string nickname = "";
+        if (!IsInputEmpty(nicknameInput.Text)) nickname = nicknameInput.Text.Trim();
+        string name_engine = nameEngineInput.Text.Trim();
+        string code = "";
+        if (!IsInputEmpty(codeInput.Text)) code = codeInput.Text.Trim();
+        string displacement = "";
+        if (!IsInputEmpty(displacementInput.Text)) displacement = displacementInput.Text.Trim();
+        string power = powerInput.Text.Trim();
+        string torque = "";
+        if (!IsInputEmpty(torqueInput.Text)) torque = torqueInput.Text.Trim();
+        string oil_capacity = "";
+        if (!IsInputEmpty(oilInput.Text)) oil_capacity = oilInput.Text.Trim();
+
+
+        Car car = new Car(-1, brand, model, manufature, mileage, fuel, body,
+            color, drive4x4, doors, seats, airCondition, vin, spz, nickname, 
+            name_engine, code, displacement, power, torque, oil_capacity, transmition,
+            1);
+
+        API api = new API();
+        if (api.checkConnectivity())
+        {
+            App.Current.MainPage.DisplayAlert("Chyba", "Nejste pøipojeni k internetu.\n\n" +
+                "Je potøeba internetové pøipojení!", "Ok");
+            return;
+        }
+
+        HttpResponseMessage response = await api.client.PostAsJsonAsync("car/create", car);
+
+        if (response.IsSuccessStatusCode)
+        {
+            App.Current.MainPage.DisplayAlert("Úspìch", "Uživatel byl úspìšnì vytvoøen.\n\n" +
+                "Mùžete se nyní pøihlásit", "OK");
+        }
+        else
+        {
+            App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+        }
+    }
+
+    private void doorsChange(object sender, CheckedChangedEventArgs e)
+    {
+        if (sender is RadioButton radioButton && e.Value)
+        {
+            // Získání obsahu (Content) zvoleného RadioButtonu
+            string selectedContent = radioButton.Content?.ToString();
+            doors = selectedContent[0];
+        }
+    }
+
+    private void gearboxChange(object sender, CheckedChangedEventArgs e)
+    {
+        if (sender is RadioButton radioButton && e.Value)
+        {
+            transmition = radioButton.Content?.ToString();
+        }
     }
 }

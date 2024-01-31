@@ -58,6 +58,8 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\car.png" />
+	  <None Remove="Resources\Images\electroCar.png" />
+	  <None Remove="Resources\Images\gasCar.png" />
 	  <None Remove="Resources\Images\registation.png" />
 	</ItemGroup>
 
@@ -81,6 +83,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Desktop\Pages\Registration\DesktopRegistration.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Mobile\Pages\Cars\MobileCars.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Mobile\Pages\Login\MobileLogin.xaml">

@@ -8,7 +8,7 @@
             Text="Přídání nového auta"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
-            FontSize="Header"/>
+            FontSize="Large"/>
             <!-- Značka a model -->
             <Grid Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
@@ -156,17 +156,21 @@
                     <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap">
                         <RadioButton 
                         Content="2"                            
-                        GroupName="doors" />
+                        GroupName="doorsRB"
+                            CheckedChanged="doorsChange"/>
                         <RadioButton 
                         Content="3"
-                        GroupName="doors" />
+                        GroupName="doorsRB"
+                            CheckedChanged="doorsChange"/>
                         <RadioButton 
                         Content="4"    
-                        GroupName="doors" />
+                        GroupName="doorsRB"
+                            CheckedChanged="doorsChange"/>
                         <RadioButton 
                         Content="5"
-                        GroupName="doors"
-                        IsChecked="True"/>
+                        GroupName="doorsRB"
+                        IsChecked="True"
+                        CheckedChanged="doorsChange"/>
                     </FlexLayout>
                 </VerticalStackLayout>
                 <!-- Barva -->
@@ -256,22 +260,178 @@
                     </Frame>
                 </VerticalStackLayout>
             </Grid>
-            <!-- Email -->
-            <VerticalStackLayout Margin="0,12,0,0">
+            <!-- VIN -->
+            <VerticalStackLayout Margin="0,12,0,12">
                 <Label Text="VIN*" Margin="0,0,0,5"/>
                 <Frame                   
                     Padding="0">
                     <Entry
-        x:Name="vinInput" 
-        Placeholder="VIN"
-        Keyboard="Default"
-        ReturnType="Next"
-        ClearButtonVisibility="WhileEditing"
-        HorizontalTextAlignment="Center"
+                        x:Name="vinInput" 
+                        Placeholder="VIN"
+                        Keyboard="Default"
+                        ReturnType="Next"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"
                         MaxLength="17"/>
                 </Frame>
             </VerticalStackLayout>
 
-        </VerticalStackLayout>
+            <BoxView Color="{x:StaticResource MyPrimary}" HeightRequest="2" HorizontalOptions="FillAndExpand" Margin="50,12,50,8" />
+            
+            <Label
+                Text="Motor"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center"
+                FontSize="Large"/>
+
+            <!-- Název a výkon -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- Název -->
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Název*" Margin="0,0,0,5"/>
+                    <Frame        
+                        Padding="0"
+                        Margin="0,0,5,0">
+                        <Entry 
+                            x:Name="nameEngineInput"
+                            Placeholder="Název"
+                            Keyboard="Default"
+                            ReturnType="Next"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"
+                            MaxLength="100"
+                            />
+                    </Frame>
+                </VerticalStackLayout>
+                <!-- Výkon -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Výkon*" Margin="5,0,0,5"/>
+                    <Frame                          
+                        Padding="0"
+                        Margin="5,0,0,0">
+                        <Entry 
+                            x:Name="powerInput" 
+                            Placeholder="Model"
+                            Keyboard="Default"
+                            ReturnType="Next"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"
+                            MaxLength="4"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+            <!-- Převodovka a kodové označení -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- Převodovka -->
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Převodovka*" Margin="0,0,0,5"/>
+                    <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap">
+                    <RadioButton 
+                            Content="Manuální"                            
+                            GroupName="gearboxRB"
+                            CheckedChanged="gearboxChange"
+                            IsChecked="true"
+                                Margin="0"
+                                Padding="0"/>
+                    <RadioButton 
+                            Content="Automatická"
+                            GroupName="gearboxRB"
+                            CheckedChanged="gearboxChange"
+                        Margin="0"
+                        Padding="0"/>
+                    </FlexLayout>
+                </VerticalStackLayout>
+                <!-- kódové označení -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Kódové označení" Margin="5,0,0,5"/>
+                    <Frame                          
+                        Padding="0"
+                        Margin="5,0,0,0">
+                        <Entry 
+                            x:Name="codeInput" 
+                            Placeholder="Model"
+                            Keyboard="Default"
+                            ReturnType="Next"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"
+                            MaxLength="50"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+            <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap" Margin="0,8,0,0">
+                <!-- Objem -->
+                <VerticalStackLayout Margin="0,5,0,0">
+                    <Label Text="Objem (cm^3)" Margin="0,0,0,5"/>
+                    <Frame        
+                        Padding="0"
+                        Margin="0,0,5,0">
+                        <Entry 
+                            x:Name="displacementInput"
+                            Placeholder="Objem"
+                            Keyboard="Default"
+                            ReturnType="Next"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"
+                            MaxLength="5"
+                            />
+                    </Frame>
+                </VerticalStackLayout>
+                <!-- Kroutící moment -->
+                <VerticalStackLayout Margin="0,5,0,0">
+                    <Label Text="Kroutící moment (nm)" Margin="0,0,0,5"/>
+                    <Frame        
+                        Padding="0"
+                        Margin="0,0,5,0">
+                        <Entry 
+                            x:Name="torqueInput"
+                            Placeholder="Kroutící moment"
+                            Keyboard="Default"
+                            ReturnType="Next"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"
+                            MaxLength="5"
+                            />
+                    </Frame>
+                </VerticalStackLayout>
+                <!-- Olej -->
+                <VerticalStackLayout Margin="0,5,0,0">
+                    <Label Text="Kapacita olejové nádrže v L" Margin="0,0,0,5"/>
+                    <Frame        
+                        Padding="0"
+                        Margin="0,0,5,0">
+                        <Entry 
+                            x:Name="oilInput"
+                            Placeholder="Kapacita olejové nádrže"
+                            Keyboard="Default"
+                            ReturnType="Done"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"
+                            MaxLength="4"
+                            />
+                    </Frame>
+                </VerticalStackLayout>
+            </FlexLayout>
+            <Button Text="Vytvořit auto"
+                    Clicked="newCar"
+                    Margin="0,20,0,12"
+                    BackgroundColor="{x:StaticResource MySecondPrimary}">
+                <Button.Shadow>
+                    <Shadow 
+                        Brush="Black"
+                        Offset="2,5"
+                        Radius="3"
+                        Opacity="0.3" />
+                </Button.Shadow>
+            </Button>
+        </VerticalStackLayout>        
+
     </ScrollView>
 </ContentView>

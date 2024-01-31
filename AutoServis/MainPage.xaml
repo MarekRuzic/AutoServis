@@ -5,6 +5,20 @@
              Title="Hlavní strana"
              xmlns:components="clr-namespace:AutoServis.Components.Forms">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Odhlásit se"
+                     Clicked="LogOut"/>
+        <ToolbarItem Text="Odhlásit se 0"
+                     Order="Secondary"
+                    Clicked="LogOut"
+                     Priority="0"/>
+        <ToolbarItem Text="Odhlásit se"
+                    Clicked="LogOut"
+                     Order="Secondary"
+                     Priority="1"/>
+    </ContentPage.ToolbarItems>
+
+
     <ScrollView>
         <VerticalStackLayout x:Name="allUsers"
             Padding="30,0"
@@ -34,6 +48,7 @@
                 HorizontalOptions="Fill" />
 
             <components:NewCarForm x:Name="form2" Padding="10" MaximumWidthRequest="1000"/>
+
         </VerticalStackLayout>
     </ScrollView>
 
