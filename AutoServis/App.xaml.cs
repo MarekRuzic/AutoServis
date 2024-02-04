@@ -3,12 +3,12 @@ using AutoServis.Views.Mobile.Pages.Login;
 namespace AutoServis
 {
     public partial class App : Application
-    {
+    {      
         public App()
         {
             InitializeComponent();
 
-            //MainPage = new AppShell();
+            //MainPage = new AppShell();            
 
 #if ANDROID || IOS
             MainPage = new NavigationPage(new MobileLogin());

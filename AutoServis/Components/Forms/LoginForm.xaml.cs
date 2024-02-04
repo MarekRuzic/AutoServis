@@ -4,6 +4,7 @@ using AutoServis.Views.Mobile.Pages.Registration;
 using System.Text.Json;
 using AutoServis.Model.API;
 using AutoServis.Model;
+using AutoServis.Views.Mobile.Pages.Cars;
 
 public partial class LoginForm : ContentView
 {
@@ -58,7 +59,11 @@ public partial class LoginForm : ContentView
                 return;
             }
 
-            App.Current.MainPage = new NavigationPage(new MainPage());
+            #if ANDROID || IOS
+                App.Current.MainPage = new NavigationPage(new MobileCars(user));
+            #else
+               App.Current.MainPage = new NavigationPage(new MainPage());
+            #endif
         }
         else
         {

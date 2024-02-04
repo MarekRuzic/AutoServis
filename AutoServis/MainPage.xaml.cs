@@ -5,6 +5,7 @@ using AutoServis.Views.Mobile.Pages.Login;
 using AutoServis.Views.Desktop.Pages.Login;
 using Microsoft.Maui.Controls.Compatibility;
 using System.Text.Json;
+using AutoServis.Views.Mobile.Pages.Cars;
 
 namespace AutoServis
 {
@@ -23,7 +24,8 @@ namespace AutoServis
         {
             API api = new API();
 
-            HttpResponseMessage responseMessage = await api.client.GetAsync("car/list?limit=99999");
+            //HttpResponseMessage responseMessage = await api.client.GetAsync("car/list?limit=99999");
+            HttpResponseMessage responseMessage = await api.client.GetAsync($"car/listcaruser?id=1");
             if (responseMessage.IsSuccessStatusCode)
             {
                 JsonSerializerOptions options = new JsonSerializerOptions
@@ -61,6 +63,14 @@ namespace AutoServis
                     allUsers.Children.Add(borderFrame);
                 }
                 allUsers.Children.Add(form2);
+                Button button = new Button
+                {
+                    Text = "new page"
+                };
+                //button.Clicked += async (sender, args) => await Navigation.PushAsync(new MobileCars());
+                allUsers.Children.Add(button);
+
+                
             }
             else
             {
