@@ -2,154 +2,50 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Views.Mobile.Pages.Cars.MobileCars"
+             xmlns:controls="clr-namespace:AutoServis.Components.Templates"
              Title="Seznam vozidel">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Přidat vozidlo"
+            IconImageSource="add.png"
+            Clicked="addNewCarClick"/>
+        <ToolbarItem 
+            Text="O aplikaci"
+            Order="Secondary"
+            Priority="0"/>
+        <ToolbarItem 
+            Text="Uživatel"
+            Order="Secondary"
+            Priority="1"/>
+        <ToolbarItem 
+            Text="Odhlásit se"
+            Clicked="LogOut"
+            Order="Secondary"
+            Priority="2"/>
+    </ContentPage.ToolbarItems>
+
+
     <ScrollView>
         <VerticalStackLayout x:Name="verticalLayout">
-                <Border 
-                    Stroke="Black"
-                    StrokeThickness="1"
-                    Margin="10">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="5" />
-                    </Border.StrokeShape>
-                    <Border.GestureRecognizers>
-                        <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipe"/>
-                    </Border.GestureRecognizers>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Padding="0">
-                                <Label Text="Renaul Clio" FontSize="Large" HorizontalOptions="Center"/>
-                            </Grid>
-                            <Grid Grid.Row="1" Grid.Column="0" Padding="0" Margin="10">
-                            <Image Source="gas_car.png" Aspect="AspectFit" MaximumWidthRequest="80"/>
-                        </Grid>                    
-                        <Grid Grid.Row="1" Grid.Column="1" Padding="0" Margin="10">
-                        <VerticalStackLayout>
-                                <Label Text="01.12.2012"/>
-                                <Label Text="158 654 km"/>
-                                <Label Text="Červená"/>
-                                <Label Text="SPZ"/>
-                                <Label Text="id:" IsVisible="false"/>
-                        </VerticalStackLayout>
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="2" Padding="0" Margin="10">
-                            <VerticalStackLayout>
-                                <Label Text="Benzín"/>
-                                <Label Text="1.2 16v"/>
-                                <Label Text="55 kw"/>
-                                <Label Text="Manuální"/>
-                            </VerticalStackLayout>
-                        </Grid>
-                        <Grid Grid.Row="2" Grid.ColumnSpan="3" Padding="0" Margin="0">
-                            <Button 
-                                Text="Více info"
-                                Margin="5"
-                                Background="{x:StaticResource MySecondPrimary}"/>
-                        </Grid>
-                    </Grid>
-                </Border>
-                <Border 
-                    Stroke="Black"
-                    StrokeDashArray="8,8,10"
-                    StrokeDashOffset="0"
-                    StrokeThickness="1"
-                    Margin="10">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="5" />
-                    </Border.StrokeShape>
-                    <Button 
-                        Margin="10"
-                        Text="Přidat nové vozidlo" 
-                        Background="White"
-                        TextColor="Black"
-                        HeightRequest="130"
-                        FontSize="Large"
-                        Clicked="addNewCarClick"/>
-                </Border>
-            <SwipeView>
-                <SwipeView.LeftItems>
-                    <SwipeItems>
-                        <SwipeItem Text="Delete"
-               IconImageSource="delete.png"
-               BackgroundColor="LightPink"
-               Command="{Binding DeleteCommand}" />
-                    </SwipeItems>
-                </SwipeView.LeftItems>
-                <SwipeView.RightItems>
-                    <SwipeItems>
-                        <SwipeItem Text="Favorite"
-               IconImageSource="favorite.png"
-               BackgroundColor="LightGreen"
-               Command="{Binding FavoriteCommand}" />
-                        <SwipeItem Text="Share"
-               IconImageSource="share.png"
-               BackgroundColor="LightYellow"
-               Command="{Binding ShareCommand}" />
-                    </SwipeItems>
-                </SwipeView.RightItems>
-                <!-- Content -->
-                <Border 
-                    Stroke="Black"
-                    StrokeThickness="1"
-                    Margin="10">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="5" />
-                    </Border.StrokeShape>
-                    <Border.GestureRecognizers>
-                        <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipe"/>
-                    </Border.GestureRecognizers>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Padding="0">
-                            <Label Text="Renaul Clio" FontSize="Large" HorizontalOptions="Center"/>
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="0" Padding="0" Margin="10">
-                            <Image Source="gas_car.png" Aspect="AspectFit" MaximumWidthRequest="80"/>
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="1" Padding="0" Margin="10">
-                            <VerticalStackLayout>
-                                <Label Text="01.12.2012"/>
-                                <Label Text="158 654 km"/>
-                                <Label Text="Červená"/>
-                                <Label Text="SPZ"/>
-                                <Label Text="id:" IsVisible="false"/>
-                            </VerticalStackLayout>
-                        </Grid>
-                        <Grid Grid.Row="1" Grid.Column="2" Padding="0" Margin="10">
-                            <VerticalStackLayout>
-                                <Label Text="Benzín"/>
-                                <Label Text="1.2 16v"/>
-                                <Label Text="55 kw"/>
-                                <Label Text="Manuální"/>
-                            </VerticalStackLayout>
-                        </Grid>
-                        <Grid Grid.Row="2" Grid.ColumnSpan="3" Padding="0" Margin="0">
-                            <Button 
-                Text="Více info"
-                Margin="5"
-                Background="{x:StaticResource MySecondPrimary}"/>
-                        </Grid>
-                    </Grid>
-                </Border>                
-            </SwipeView>
-        </VerticalStackLayout>        
+            <Border x:Name="addNewCarButton"
+    Stroke="Black"
+    StrokeDashArray="8,8,10"
+    StrokeDashOffset="0"
+    StrokeThickness="1"
+    Margin="10">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5" />
+                </Border.StrokeShape>
+                <Button 
+        Margin="10"                    
+        Text="Přidat nové vozidlo" 
+        Background="White"
+        TextColor="Black"
+        HeightRequest="130"
+        FontSize="Large"
+        Clicked="addNewCarClick"/>
+            </Border>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

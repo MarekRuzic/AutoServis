@@ -6,11 +6,12 @@ namespace AutoServis.Components.Forms;
 
 public partial class NewCarForm : ContentView
 {
-	public NewCarForm()
-	{
-		InitializeComponent();
-	}
+    public NewCarForm()
+    {
+        InitializeComponent();
+    }
 
+    public Int32 id { get; set;}
     private char doors = '5';
     private string transmition = "Manuální";
 
@@ -102,11 +103,15 @@ public partial class NewCarForm : ContentView
         string oil_capacity = "";
         if (!IsInputEmpty(oilInput.Text)) oil_capacity = oilInput.Text.Trim();
 
+        if (id.Equals(null))
+        {
+            return;
+        }
 
         Car car = new Car(-1, brand, model, manufature, mileage, fuel, body,
             color, drive4x4, doors, seats, airCondition, vin, spz, nickname, 
             name_engine, code, displacement, power, torque, oil_capacity, transmition,
-            1);
+            id);
 
         API api = new API();
         if (api.checkConnectivity())

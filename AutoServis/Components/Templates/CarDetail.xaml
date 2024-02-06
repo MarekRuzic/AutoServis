@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AutoServis.Components.Templates.CarDetail"
+             x:Name="this">
+    <SwipeView BindingContext="{Binding Source={x:Reference this}}">
+        <SwipeView.LeftItems>
+            <SwipeItems Mode="Reveal">
+                <SwipeItem 
+                    Text="Smazat"
+                    IconImageSource="delete.png"
+                    BackgroundColor="LightPink"
+                    Invoked="OnDeleteSwipeItemInvoked" />
+            </SwipeItems>
+        </SwipeView.LeftItems>
+        <SwipeView.RightItems>
+            <SwipeItems>
+                <SwipeItem 
+                Text="Upravit"
+                IconImageSource="edit.png"
+                BackgroundColor="LightYellow"
+                Command="{Binding ShareCommand}" />
+            </SwipeItems>
+        </SwipeView.RightItems>
+        <!-- Content -->
+        <Border 
+        Stroke="Black"
+        StrokeThickness="1"
+        Margin="10">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="5" />
+            </Border.StrokeShape>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Padding="0">
+                    <Label Text="{Binding CarName}" FontSize="Large" HorizontalOptions="Center"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="0" Padding="0" Margin="10">
+                    <Image Source="{Binding CarImage}" Aspect="AspectFit" MaximumWidthRequest="80"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1" Padding="0" Margin="10">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding CarManufacture}"/>
+                        <Label Text="{Binding CarMileage}"/>
+                        <Label Text="{Binding CarColor}"/>
+                        <Label Text="{Binding CarSPZ}"/>
+                        <Label Text="{Binding CarId}" IsVisible="false"/>
+                    </VerticalStackLayout>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="2" Padding="0" Margin="10">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding CarFuel}"/>
+                        <Label Text="{Binding CarEngineName}"/>
+                        <Label Text="{Binding CarPower}"/>
+                        <Label Text="{Binding CarGearbox}"/>
+                    </VerticalStackLayout>
+                </Grid>
+                <Grid Grid.Row="2" Grid.ColumnSpan="3" Padding="0" Margin="0">
+                    <Button 
+                        Text="Více info"
+                        Margin="5"
+                        Background="{x:StaticResource MySecondPrimary}"
+                        Clicked="MoreCarInfoClicked"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </SwipeView>
+</ContentView>

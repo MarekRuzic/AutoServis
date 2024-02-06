@@ -5,5 +5,5 @@
              xmlns:components="clr-namespace:AutoServis.Components.Forms"
              Title="Nové vozidlo">
 
-    <components:NewCarForm Margin="10"/>
+    <components:NewCarForm x:Name="NewCarForm" Margin="10"/>
 </ContentPage>

@@ -59,11 +59,13 @@ public partial class LoginForm : ContentView
                 return;
             }
 
-            #if ANDROID || IOS
+            /*#if ANDROID || IOS
                 App.Current.MainPage = new NavigationPage(new MobileCars(user));
             #else
                App.Current.MainPage = new NavigationPage(new MainPage());
-            #endif
+            #endif*/
+
+            App.Current.MainPage = new NavigationPage(new MobileCars(user));
         }
         else
         {
