@@ -10,14 +10,16 @@ using System.Text.Json;
 public partial class MobileCars : ContentPage
 {
 	User user;
-	public MobileCars(Object userO)
+    List<Car> cars = new List<Car>();
+	public MobileCars(Object user)
 	{
 		InitializeComponent();
-        user = (User)userO;
-        showUserCars();
+        this.user = (User)user;
+        LoadUserCars();
 	}
 
-    private async void showUserCars()
+    // Naète data z databáze pomocí API
+    private async void LoadUserCars()
     {
         API api = new API();
 
@@ -29,40 +31,59 @@ public partial class MobileCars : ContentPage
                 Converters = { new BoolConverter() },
             };
             string getResponseString = await responseMessage.Content.ReadAsStringAsync();
-            List<Car> cars = JsonSerializer.Deserialize<List<Car>>(getResponseString, options);
-            verticalLayout.Children.Clear();
-            foreach (Car car in cars)
-            {
-                string carImage = "gas_car.png";
-                if (car.fuel == "Elektro" || car.fuel == "Hybrid") carImage = "electro_car.png";
-                var carView = new CarDetail
-                {
-                    CarId = car.id,
-                    CarName = $"{car.brand} {car.model}",
-                    CarManufacture = car.manufacture.ToShortDateString(),
-                    CarSPZ = car.spz,
-                    CarColor = car.color,
-                    CarMileage = car.mileage.ToString(),
-                    CarFuel = car.fuel,
-                    CarEngineName = car.name_engine,
-                    CarPower = car.power,
-                    CarGearbox = car.transmition,
-                    CarImage = carImage,
-                };
-                verticalLayout.Children.Add(carView);
-            }
-            verticalLayout.Children.Add(addNewCarButton);
+            cars = JsonSerializer.Deserialize<List<Car>>(getResponseString, options);
+
+            ShowUserCars();
         }
+        else
+        {
+            await DisplayAlert("Oznámení", "Pøi naèítání dat z databáze došlo k chybì.", "Zavøít");
+        }
+    }
+
+    // Zobrazení jednotlivých vozidel uživatele
+    private void ShowUserCars()
+    {
+        verticalLayout.Children.Clear();
+        foreach (Car car in cars)
+        {
+            string carImage = "gas_car.png";
+            if (car.fuel == "Elektro" || car.fuel == "Hybrid") carImage = "electro_car.png";
+            var carView = new CarDetail
+            {
+                CarId = car.id,
+                CarName = $"{car.brand} {car.model}",
+                CarManufacture = car.manufacture.ToShortDateString(),
+                CarSPZ = car.spz,
+                CarColor = car.color,
+                CarMileage = car.mileage.ToString(),
+                CarFuel = car.fuel,
+                CarEngineName = car.name_engine,
+                CarPower = car.power,
+                CarGearbox = car.transmition,
+                CarImage = carImage,
+            };
+            verticalLayout.Children.Add(carView);
+        }
+        verticalLayout.Children.Add(addNewCarButton);
+    }
+
+    public void DeleteCar(int carId)
+    {
+        //Odstraní všechny prvky s daným ID za pomoci lambda výrazu
+        cars.RemoveAll(c => c.id == carId);
+        // Znovu zobrazení List<Car>
+        ShowUserCars();
+    }
+
+    public void EditCar(int carId)
+    {
+        Car car = cars.FirstOrDefault(c => c.id == carId);
     }
 
     private async void addNewCarClick(object sender, EventArgs e)
     {
-		await Navigation.PushAsync(new MobileNewCar(user.id));
-    }
-
-    private void OnSwipe(object sender, SwipedEventArgs e)
-    {
-        DisplayAlert("Ahoj", "Toto bylo swipe :D", "ok");
+		await Navigation.PushAsync(new MobileNewCar());
     }
 
     private async void LogOut(object sender, EventArgs e)

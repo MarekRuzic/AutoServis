@@ -1,5 +1,6 @@
 namespace AutoServis.Components.Templates;
 using AutoServis.Model;
+using AutoServis.Views.Mobile.Pages.Cars;
 
 public partial class CarDetail : ContentView
 {
@@ -86,16 +87,34 @@ public partial class CarDetail : ContentView
         set => SetValue(CarImageProperty, value);
     }
 
-    private void MoreInfoClicked(object sender, EventArgs e)
-    {
-
-        //App.Current.MainPage.DisplayAlert("Ahoj", $"Id je: {carDetail.Id}", "ok");
-    }
-
     private void MoreCarInfoClicked(object sender, EventArgs e)
     {
         // Získání id daného
         App.Current.MainPage.DisplayAlert("Ahoj", $"Id je: {CarId}", "ok");
+
+        // Získání reference na rodièovskou stránku
+        MobileCars parentPage = FindParentMobileCars(this);
+
+        // Zavolání metody pro smazání auta z List<Car>
+        parentPage?.DeleteCar(CarId);
+    }
+
+    private MobileCars FindParentMobileCars(Element element)
+    {
+        // Rekurzivnì hledej rodièovskou stránku MobileCars
+        if (element.Parent is MobileCars mobileCars)
+        {
+            return mobileCars;
+        }
+
+        if (element.Parent != null)
+        {
+            // Pokraèuj v hledání v rodièovském prvku
+            return FindParentMobileCars(element.Parent);
+        }
+
+        // Nenalezena žádná rodièovská stránka MobileCars
+        return null;
     }
 
     private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e)
@@ -106,5 +125,10 @@ public partial class CarDetail : ContentView
             return;
         }
         await App.Current.MainPage.DisplayAlert("Oznámení", $"Auto bylo uspìšnì smazáno.", "Ok");
+    }
+
+    private async void OnEditSwipeItemInvoked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new MobileNewCar());
     }
 }

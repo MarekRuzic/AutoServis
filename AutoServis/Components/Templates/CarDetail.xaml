@@ -19,7 +19,7 @@
                 Text="Upravit"
                 IconImageSource="edit.png"
                 BackgroundColor="LightYellow"
-                Command="{Binding ShareCommand}" />
+                Invoked="OnEditSwipeItemInvoked" />
             </SwipeItems>
         </SwipeView.RightItems>
         <!-- Content -->
