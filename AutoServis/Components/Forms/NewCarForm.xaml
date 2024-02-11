@@ -2,8 +2,9 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Components.Forms.NewCarForm">
-    <ScrollView>
-        <VerticalStackLayout VerticalOptions="Center">
+    <ScrollView MaximumWidthRequest="1000">
+        <VerticalStackLayout VerticalOptions="Center" BindingContext="{Binding Source={x:Reference MobileNewCar}}">
+            <Label x:Name="idCar" Text="" IsVisible="false" />
             <Label
             Text="Přídání nového auta"
             VerticalOptions="Center" 
@@ -70,8 +71,8 @@
                 </Grid.ColumnDefinitions>
                 <!-- Rok výroby -->
                 <VerticalStackLayout Grid.Column="0">
-                    <Label Text="Rok výroky*" Margin="0,0,0,5"/>
-                    <DatePicker x:Name="manufactureDate" HorizontalOptions="FillAndExpand"/>
+                    <Label Text="Rok výroby*" Margin="0,0,0,5"/>
+                    <DatePicker x:Name="manufactureDate" HorizontalOptions="FillAndExpand" Format="dd/MM/yyyy"/>
                 </VerticalStackLayout>
                 <!-- Stav tachometru -->
                 <VerticalStackLayout Grid.Column="1">
@@ -82,7 +83,7 @@
                         <Entry 
                         x:Name="mileageInput" 
                         Placeholder="Stav tachometru"
-                        Keyboard="Default"
+                        Keyboard="Numeric"
                         ReturnType="Next"
                         ClearButtonVisibility="WhileEditing"
                         HorizontalTextAlignment="Center"/>
@@ -153,7 +154,7 @@
                 <!-- Počet dveří -->
                 <VerticalStackLayout Grid.Column="0">
                     <Label Text="Počet dveří*" Margin="0,0,0,5"/>
-                    <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap">
+                    <FlexLayout x:Name="doorRBFlex" JustifyContent="SpaceEvenly" Wrap="Wrap">
                         <RadioButton 
                         Content="2"                            
                         GroupName="doorsRB"
@@ -316,7 +317,7 @@
                         <Entry 
                             x:Name="powerInput" 
                             Placeholder="Model"
-                            Keyboard="Default"
+                            Keyboard="Numeric"
                             ReturnType="Next"
                             ClearButtonVisibility="WhileEditing"
                             HorizontalTextAlignment="Center"
@@ -333,7 +334,7 @@
                 <!-- Převodovka -->
                 <VerticalStackLayout Grid.Column="0">
                     <Label Text="Převodovka*" Margin="0,0,0,5"/>
-                    <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap">
+                    <FlexLayout x:Name="gearboxRBFlex" JustifyContent="SpaceEvenly" Wrap="Wrap">
                     <RadioButton 
                             Content="Manuální"                            
                             GroupName="gearboxRB"
@@ -376,7 +377,7 @@
                         <Entry 
                             x:Name="displacementInput"
                             Placeholder="Objem"
-                            Keyboard="Default"
+                            Keyboard="Numeric"
                             ReturnType="Next"
                             ClearButtonVisibility="WhileEditing"
                             HorizontalTextAlignment="Center"
@@ -393,7 +394,7 @@
                         <Entry 
                             x:Name="torqueInput"
                             Placeholder="Kroutící moment"
-                            Keyboard="Default"
+                            Keyboard="Numeric"
                             ReturnType="Next"
                             ClearButtonVisibility="WhileEditing"
                             HorizontalTextAlignment="Center"
@@ -410,7 +411,7 @@
                         <Entry 
                             x:Name="oilInput"
                             Placeholder="Kapacita olejové nádrže"
-                            Keyboard="Default"
+                            Keyboard="Numeric"
                             ReturnType="Done"
                             ClearButtonVisibility="WhileEditing"
                             HorizontalTextAlignment="Center"
@@ -419,10 +420,12 @@
                     </Frame>
                 </VerticalStackLayout>
             </FlexLayout>
-            <Button Text="Vytvořit auto"
-                    Clicked="newCar"
-                    Margin="0,20,0,12"
-                    BackgroundColor="{x:StaticResource MySecondPrimary}">
+            <Button 
+                x:Name="BtnEndForm"
+                Text="Vytvořit auto"
+                Clicked="newCar"
+                Margin="0,20,0,12"
+                BackgroundColor="{x:StaticResource MySecondPrimary}">
                 <Button.Shadow>
                     <Shadow 
                         Brush="Black"

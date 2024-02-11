@@ -137,11 +137,11 @@ namespace AutoServis
 
         private void LogOut(object sender, EventArgs e)
         {
-#if ANDROID || IOS
-            App.Current.MainPage = new NavigationPage(new MobileLogin());
-#else
-            App.Current.MainPage = new NavigationPage(new DesktopLogin());
-#endif
+            #if ANDROID || IOS
+                App.Current.MainPage = new NavigationPage(new MobileLogin());
+            #else
+                App.Current.MainPage = new NavigationPage(new DesktopLogin());
+            #endif
         }
     }
 

@@ -110,4 +110,8 @@
 	  <Folder Include="Model\CarDetail\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
 </Project>

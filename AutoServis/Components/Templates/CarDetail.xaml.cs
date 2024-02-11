@@ -1,5 +1,6 @@
 namespace AutoServis.Components.Templates;
 using AutoServis.Model;
+using AutoServis.Model.API;
 using AutoServis.Views.Mobile.Pages.Cars;
 
 public partial class CarDetail : ContentView
@@ -90,18 +91,14 @@ public partial class CarDetail : ContentView
     private void MoreCarInfoClicked(object sender, EventArgs e)
     {
         // Získání id daného
-        App.Current.MainPage.DisplayAlert("Ahoj", $"Id je: {CarId}", "ok");
+        //App.Current.MainPage.DisplayAlert("Ahoj", $"Id je: {CarId}", "ok");
 
-        // Získání reference na rodièovskou stránku
-        MobileCars parentPage = FindParentMobileCars(this);
-
-        // Zavolání metody pro smazání auta z List<Car>
-        parentPage?.DeleteCar(CarId);
+        OnDeleteSwipeItemInvoked(sender, e);
     }
 
     private MobileCars FindParentMobileCars(Element element)
     {
-        // Rekurzivnì hledej rodièovskou stránku MobileCars
+        // Rekurzivnì hledá rodièovskou stránku MobileCars
         if (element.Parent is MobileCars mobileCars)
         {
             return mobileCars;
@@ -124,11 +121,41 @@ public partial class CarDetail : ContentView
         {
             return;
         }
-        await App.Current.MainPage.DisplayAlert("Oznámení", $"Auto bylo uspìšnì smazáno.", "Ok");
+
+        API api = new API();
+
+        HttpResponseMessage response = await api.client.DeleteAsync($"car/delete?id={CarId}");
+        if (response.IsSuccessStatusCode)
+        {
+            await App.Current.MainPage.DisplayAlert("Oznámení", $"Auto bylo uspìšnì smazáno.", "Ok");
+
+            // Získání reference na rodièovskou stránku
+            MobileCars parentPage = FindParentMobileCars(this);
+
+            // Kontrola nalezení rodièovské stránky
+            if (parentPage == null)
+            {
+                App.Current.MainPage.DisplayAlert("Oznámení", $"V souèasné chvíli nelze smazat požadovéné vozidlo.", "Ok");
+                return;
+            }
+            // Zavolání metody pro smazání auta z List<Car>
+            parentPage?.DeleteCar(CarId);
+        }
+        else
+        {
+            await App.Current.MainPage.DisplayAlert("Oznámení", $"Došlo k chybì pøi mazání vozidla.", "Ok");
+        }            
     }
 
     private async void OnEditSwipeItemInvoked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new MobileNewCar());
+        MobileCars parentPage = FindParentMobileCars(this);
+        // Kontrola nalezení rodièovské stránky
+        if (parentPage == null)
+        {
+            App.Current.MainPage.DisplayAlert("Oznámení", $"V souèasné chvíli nelze smazat požadovéné vozidlo.", "Ok");
+            return;
+        }
+        parentPage?.EditCar(CarId);        
     }
 }

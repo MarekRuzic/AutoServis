@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoServis.Model
 {
-    internal class Car
+    public class Car
     {
         public int id { get; set; }
         public string brand { get; set; }

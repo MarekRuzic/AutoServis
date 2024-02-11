@@ -6,6 +6,7 @@ using AutoServis.Model;
 using AutoServis.Model.API;
 using AutoServis.Model.JSON;
 using System.Text.Json;
+using Microsoft.Maui.Controls;
 
 public partial class MobileCars : ContentPage
 {
@@ -76,14 +77,34 @@ public partial class MobileCars : ContentPage
         ShowUserCars();
     }
 
-    public void EditCar(int carId)
+    public async void EditCar(int carId)
     {
         Car car = cars.FirstOrDefault(c => c.id == carId);
+        MobileCars mobileCars = this;
+        await Navigation.PushAsync(new MobileNewCar(car, user.id, mobileCars));
+    }
+
+    public void SaveCarToList(Car car, bool isAdd)
+    {
+        if (isAdd)
+        {
+            LoadUserCars();
+        }
+        else
+        {
+            int index = cars.FindIndex(carList => carList.id == car.id);
+            if (index != -1)
+            {
+                cars[index] = car;
+            }
+        }        
+        ShowUserCars();
     }
 
     private async void addNewCarClick(object sender, EventArgs e)
     {
-		await Navigation.PushAsync(new MobileNewCar());
+        MobileCars mobileCars = this;
+        await Navigation.PushAsync(new MobileNewCar(user.id, mobileCars));
     }
 
     private async void LogOut(object sender, EventArgs e)

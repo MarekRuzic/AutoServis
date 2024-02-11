@@ -2,6 +2,7 @@ using Microsoft.Maui.Controls.Internals;
 using AutoServis.Model;
 using AutoServis.Model.API;
 using System.Net.Http.Json;
+using AutoServis.Views.Mobile.Pages.Cars;
 namespace AutoServis.Components.Forms;
 
 public partial class NewCarForm : ContentView
@@ -10,10 +11,19 @@ public partial class NewCarForm : ContentView
     {
         InitializeComponent();
     }
-
     public Int32 id { get; set;}
     private char doors = '5';
     private string transmition = "Manuální";
+
+    public void setDoors(char doors)
+    {
+        this.doors = doors;
+    }
+
+    public void setTransmition(string transmition)
+    {
+        this.transmition = transmition;
+    }
 
     private bool IsInputEmpty(String text)
     {
@@ -121,17 +131,43 @@ public partial class NewCarForm : ContentView
             return;
         }
 
-        HttpResponseMessage response = await api.client.PostAsJsonAsync("car/create", car);
+        HttpResponseMessage response;
+
+        // Nalezne rodièe a zavolá metodu SaveToList
+        MobileNewCar parentPage = FindParentMobileNewCar(this);        
+
+        if (BtnEndForm.Text.Trim() == "Uložit zmìny")
+        {
+            car.id = Convert.ToInt32(idCar.Text);
+            response = await api.client.PutAsJsonAsync("car/update", car);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Pøidání do hlavního listu upravené vozidlo
+                if (parentPage != null)
+                {
+                    parentPage?.SaveToList(car, false);
+                }
+                await App.Current.MainPage.DisplayAlert("Oznámení", "U vozidla byla úspìšnì zmìnìna data", "OK");
+                await Navigation.PopAsync();
+            }
+            else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+            return;
+        }
+
+        response = await api.client.PostAsJsonAsync("car/create", car);
 
         if (response.IsSuccessStatusCode)
         {
-            App.Current.MainPage.DisplayAlert("Úspìch", "Uživatel byl úspìšnì vytvoøen.\n\n" +
-                "Mùžete se nyní pøihlásit", "OK");
+            // Pøidání nového vozidla do listu
+            if (parentPage != null)
+            {
+                parentPage?.SaveToList(null, true);
+            }
+            await App.Current.MainPage.DisplayAlert("Oznámení", "Vozidlo bylo úspìšnì vytvoøeno.", "OK");
+            await Navigation.PopAsync();
         }
-        else
-        {
-            App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
-        }
+        else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
     }
 
     private void doorsChange(object sender, CheckedChangedEventArgs e)
@@ -150,5 +186,23 @@ public partial class NewCarForm : ContentView
         {
             transmition = radioButton.Content?.ToString();
         }
+    }
+
+    private MobileNewCar FindParentMobileNewCar(Element element)
+    {
+        // Rekurzivnì hledá rodièovskou stránku MobileCars
+        if (element.Parent is MobileNewCar mobileNewCar)
+        {
+            return mobileNewCar;
+        }
+
+        if (element.Parent != null)
+        {
+            // Pokraèuj v hledání v rodièovském prvku
+            return FindParentMobileNewCar(element.Parent);
+        }
+
+        // Nenalezena žádná rodièovská stránka MobileCars
+        return null;
     }
 }

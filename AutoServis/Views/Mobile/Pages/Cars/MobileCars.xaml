@@ -4,7 +4,7 @@
              x:Class="AutoServis.Views.Mobile.Pages.Cars.MobileCars"
              xmlns:controls="clr-namespace:AutoServis.Components.Templates"
              Title="Seznam vozidel">
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem 
             Text="Přidat vozidlo"
@@ -28,23 +28,39 @@
 
     <ScrollView>
         <VerticalStackLayout x:Name="verticalLayout">
-            <Border x:Name="addNewCarButton"
-    Stroke="Black"
-    StrokeDashArray="8,8,10"
-    StrokeDashOffset="0"
-    StrokeThickness="1"
-    Margin="10">
+            <!-- Oznámení uživateli o načítání dat -->
+            <StackLayout x:Name="LoadingIndicator">
+                <ActivityIndicator 
+                    Margin="5"
+                    IsRunning="true"
+                    Color="{x:StaticResource MySecondPrimary}"
+                    HorizontalOptions="Center"/>
+                <Label 
+                    Margin="5"
+                    Text="Probíhá načítání dat z databáze" 
+                    HorizontalOptions="Center"
+                    FontSize="Large"/>
+            </StackLayout>
+
+
+            <Border 
+                x:Name="addNewCarButton"
+                Stroke="Black"
+                StrokeDashArray="8,8,10"
+                StrokeDashOffset="0"
+                StrokeThickness="1"
+                Margin="10">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="5" />
                 </Border.StrokeShape>
                 <Button 
-        Margin="10"                    
-        Text="Přidat nové vozidlo" 
-        Background="White"
-        TextColor="Black"
-        HeightRequest="130"
-        FontSize="Large"
-        Clicked="addNewCarClick"/>
+                    Margin="10"                     
+                    Text="Přidat nové vozidlo" 
+                    Background="White"
+                    TextColor="Black"
+                    HeightRequest="130"
+                    FontSize="Large"
+                    Clicked="addNewCarClick"/>
             </Border>
         </VerticalStackLayout>
     </ScrollView>
