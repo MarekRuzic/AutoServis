@@ -10,11 +10,11 @@ namespace AutoServis
 
             //MainPage = new AppShell();            
 
-#if ANDROID || IOS
-            MainPage = new NavigationPage(new MobileLogin());
-#else
-            MainPage = new NavigationPage(new DesktopLogin());
-#endif
+            #if ANDROID || IOS
+                MainPage = new NavigationPage(new MobileLogin());
+            #else
+                MainPage = new NavigationPage(new DesktopLogin());
+            #endif
         }
     }
 }

@@ -57,6 +57,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Model\CarDetail\**" />
+	  <Compile Remove="Model\CarDetail\**" />
+	  <EmbeddedResource Remove="Model\CarDetail\**" />
+	  <MauiCss Remove="Model\CarDetail\**" />
+	  <MauiXaml Remove="Model\CarDetail\**" />
+	  <None Remove="Model\CarDetail\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\Images\add.png" />
 	  <None Remove="Resources\Images\car.png" />
 	  <None Remove="Resources\Images\delete.png" />
@@ -65,6 +74,7 @@
 	  <None Remove="Resources\Images\gas_car.png" />
 	  <None Remove="Resources\Images\registation.png" />
 	  <None Remove="Resources\Images\user.png" />
+	  <None Remove="Resources\Images\user_info.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -83,13 +93,22 @@
 	  <MauiXaml Update="Components\Forms\RegistrationForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\Forms\UserInfoForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\Templates\CarDetail.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\All\Pages\CarForm\AllCarForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Desktop\Pages\Login\DesktopLogin.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Desktop\Pages\Registration\DesktopRegistration.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Desktop\Pages\UserInfo\DesktopUserInfo.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Mobile\Pages\Cars\MobileCars.xaml">
@@ -104,10 +123,9 @@
 	  <MauiXaml Update="Views\Mobile\Pages\Registration\MobileRegistration.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Model\CarDetail\" />
+	  <MauiXaml Update="Views\Mobile\Pages\UserInfo\MobileUserInfo.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>

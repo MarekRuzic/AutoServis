@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Components.Templates.CarDetail"
              x:Name="this">
+
     <SwipeView BindingContext="{Binding Source={x:Reference this}}">
         <SwipeView.LeftItems>
             <SwipeItems Mode="Reveal">
@@ -64,12 +65,36 @@
                         <Label Text="{Binding CarGearbox}"/>
                     </VerticalStackLayout>
                 </Grid>
-                <Grid Grid.Row="2" Grid.ColumnSpan="3" Padding="0" Margin="0">
+                <!-- Mobilní zařízení -->
+                <Grid Grid.Row="2" Grid.ColumnSpan="3" Padding="0" Margin="0" IsVisible="{OnPlatform False, Android=True, iOS=True}">
                     <Button 
                         Text="Více info"
                         Margin="5"
                         Background="{x:StaticResource MySecondPrimary}"
                         Clicked="MoreCarInfoClicked"/>
+                </Grid>
+                <!-- Pro počítač -->
+                <Grid Grid.Row="2" Grid.Column="0" Padding="0" Margin="0" IsVisible="{OnPlatform True, Android=False, iOS=False}">
+                    <Button 
+                        Text="Upravit"
+                        TextColor="Black"
+                        Margin="5"
+                        BackgroundColor="LightYellow"
+                        Clicked="OnEditSwipeItemInvoked"/>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="1" Padding="0" Margin="0" IsVisible="{OnPlatform True, Android=False, iOS=False}">
+                    <Button 
+                        Text="Více info"
+                        Margin="5"
+                        Background="{x:StaticResource MySecondPrimary}"
+                        Clicked="MoreCarInfoClicked"/>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="2" Padding="0" Margin="0" IsVisible="{OnPlatform True, Android=False, iOS=False}">
+                    <Button 
+                        Text="Smazat"
+                        Margin="5"
+                        BackgroundColor="LightPink"
+                        Clicked="OnDeleteSwipeItemInvoked"/>
                 </Grid>
             </Grid>
         </Border>

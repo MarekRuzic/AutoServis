@@ -5,9 +5,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoServis.Model.API
+namespace AutoServis.Model
 {
-    class API
+    public class API
     {
         public HttpClient client { get; set; }
 
@@ -27,6 +27,12 @@ namespace AutoServis.Model.API
         public bool checkConnectivity()
         {
             return Connectivity.Current.NetworkAccess != NetworkAccess.Internet;
+        }
+
+        public string[] GetConnectionMessage()
+        {
+            string[] message = { "Chyba","Nejste připojeni k internetu.\n\nJe potřeba internetové připojení!", "Ok" };
+            return message;
         }
     }
 }

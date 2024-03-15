@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoServis.Model
 {
-    internal class User
+    public class User
     {
         public int id { get; set; }
         public string firstname { get; set; }
@@ -32,6 +32,20 @@ namespace AutoServis.Model
             this.firstname = firstname;
             this.lastname = lastname;
             this.email = email;
+            this.password = password;
+        }
+
+        public User(int id, string firstname, string lastname, string email)
+        {
+            this.id = id;
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.email = email;
+        }
+
+        public User(int id, string password)
+        {
+            this.id = id;
             this.password = password;
         }
 

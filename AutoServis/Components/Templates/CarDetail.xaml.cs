@@ -1,7 +1,7 @@
 namespace AutoServis.Components.Templates;
 using AutoServis.Model;
-using AutoServis.Model.API;
 using AutoServis.Views.Mobile.Pages.Cars;
+using Microsoft.VisualBasic.FileIO;
 
 public partial class CarDetail : ContentView
 {
@@ -124,6 +124,12 @@ public partial class CarDetail : ContentView
 
         API api = new API();
 
+        if (api.checkConnectivity())
+        {
+            await App.Current.MainPage.DisplayAlert("Varování", "Nemáte pøipojení k internetu, je potøeba pøipojení", "Ok");
+            return;
+        }
+
         HttpResponseMessage response = await api.client.DeleteAsync($"car/delete?id={CarId}");
         if (response.IsSuccessStatusCode)
         {
@@ -144,7 +150,7 @@ public partial class CarDetail : ContentView
         else
         {
             await App.Current.MainPage.DisplayAlert("Oznámení", $"Došlo k chybì pøi mazání vozidla.", "Ok");
-        }            
+        }
     }
 
     private async void OnEditSwipeItemInvoked(object sender, EventArgs e)

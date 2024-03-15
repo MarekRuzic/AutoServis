@@ -17,6 +17,7 @@
         <ToolbarItem 
             Text="Uživatel"
             Order="Secondary"
+            Clicked="userInfoClick"
             Priority="1"/>
         <ToolbarItem 
             Text="Odhlásit se"

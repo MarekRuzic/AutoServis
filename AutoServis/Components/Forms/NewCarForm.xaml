@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Components.Forms.NewCarForm">
     <ScrollView MaximumWidthRequest="1000">
-        <VerticalStackLayout VerticalOptions="Center" BindingContext="{Binding Source={x:Reference MobileNewCar}}">
+        <VerticalStackLayout VerticalOptions="Center">
             <Label x:Name="idCar" Text="" IsVisible="false" />
             <Label
             Text="Přídání nového auta"
@@ -154,7 +154,10 @@
                 <!-- Počet dveří -->
                 <VerticalStackLayout Grid.Column="0">
                     <Label Text="Počet dveří*" Margin="0,0,0,5"/>
-                    <FlexLayout x:Name="doorRBFlex" JustifyContent="SpaceEvenly" Wrap="Wrap">
+                    <FlexLayout x:Name="doorRBFlex" 
+                                JustifyContent="{OnPlatform SpaceEvenly, Android=Center, iOS=Center}" 
+                                Wrap="{OnPlatform Wrap, Android=NoWrap, iOS=NoWrap}" 
+                                Direction="{OnPlatform Row, Android=Column, iOS=Column}">
                         <RadioButton 
                         Content="2"                            
                         GroupName="doorsRB"
@@ -227,13 +230,16 @@
                 
                 <VerticalStackLayout Grid.Column="0">
                     <Label Text="Klimatizace a pohon 4x4*" Margin="0,0,0,5"/>
-                    <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap">
+                    <FlexLayout 
+                        JustifyContent="{OnPlatform SpaceEvenly, Android=Center, iOS=Center}" 
+                        Wrap="{OnPlatform Wrap, Android=NoWrap, iOS=NoWrap}"  
+                        Direction="{OnPlatform Row, Android=Column, iOS=Column}">
                         <!-- Klimatizace -->
                         <HorizontalStackLayout>
                             <Label x:Name="airConditioningLabel" Text="Ne" Padding="0,10,10,0"/>
                             <Switch 
                                 x:Name="airConditioningSwitch"
-                                Toggled="SwitchChange"/>                            
+                                Toggled="SwitchChange"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout>
                             <Label Text="Pohon 4x4:"
@@ -334,15 +340,18 @@
                 <!-- Převodovka -->
                 <VerticalStackLayout Grid.Column="0">
                     <Label Text="Převodovka*" Margin="0,0,0,5"/>
-                    <FlexLayout x:Name="gearboxRBFlex" JustifyContent="SpaceEvenly" Wrap="Wrap">
-                    <RadioButton 
+                    <FlexLayout x:Name="gearboxRBFlex" 
+                                JustifyContent="{OnPlatform SpaceEvenly, Android=Center, iOS=Center}" 
+                                Wrap="{OnPlatform Wrap, Android=NoWrap, iOS=NoWrap}"  
+                                Direction="{OnPlatform Row, Android=Column, iOS=Column}">
+                        <RadioButton 
                             Content="Manuální"                            
                             GroupName="gearboxRB"
                             CheckedChanged="gearboxChange"
                             IsChecked="true"
                                 Margin="0"
                                 Padding="0"/>
-                    <RadioButton 
+                        <RadioButton 
                             Content="Automatická"
                             GroupName="gearboxRB"
                             CheckedChanged="gearboxChange"
@@ -367,7 +376,7 @@
                     </Frame>
                 </VerticalStackLayout>
             </Grid>
-            <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap" Margin="0,8,0,0">
+            <FlexLayout JustifyContent="SpaceEvenly" Wrap="Wrap" Margin="0,8,0,0" Direction="{OnPlatform Row, Android=Column, iOS=Column}">
                 <!-- Objem -->
                 <VerticalStackLayout Margin="0,5,0,0">
                     <Label Text="Objem (cm^3)" Margin="0,0,0,5"/>

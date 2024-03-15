@@ -1,21 +1,24 @@
 namespace AutoServis.Views.Mobile.Pages.Cars;
 using AutoServis.Views.Desktop.Pages.Login;
+using AutoServis.Views.Desktop.Pages.UserInfo;
 using AutoServis.Views.Mobile.Pages.Login;
+using AutoServis.Views.Mobile.Pages.UserInfo;
+using AutoServis.Views.All.Pages.CarForm;
 using AutoServis.Components.Templates;
 using AutoServis.Model;
-using AutoServis.Model.API;
 using AutoServis.Model.JSON;
 using System.Text.Json;
 using Microsoft.Maui.Controls;
+using AutoServis.Views.Mobile.Pages.UserInfo;
 
 public partial class MobileCars : ContentPage
 {
 	User user;
     List<Car> cars = new List<Car>();
-	public MobileCars(Object user)
+	public MobileCars(User user)
 	{
 		InitializeComponent();
-        this.user = (User)user;
+        this.user = user;
         LoadUserCars();
 	}
 
@@ -46,12 +49,16 @@ public partial class MobileCars : ContentPage
     private void ShowUserCars()
     {
         verticalLayout.Children.Clear();
+        int margin = 0;
+        if (DevicePlatform.WinUI == DeviceInfo.Platform) margin = 10;
         foreach (Car car in cars)
         {
             string carImage = "gas_car.png";
             if (car.fuel == "Elektro" || car.fuel == "Hybrid") carImage = "electro_car.png";
             var carView = new CarDetail
             {
+                Padding = margin,
+                MaximumWidthRequest = 1000,
                 CarId = car.id,
                 CarName = $"{car.brand} {car.model}",
                 CarManufacture = car.manufacture.ToShortDateString(),
@@ -104,7 +111,8 @@ public partial class MobileCars : ContentPage
     private async void addNewCarClick(object sender, EventArgs e)
     {
         MobileCars mobileCars = this;
-        await Navigation.PushAsync(new MobileNewCar(user.id, mobileCars));
+        //await Navigation.PushAsync(new MobileNewCar(user.id, mobileCars));
+        await Navigation.PushAsync(new AllCarForm());
     }
 
     private async void LogOut(object sender, EventArgs e)
@@ -118,5 +126,15 @@ public partial class MobileCars : ContentPage
                 App.Current.MainPage = new NavigationPage(new DesktopLogin());
             #endif
         }
+    }
+
+    private async void userInfoClick(object sender, EventArgs e)
+    {
+#if ANDROID || IOS
+        await Navigation.PushAsync(new MobileUserInfo(user));
+#else
+        await Navigation.PushAsync(new DesktopUserInfo(user));
+#endif
+
     }
 }

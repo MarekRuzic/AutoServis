@@ -2,7 +2,6 @@ namespace AutoServis.Components.Forms;
 using AutoServis.Views.Desktop.Pages.Registration;
 using AutoServis.Views.Mobile.Pages.Registration;
 using System.Text.Json;
-using AutoServis.Model.API;
 using AutoServis.Model;
 using AutoServis.Views.Mobile.Pages.Cars;
 

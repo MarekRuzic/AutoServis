@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AutoServis.Views.All.Pages.CarForm.AllCarForm"
+             xmlns:components="clr-namespace:AutoServis.Components.Forms"
+             Title="Formulář vozidlo">
+
+    <components:NewCarForm x:Name="NewCarForm" Margin="10"/>
+</ContentPage>

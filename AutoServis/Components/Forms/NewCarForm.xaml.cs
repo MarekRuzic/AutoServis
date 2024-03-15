@@ -1,6 +1,5 @@
 using Microsoft.Maui.Controls.Internals;
 using AutoServis.Model;
-using AutoServis.Model.API;
 using System.Net.Http.Json;
 using AutoServis.Views.Mobile.Pages.Cars;
 namespace AutoServis.Components.Forms;
