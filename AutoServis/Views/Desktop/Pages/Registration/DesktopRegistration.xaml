@@ -23,7 +23,7 @@
 
         <Grid Grid.Column="0" Grid.Row="2" BackgroundColor="White">
             <ScrollView>
-                <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" MaximumWidthRequest="750">
                     <components:RegistrationForm Margin="20"/>
                 </StackLayout>
             </ScrollView>

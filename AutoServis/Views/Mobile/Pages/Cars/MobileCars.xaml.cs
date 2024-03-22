@@ -108,6 +108,12 @@ public partial class MobileCars : ContentPage
         ShowUserCars();
     }
 
+    public Car LoadCar(int id)
+    {
+        int index = cars.FindIndex(carList => carList.id == id);
+        return cars[index];
+    }
+
     private async void addNewCarClick(object sender, EventArgs e)
     {
         MobileCars mobileCars = this;

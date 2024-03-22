@@ -60,7 +60,8 @@
                     ReturnType="Next"
                     ClearButtonVisibility="WhileEditing"
                     HorizontalTextAlignment="Center"
-                        MaxLength="7"/>
+                    MaxLength="7"
+                    TextTransform="Uppercase"/>
                 </Frame>
             </VerticalStackLayout>
             <!-- Rok výroby a stav tachometru -->
@@ -86,7 +87,10 @@
                         Keyboard="Numeric"
                         ReturnType="Next"
                         ClearButtonVisibility="WhileEditing"
-                        HorizontalTextAlignment="Center"/>
+                        HorizontalTextAlignment="Center"
+                        TextChanged="OnEntryTextChange"
+                        MaxLength="12"
+                        TextTransform="Lowercase"/>
                     </Frame>
                 </VerticalStackLayout>
             </Grid>
@@ -236,7 +240,7 @@
                         Direction="{OnPlatform Row, Android=Column, iOS=Column}">
                         <!-- Klimatizace -->
                         <HorizontalStackLayout>
-                            <Label x:Name="airConditioningLabel" Text="Ne" Padding="0,10,10,0"/>
+                            <Label x:Name="airConditioningLabel" Text="Klimatizace - Ne" Padding="0,10,10,0"/>
                             <Switch 
                                 x:Name="airConditioningSwitch"
                                 Toggled="SwitchChange"/>
@@ -433,7 +437,7 @@
                 x:Name="BtnEndForm"
                 Text="Vytvořit auto"
                 Clicked="newCar"
-                Margin="0,20,0,12"
+                Margin="0,20,0,30"
                 BackgroundColor="{x:StaticResource MySecondPrimary}">
                 <Button.Shadow>
                     <Shadow 
@@ -443,7 +447,22 @@
                         Opacity="0.3" />
                 </Button.Shadow>
             </Button>
-        </VerticalStackLayout>        
 
+            <VerticalStackLayout
+                x:Name="LoadingIndicator"
+                HorizontalOptions="Center"
+                Margin="5, 12"
+                IsVisible="false">
+                <ActivityIndicator
+                    IsRunning="True"
+                    Color="{x:StaticResource MySecondPrimary}"
+                    HeightRequest="70"
+                    WidthRequest="70"/>
+                <Label Text="Probíhá ukládání dat..."
+                       FontSize="Medium"
+                       Margin="5, 20"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>      
     </ScrollView>
 </ContentView>

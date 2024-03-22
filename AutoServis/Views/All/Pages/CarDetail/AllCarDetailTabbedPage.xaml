@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="AutoServis.Views.All.Pages.CarDetail.AllCarDetailTabbedPage"
+            xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            xmlns:controls="clr-namespace:AutoServis.Views.All.Pages.CarDetail"
+            xmlns:control="clr-namespace:AutoServis.Components.Templates"
+            BarBackgroundColor="{x:StaticResource MyPrimary}"
+            BarTextColor="White"
+            SelectedTabColor="White"
+            UnselectedTabColor="Black"            
+            CurrentPageChanged="OnCurrentPageChange">
+    
+    <ContentPage
+        Title="Vozidlo"
+        IconImageSource="sport_car.png"
+        x:Name="PrvniStrana">
+        <ScrollView>
+            <VerticalStackLayout x:Name="verticalViewCarInfo">
+                
+            </VerticalStackLayout>            
+        </ScrollView>
+    </ContentPage>
+    <ContentPage 
+        Title="Opravy vozidla"
+        IconImageSource="car_repair.png">
+        <Label Text="mami"/>
+    </ContentPage>
+    <ContentPage 
+        Title="Nová oprava"
+        IconImageSource="form.png">
+        <Label Text="😍"/>
+    </ContentPage>
+    <controls:NewPage1 IconImageSource="form.png"/>
+</TabbedPage>

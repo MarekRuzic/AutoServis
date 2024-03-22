@@ -67,14 +67,36 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\add.png" />
+	  <None Remove="Resources\Images\aircondition_icon.png" />
+	  <None Remove="Resources\Images\aircondition_icon32.png" />
+	  <None Remove="Resources\Images\allwheel_icon.png" />
+	  <None Remove="Resources\Images\allwheel_icon32.png" />
+	  <None Remove="Resources\Images\body_icon.png" />
+	  <None Remove="Resources\Images\body_icon32.png" />
 	  <None Remove="Resources\Images\car.png" />
+	  <None Remove="Resources\Images\cartrid.png" />
+	  <None Remove="Resources\Images\car_repair.png" />
+	  <None Remove="Resources\Images\color_icon32.png" />
 	  <None Remove="Resources\Images\delete.png" />
+	  <None Remove="Resources\Images\ecofuel_icon.png" />
 	  <None Remove="Resources\Images\edit.png" />
 	  <None Remove="Resources\Images\electro_car.png" />
+	  <None Remove="Resources\Images\engine_icon.png" />
+	  <None Remove="Resources\Images\form.png" />
+	  <None Remove="Resources\Images\fuel_icon.png" />
 	  <None Remove="Resources\Images\gas_car.png" />
+	  <None Remove="Resources\Images\gearbox_icon.png" />
+	  <None Remove="Resources\Images\licenseplate_icon.png" />
+	  <None Remove="Resources\Images\mileage_icon.png" />
 	  <None Remove="Resources\Images\registation.png" />
+	  <None Remove="Resources\Images\seats_icon.png" />
+	  <None Remove="Resources\Images\seats_icon32.png" />
+	  <None Remove="Resources\Images\sport_car.png" />
 	  <None Remove="Resources\Images\user.png" />
 	  <None Remove="Resources\Images\user_info.png" />
+	  <None Remove="Resources\Images\vin_icon.png" />
+	  <None Remove="Resources\Images\vin_icon32.png" />
+	  <None Remove="Resources\Images\year_icon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -97,6 +119,15 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\Templates\CarDetail.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Templates\CarInfo.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\All\Pages\CarDetail\AllCarDetailTabbedPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\All\Pages\CarDetail\NewPage1.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\All\Pages\CarForm\AllCarForm.xaml">
@@ -131,5 +162,7 @@
 	<ItemGroup>
 	  <None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadUnhandledDeviceExceptionAutoServisHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>

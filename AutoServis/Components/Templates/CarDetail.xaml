@@ -90,6 +90,7 @@
                         Clicked="MoreCarInfoClicked"/>
                 </Grid>
                 <Grid Grid.Row="2" Grid.Column="2" Padding="0" Margin="0" IsVisible="{OnPlatform True, Android=False, iOS=False}">
+                    <!-- Volání stejné metody jako ve SwipeView -->
                     <Button 
                         Text="Smazat"
                         Margin="5"

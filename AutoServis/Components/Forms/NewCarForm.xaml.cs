@@ -1,4 +1,4 @@
-using Microsoft.Maui.Controls.Internals;
+ï»¿using Microsoft.Maui.Controls.Internals;
 using AutoServis.Model;
 using System.Net.Http.Json;
 using AutoServis.Views.Mobile.Pages.Cars;
@@ -12,7 +12,7 @@ public partial class NewCarForm : ContentView
     }
     public Int32 id { get; set;}
     private char doors = '5';
-    private string transmition = "Manuální";
+    private string transmition = "ManuÃ¡lnÃ­";
 
     public void setDoors(char doors)
     {
@@ -34,7 +34,7 @@ public partial class NewCarForm : ContentView
     {
         double value = Math.Round(e.NewValue);
         sliderSeat.Value = value;
-        displayLabel.Text = $"Poèet míst k sezení: {value}";
+        displayLabel.Text = $"PoÄet mÃ­st k sezenÃ­: {value}";
     }
 
     private void seatButtonClick(object sender, EventArgs e)
@@ -42,7 +42,7 @@ public partial class NewCarForm : ContentView
         Button btn = (Button)sender;
         string text = btn.Text;
         double value = sliderSeat.Value;
-        if (text.ToLower().Trim() == "pøidat")
+        if (text.ToLower().Trim() == "pÅ™idat")
         {
             value += 1;
             if (value > 9) value = 9;
@@ -57,8 +57,8 @@ public partial class NewCarForm : ContentView
 
     private void SwitchChange(object sender, ToggledEventArgs e)
     {
-        if (airConditioningSwitch.IsToggled) airConditioningLabel.Text = "Ano";
-        else airConditioningLabel.Text = "Ne";
+        if (airConditioningSwitch.IsToggled) airConditioningLabel.Text = "Klimatizace - Ano";
+        else airConditioningLabel.Text = "Klimatizace - Ne";
     }
 
     private async void newCar(object sender, EventArgs e)
@@ -70,20 +70,20 @@ public partial class NewCarForm : ContentView
             IsInputEmpty(nameEngineInput.Text) &&
             IsInputEmpty(powerInput.Text))
         {
-            App.Current.MainPage.DisplayAlert("Oznámení", "Nìjakı z povinnıch údajù nebyl vyplnìn.", "Ok");
+            App.Current.MainPage.DisplayAlert("OznÃ¡menÃ­", "NÄ›jakÃ½ z povinnÃ½ch ÃºdajÅ¯ nebyl vyplnÄ›n.", "Ok");
             return;
         }
 
         double mileage = 0;
         if (!Double.TryParse(mileageInput.Text, out mileage))
         {
-            App.Current.MainPage.DisplayAlert("Oznámení", "Údaj stav kilometrù je špatnì vyplnìn", "Ok");
+            App.Current.MainPage.DisplayAlert("OznÃ¡menÃ­", "Ãšdaj stav kilometrÅ¯ je Å¡patnÄ› vyplnÄ›n", "Ok");
             return;
         }
 
         if (fuelPicker.SelectedIndex == -1 || bodyPicker.SelectedIndex == -1)
         {
-            App.Current.MainPage.DisplayAlert("Oznámení", "Nebyly vyplnìny všechny údaje", "Ok");
+            App.Current.MainPage.DisplayAlert("OznÃ¡menÃ­", "Nebyly vyplnÄ›ny vÅ¡echny Ãºdaje", "Ok");
             return;
         }
 
@@ -117,6 +117,9 @@ public partial class NewCarForm : ContentView
             return;
         }
 
+        LoadingIndicator.IsVisible = true;
+        BtnEndForm.IsVisible = false;
+
         Car car = new Car(-1, brand, model, manufature, mileage, fuel, body,
             color, drive4x4, doors, seats, airCondition, vin, spz, nickname, 
             name_engine, code, displacement, power, torque, oil_capacity, transmition,
@@ -125,32 +128,38 @@ public partial class NewCarForm : ContentView
         API api = new API();
         if (api.checkConnectivity())
         {
-            App.Current.MainPage.DisplayAlert("Chyba", "Nejste pøipojeni k internetu.\n\n" +
-                "Je potøeba internetové pøipojení!", "Ok");
+            App.Current.MainPage.DisplayAlert("Chyba", "Nejste pÅ™ipojeni k internetu.\n\n" +
+                "Je potÅ™eba internetovÃ© pÅ™ipojenÃ­!", "Ok");
             return;
         }
 
         HttpResponseMessage response;
 
-        // Nalezne rodièe a zavolá metodu SaveToList
+        // Nalezne rodiÄe a zavolÃ¡ metodu SaveToList
         MobileNewCar parentPage = FindParentMobileNewCar(this);        
 
-        if (BtnEndForm.Text.Trim() == "Uloit zmìny")
+        if (BtnEndForm.Text.Trim() == "UloÅ¾it zmÄ›ny")
         {
             car.id = Convert.ToInt32(idCar.Text);
             response = await api.client.PutAsJsonAsync("car/update", car);
 
+            LoadingIndicator.IsVisible = false;
+            BtnEndForm.IsVisible = true;
+
             if (response.IsSuccessStatusCode)
             {
-                // Pøidání do hlavního listu upravené vozidlo
+                // PÅ™idÃ¡nÃ­ do hlavnÃ­ho listu upravenÃ© vozidlo
                 if (parentPage != null)
                 {
                     parentPage?.SaveToList(car, false);
                 }
-                await App.Current.MainPage.DisplayAlert("Oznámení", "U vozidla byla úspìšnì zmìnìna data", "OK");
+                await App.Current.MainPage.DisplayAlert("OznÃ¡menÃ­", "U vozidla byla ÃºspÄ›Å¡nÄ› zmÄ›nÄ›na data" +
+                    "\n\nPo stisku tlaÄÃ­tka budete pÅ™esmÄ›rovÃ¡nÃ­ na ÃºvodnÃ­ strÃ¡nku ğŸ˜Š", "OK");                
                 await Navigation.PopAsync();
             }
-            else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+            else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoÄkÃ¡vanÃ¡ chyba. Zkus se to znovu", "Ok");
+            LoadingIndicator.IsVisible = false;
+            BtnEndForm.IsVisible = true;
             return;
         }
 
@@ -158,22 +167,27 @@ public partial class NewCarForm : ContentView
 
         if (response.IsSuccessStatusCode)
         {
-            // Pøidání nového vozidla do listu
+            LoadingIndicator.IsVisible = false;
+            BtnEndForm.IsVisible = true;
+            // PÅ™idÃ¡nÃ­ novÃ©ho vozidla do listu
             if (parentPage != null)
             {
                 parentPage?.SaveToList(null, true);
             }
-            await App.Current.MainPage.DisplayAlert("Oznámení", "Vozidlo bylo úspìšnì vytvoøeno.", "OK");
+            await App.Current.MainPage.DisplayAlert("OznÃ¡menÃ­", "Vozidlo bylo ÃºspÄ›Å¡nÄ› vytvoÅ™eno." +
+                "\n\nPo stisku tlaÄÃ­tka budete pÅ™esmÄ›rovÃ¡nÃ­ na ÃºvodnÃ­ strÃ¡nku ğŸ˜Š", "OK");            
             await Navigation.PopAsync();
         }
-        else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+        else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoÄkÃ¡vanÃ¡ chyba. Zkus se to znovu", "Ok");
+        LoadingIndicator.IsVisible = false;
+        BtnEndForm.IsVisible = true;
     }
 
     private void doorsChange(object sender, CheckedChangedEventArgs e)
     {
         if (sender is RadioButton radioButton && e.Value)
         {
-            // Získání obsahu (Content) zvoleného RadioButtonu
+            // ZÃ­skÃ¡nÃ­ obsahu (Content) zvolenÃ©ho RadioButtonu
             string selectedContent = radioButton.Content?.ToString();
             doors = selectedContent[0];
         }
@@ -189,7 +203,7 @@ public partial class NewCarForm : ContentView
 
     private MobileNewCar FindParentMobileNewCar(Element element)
     {
-        // Rekurzivnì hledá rodièovskou stránku MobileCars
+        // RekurzivnÄ› hledÃ¡ rodiÄovskou strÃ¡nku MobileCars
         if (element.Parent is MobileNewCar mobileNewCar)
         {
             return mobileNewCar;
@@ -197,11 +211,25 @@ public partial class NewCarForm : ContentView
 
         if (element.Parent != null)
         {
-            // Pokraèuj v hledání v rodièovském prvku
+            // PokraÄuj v hledÃ¡nÃ­ v rodiÄovskÃ©m prvku
             return FindParentMobileNewCar(element.Parent);
         }
 
-        // Nenalezena ádná rodièovská stránka MobileCars
+        // Nenalezena Å¾Ã¡dnÃ¡ rodiÄovskÃ¡ strÃ¡nka MobileCars
         return null;
+    }
+
+    private void OnEntryTextChange(
+        object sender, 
+        TextChangedEventArgs e)
+    {
+     string text = ((Entry)sender).Text;
+     string result = "";
+     for(int i = 0; i < text.Length; i++)
+     {
+      if (text[i] >= '0' && text[i] <= '9' 
+      || text[i] == ' ') result += text[i];
+     }
+     ((Entry)sender).Text = result;
     }
 }

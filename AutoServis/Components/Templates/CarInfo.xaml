@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AutoServis.Components.Templates.CarInfo"
+             x:Name="this">
+    
+    <VerticalStackLayout BindingContext="{Binding Source={x:Reference this}}">
+        <Label 
+        FontSize="{OnPlatform 60, Android=32, iOS=32}"
+        Margin="0,10"
+        Text="{Binding CarName}"
+        HorizontalOptions="Center"/>
+        <Image
+            Source="cartrid.png" 
+            Aspect="AspectFit" 
+            WidthRequest="{OnPlatform 350, Android=300}" 
+            HorizontalOptions="Center">
+            <Image.Shadow>
+                <Shadow Brush="Black"
+                    Offset="15,50"
+                    Radius="30"
+                    Opacity="0.5" />
+            </Image.Shadow>
+        </Image>
+        <Line 
+        Stroke="Black" 
+        StrokeThickness="1" X1="0" Y1="0" X2="3000" Y2="0"
+        Margin="0, 0, 0, 0"/>
+        <FlexLayout 
+        JustifyContent="SpaceEvenly"
+        Wrap="Wrap"
+        Direction="Row">
+            <VerticalStackLayout Margin="10">
+                <Image Source="year_icon.png" Aspect="AspectFit" HeightRequest="64"/>
+                <Label Text="{Binding CarManufacture}" HorizontalOptions="Center" FontSize="Medium"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Margin="10">
+                <Image Source="mileage_icon.png" Aspect="AspectFit" HeightRequest="64"/>
+                <Label Text="{Binding CarMileage}" HorizontalOptions="Center" FontSize="Medium"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Margin="10">
+                <Image Source="licenseplate_icon.png" Aspect="AspectFit" HeightRequest="64"/>
+                <Label Text="{Binding CarSPZ}" HorizontalOptions="Center" FontSize="Medium"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Margin="10">
+                <Image Source="{Binding CarFuelImage}" Aspect="AspectFit" HeightRequest="64"/>
+                <Label Text="{Binding CarFuel}" HorizontalOptions="Center" FontSize="Medium"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Margin="10">
+                <Image Source="gearbox_icon.png" Aspect="AspectFit" HeightRequest="64"/>
+                <Label Text="{Binding CarGearbox}" HorizontalOptions="Center" FontSize="Medium"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Margin="10">
+                <Image Source="engine_icon.png" Aspect="AspectFit" HeightRequest="64"/>
+                <Label Text="{Binding CarDisplacement}" HorizontalOptions="Center" FontSize="Medium"/>
+            </VerticalStackLayout>
+        </FlexLayout>
+
+        <FlexLayout JustifyContent="SpaceEvenly"
+            Wrap="Wrap"
+            Direction="Row">
+            <TableView Intent="Settings" Margin="5">
+                <TableRoot>
+                    <TableSection Title="Další informace o vozidle">
+                        <ImageCell 
+                Text="VIN"
+                Detail="{Binding CarVIN}"
+                ImageSource="vin_icon32.png"/>
+                        <ImageCell 
+                Text="Klimatizace"
+                Detail="{Binding CarAirCondition}"
+                ImageSource="aircondition_icon32.png"/>
+                        <ImageCell 
+                Text="Sedadla / dveře"
+                Detail="{Binding CarSeatDoor}"
+                ImageSource="seats_icon32.png"/>
+                        <ImageCell 
+                Text="Karoserie"
+                Detail="{Binding CarBody}"
+                ImageSource="body_icon32.png"/>
+                        <ImageCell 
+                Text="4x4"
+                Detail="{Binding CarDrive}"
+                ImageSource="allwheel_icon32.png"/>
+                        <ImageCell                         
+                Text="Barva"
+                Detail="{Binding CarColor}"
+                ImageSource="color_icon32.png"/>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+
+            <TableView Intent="Data" Margin="5">
+                <TableRoot>
+                    <TableSection Title="Informace o motoru">
+                        <TextCell 
+                Text="Název motoru"
+                Detail="{Binding CarEngine}"/>
+                        <TextCell 
+                Text="Kódové označení"
+                Detail="{Binding CarCode}"/>
+                        <TextCell 
+                Text="Objem motoru"
+                Detail="{Binding CarDisplacement2}"/>
+                        <TextCell 
+                Text="Výkon"
+                Detail="{Binding CarPower}"/>
+                        <TextCell 
+                Text="Kroutící moment"
+                Detail="{Binding CarTorque}"/>
+                        <TextCell 
+                Text="Kapacita olejové nádrže"
+                Detail="{Binding CarOil}"/>
+                        <TextCell 
+                            Text="Převodovka"
+                            Detail="{Binding CarGearbox}"/>
+                        <TextCell 
+                            Text="Přezdívka"
+                            Detail="{Binding CarNickname}"/>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+        </FlexLayout>
+    </VerticalStackLayout>
+</ContentView>

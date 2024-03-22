@@ -1,6 +1,7 @@
 namespace AutoServis.Components.Templates;
 using AutoServis.Model;
 using AutoServis.Views.Mobile.Pages.Cars;
+using AutoServis.Views.All.Pages.CarDetail;
 using Microsoft.VisualBasic.FileIO;
 
 public partial class CarDetail : ContentView
@@ -88,12 +89,15 @@ public partial class CarDetail : ContentView
         set => SetValue(CarImageProperty, value);
     }
 
-    private void MoreCarInfoClicked(object sender, EventArgs e)
+    private async void MoreCarInfoClicked(object sender, EventArgs e)
     {
         // Získání id daného
-        //App.Current.MainPage.DisplayAlert("Ahoj", $"Id je: {CarId}", "ok");
+        //await Navigation.PushAsync(new AllCarDetailTabbedPage(CarId));
 
-        OnDeleteSwipeItemInvoked(sender, e);
+
+        MobileCars parentPage = FindParentMobileCars(this);
+
+        await Navigation.PushAsync(new AllCarDetailTabbedPage(parentPage.LoadCar(CarId)));
     }
 
     private MobileCars FindParentMobileCars(Element element)
