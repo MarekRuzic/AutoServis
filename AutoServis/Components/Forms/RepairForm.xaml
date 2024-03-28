@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AutoServis.Components.Forms.RepairForm">
+    <ScrollView MaximumWidthRequest="1000">
+        <VerticalStackLayout VerticalOptions="Center">
+            <Label 
+                Text="Nová oprava vozidla"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                FontSize="Large"/>
+            <!-- Název opravy -->
+            <VerticalStackLayout Margin="0,12,0,0">
+                <Label Text="Název opravy*" Margin="0,0,0,5"/>
+                <Frame                    
+                    Padding="0">
+                    <Entry
+                        x:Name="nameInput"
+                        Placeholder="Název opravy"
+                        Keyboard="Default"
+                        ReturnType="Next"
+                        ClearButtonVisibility="WhileEditing"
+                        HorizontalTextAlignment="Center"
+                        MaxLength="255"/>
+                </Frame>
+            </VerticalStackLayout>
+            <!-- Datum klimetrů a stav kilometrů -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- Rok výroby -->
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Datum opravy*" Margin="0,0,0,5"/>
+                    <DatePicker x:Name="repairDate" HorizontalOptions="FillAndExpand" Format="dd/MM/yyyy"/>
+                </VerticalStackLayout>
+                <!-- Stav tachometru -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Stav tachometru*" Margin="5,0,0,5"/>
+                    <Frame                         
+                        Padding="0"
+                        Margin="5,0,0,0">
+                        <Entry 
+                            x:Name="mileageInput" 
+                            Placeholder="Stav tachometru"
+                            Keyboard="Numeric"
+                            ReturnType="Next"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"
+                            TextChanged="OnEntryTextChange"
+                            MaxLength="12"
+                            TextTransform="Lowercase"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+            <!-- Text opravy -->
+            <VerticalStackLayout Margin="0,12,0,0">
+                <Label Text="Popis opravy*" Margin="0,0,0,5"/>
+                <Frame                    
+                    Padding="0">
+                    <Editor
+                        x:Name="descriptionInput"
+                        Placeholder="Popis opravy"
+                        Keyboard="Default"
+                        HeightRequest="250"
+                        AutoSize="TextChanges"/>
+                </Frame>
+            </VerticalStackLayout>
+            <!-- Název dílu a odkaz na webovou stánku -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- Název dílu -->
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Název dílu" Margin="0,0,0,5"/>
+                    <Frame        
+                        Padding="0"
+                        Margin="0,0,5,0">
+                        <Entry 
+                            x:Name="namepartInput"
+                            Placeholder="Název dílu"
+                            Keyboard="Default"
+                            ReturnType="Next"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"
+                            />
+                    </Frame>
+                </VerticalStackLayout>
+                <!-- Odkaz -->
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Odkaz na web" Margin="5,0,0,5"/>
+                    <Frame                          
+                        Padding="0"
+                        Margin="5,0,0,0">
+                        <Entry 
+                            x:Name="urlInput" 
+                            Placeholder="Odkaz na web"
+                            Keyboard="Url"
+                            ReturnType="Next"
+                            ClearButtonVisibility="WhileEditing"
+                            HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </VerticalStackLayout>              
+            </Grid>
+
+
+
+            <Button 
+                x:Name="BtnEndForm"
+                Text="Uložit opravu"
+                Clicked="saveRepairCar_Clicked"
+                Margin="0,20,0,30"
+                BackgroundColor="{x:StaticResource MySecondPrimary}">
+                <Button.Shadow>
+                    <Shadow 
+                        Brush="Black"
+                        Offset="2,5"
+                        Radius="3"
+                        Opacity="0.3" />
+                </Button.Shadow>
+            </Button>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

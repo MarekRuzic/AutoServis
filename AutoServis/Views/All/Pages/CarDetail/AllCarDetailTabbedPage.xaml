@@ -18,7 +18,7 @@
         x:Name="PrvniStrana">
         <ScrollView>
             <VerticalStackLayout x:Name="verticalViewCarInfo">
-                
+                <!-- Vložení šablony CarInfo -->
             </VerticalStackLayout>            
         </ScrollView>
     </ContentPage>
@@ -27,10 +27,5 @@
         IconImageSource="car_repair.png">
         <Label Text="mami"/>
     </ContentPage>
-    <ContentPage 
-        Title="Nová oprava"
-        IconImageSource="form.png">
-        <Label Text="😍"/>
-    </ContentPage>
-    <controls:NewPage1 IconImageSource="form.png"/>
+    <controls:AllCarDetailFormRepair IconImageSource="form.png"/>
 </TabbedPage>

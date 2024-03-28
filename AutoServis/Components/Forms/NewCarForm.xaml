@@ -106,6 +106,7 @@
                     <Frame        
                     Padding="0"
                     Margin="0,0,5,0">
+                        <!-- Kód v XAML -->
                         <Picker 
                         x:Name="fuelPicker"
                         HorizontalTextAlignment="Center">
@@ -241,9 +242,7 @@
                         <!-- Klimatizace -->
                         <HorizontalStackLayout>
                             <Label x:Name="airConditioningLabel" Text="Klimatizace - Ne" Padding="0,10,10,0"/>
-                            <Switch 
-                                x:Name="airConditioningSwitch"
-                                Toggled="SwitchChange"/>
+                            <Switch x:Name="airConditioningSwitch" Toggled="SwitchChange"/>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout>
                             <Label Text="Pohon 4x4:"
@@ -359,8 +358,8 @@
                             Content="Automatická"
                             GroupName="gearboxRB"
                             CheckedChanged="gearboxChange"
-                        Margin="0"
-                        Padding="0"/>
+                                Margin="0"
+                                Padding="0"/>
                     </FlexLayout>
                 </VerticalStackLayout>
                 <!-- kódové označení -->
@@ -447,7 +446,7 @@
                         Opacity="0.3" />
                 </Button.Shadow>
             </Button>
-
+            <!-- XAML kód -->
             <VerticalStackLayout
                 x:Name="LoadingIndicator"
                 HorizontalOptions="Center"

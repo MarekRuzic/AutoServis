@@ -76,6 +76,7 @@
 	  <None Remove="Resources\Images\car.png" />
 	  <None Remove="Resources\Images\cartrid.png" />
 	  <None Remove="Resources\Images\car_repair.png" />
+	  <None Remove="Resources\Images\car_repair_form.png" />
 	  <None Remove="Resources\Images\color_icon32.png" />
 	  <None Remove="Resources\Images\delete.png" />
 	  <None Remove="Resources\Images\ecofuel_icon.png" />
@@ -115,6 +116,9 @@
 	  <MauiXaml Update="Components\Forms\RegistrationForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\Forms\RepairForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\Forms\UserInfoForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -124,10 +128,10 @@
 	  <MauiXaml Update="Components\Templates\CarInfo.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\All\Pages\CarDetail\AllCarDetailTabbedPage.xaml">
+	  <MauiXaml Update="Views\All\Pages\CarDetail\AllCarDetailFormRepair.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\All\Pages\CarDetail\NewPage1.xaml">
+	  <MauiXaml Update="Views\All\Pages\CarDetail\AllCarDetailTabbedPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\All\Pages\CarForm\AllCarForm.xaml">

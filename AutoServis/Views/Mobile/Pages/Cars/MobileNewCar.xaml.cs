@@ -74,11 +74,12 @@ public partial class MobileNewCar : ContentPage
         findAndSelectRadioButton(doorRBFlex, (car.doors - 48).ToString());
         // RadioButton pøevodovka
         findAndSelectRadioButton(gearboxRBFlex, car.transmition);
-        setPicker(fuelPicker, car.fuel);
-        setPicker(bodyPicker, car.body);
+        SetPicker(fuelPicker, car.fuel);
+        SetPicker(bodyPicker, car.body);
     }
 
-    private void setPicker(Picker picker, string item)
+    // Vybrání správné hodnoty v Pickeru
+    private void SetPicker(Picker picker, string item)
     {
         if (picker.ItemsSource is IList<string> fuelItems)
         {

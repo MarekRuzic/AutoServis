@@ -81,6 +81,7 @@ public partial class NewCarForm : ContentView
             return;
         }
 
+        // Programový kód
         if (fuelPicker.SelectedIndex == -1 || bodyPicker.SelectedIndex == -1)
         {
             App.Current.MainPage.DisplayAlert("Oznámení", "Nebyly vyplněny všechny údaje", "Ok");
@@ -117,6 +118,7 @@ public partial class NewCarForm : ContentView
             return;
         }
 
+        // C# kód zobrazení ActivityIndicator s Label
         LoadingIndicator.IsVisible = true;
         BtnEndForm.IsVisible = false;
 

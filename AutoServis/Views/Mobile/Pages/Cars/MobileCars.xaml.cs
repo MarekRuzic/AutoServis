@@ -123,7 +123,7 @@ public partial class MobileCars : ContentPage
 
     private async void LogOut(object sender, EventArgs e)
     {
-        bool answer = await DisplayAlert("Odlásit se", "", "Ano", "Ne");
+        bool answer = await DisplayAlert("Odhlásit se", "Opravdu se chcete odhlásit?", "Ano", "Ne");
         if (answer)
         {
             #if ANDROID || IOS

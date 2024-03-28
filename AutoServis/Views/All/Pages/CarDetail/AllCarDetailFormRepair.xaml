@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AutoServis.Views.All.Pages.CarDetail.AllCarDetailFormRepair"
+             xmlns:controls="clr-namespace:AutoServis.Components.Forms"
+             Title="Formulář pro opravu vozidla">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid IsVisible="{OnPlatform 'True', Android='False', iOS='False'}" 
+              Grid.Column="1" Grid.Row="0" Background="{StaticResource MyLightBlue}">
+
+        </Grid>
+        <Grid IsVisible="{OnPlatform 'True', Android='False', iOS='False'}"
+            Grid.Column="1" Grid.Row="1" Background="{StaticResource MyLightBlue}">
+            <Image Source="car_repair_form.png" Aspect="AspectFit" Margin="50" HeightRequest="400"/>
+        </Grid>
+
+        <Grid IsVisible="{OnPlatform 'True', Android='False', iOS='False'}" Grid.Column="0" Grid.Row="2"  BackgroundColor="White">
+            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" MaximumWidthRequest="750">
+                <controls:RepairForm Margin="10"/>
+            </StackLayout>
+        </Grid>
+
+        <Grid IsVisible="{OnPlatform 'False', Android='True', iOS='True'}" Grid.Column="0" Grid.Row="2" ColumnSpan="2"  BackgroundColor="White">
+            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" MaximumWidthRequest="750">
+                <controls:RepairForm Margin="10"/>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>
