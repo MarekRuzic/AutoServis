@@ -24,6 +24,7 @@
         </ScrollView>
     </ContentPage>
     <ContentPage
+        x:Name="RepairCarpage"
         Title="Opravy vozidla"
         IconImageSource="car_repair.png">
         <ScrollView MaximumWidthRequest="1000">
@@ -32,5 +33,5 @@
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage>
-    <controls:AllCarDetailFormRepair IconImageSource="form.png"/>
+    <controls:AllCarDetailFormRepair x:Name="AllCarDetailFormRepair" IconImageSource="form.png"/>
 </TabbedPage>

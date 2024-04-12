@@ -2,6 +2,8 @@ namespace AutoServis.Views.All.Pages.CarDetail;
 
 using AutoServis.Components.Templates;
 using AutoServis.Model;
+using AutoServis.Model.JSON;
+using System.Text.Json;
 
 public partial class AllCarDetailTabbedPage : TabbedPage
 {
@@ -12,7 +14,7 @@ public partial class AllCarDetailTabbedPage : TabbedPage
         InitializeComponent();
 		this.car = car;
         ShowCarInfo(car);
-		ShowCarRepair();
+        AllCarDetailFormRepair.CarId = car.id;
     }
 
     public void ShowCarInfo(Car car)
@@ -48,10 +50,57 @@ public partial class AllCarDetailTabbedPage : TabbedPage
 		verticalViewCarInfo.Children.Add(carInfo);
 	}
 
-	private void ShowCarRepair()
+    public async void LoadRepairsFromDatabase()
+    {
+        API api = new API();
+
+        if (api.checkConnectivity())
+        {
+            await DisplayAlert("Oznámení", "Není pøipojení k internetu. Proto nemohli být naèteny data", "Zavøít");
+            return;
+        }
+        List<Repair> repairs = new List<Repair>();
+        HttpResponseMessage responseMessage = await api.client.GetAsync($"repair/list?id={car.id}");
+        if (responseMessage.IsSuccessStatusCode)
+        {
+            string getResponseString = await responseMessage.Content.ReadAsStringAsync();
+            repairs = JsonSerializer.Deserialize<List<Repair>>(getResponseString);
+
+            ShowCarRepair(repairs);
+        }
+        else
+        {
+            await DisplayAlert("Oznámení", "Pøi naèítání dat z databáze došlo k chybì.", "Zavøít");
+        }
+    }
+
+    private void ShowCarRepair(List<Repair> repairs)
 	{
 		verticalViewCarRepair.Children.Clear();
-		var carRepair = new CarRepair
+        foreach (Repair repair in repairs)
+        {
+            string carImage = "gas_car.png";
+            if (car.fuel == "Elektro" || car.fuel == "Hybrid") carImage = "electro_car.png";
+            var carRepair = new CarRepair
+            {
+                Margin = 10,
+                MaximumWidthRequest = 1000,
+                RepairId = repair.id,
+                RepairName = repair.name,
+                RepairDate = repair.date.ToShortDateString(),
+                RepairMileage = repair.mileage + " Km",
+                RepairPrice = repair.price + " Kè",
+                decription = repair.description,
+                part_name = repair.part_name,
+                url = repair.url,
+                car_id = car.id,
+            };
+            verticalViewCarRepair.Children.Add(carRepair);
+        }
+
+
+
+        /*var carRepair = new CarRepair
 		{
 			Margin = 10,
 			RepairId = -1,
@@ -90,7 +139,7 @@ public partial class AllCarDetailTabbedPage : TabbedPage
             RepairMileage = "157969 Km",
             RepairPrice = "199 Kè"
         };
-        verticalViewCarRepair.Children.Add(carRepair);
+        verticalViewCarRepair.Children.Add(carRepair);*/
     }
 
     private void OnCurrentPageChange(object sender, EventArgs e)
@@ -99,7 +148,13 @@ public partial class AllCarDetailTabbedPage : TabbedPage
 			if (this.CurrentPage == AboutCarPage)
 			{
 				if (this.car != null) ShowCarInfo(this.car);
+				return;
 			}
 		#endif
+
+		if (this.CurrentPage == RepairCarpage)
+		{
+            LoadRepairsFromDatabase();
+        }
     }
 }

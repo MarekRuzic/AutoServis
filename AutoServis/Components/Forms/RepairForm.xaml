@@ -79,7 +79,7 @@
             ReturnType="Next"
             ClearButtonVisibility="WhileEditing"
             HorizontalTextAlignment="Center"
-            MaxLength="255"
+            MaxLength="7"
                         TextChanged="OnEntryTextChange"/>
                 </Frame>
             </VerticalStackLayout>
@@ -124,7 +124,7 @@
 
 
 
-            <Button x:Name="BtnEndForm"
+            <Button x:Name="BtnRepairForm"
                     Text="Uložit opravu"
                     Clicked="saveRepairCar_Clicked"
                     Margin="0,20,0,30"
@@ -133,6 +133,13 @@
                     <Shadow Brush="Black" Offset="2,5" Radius="3" Opacity="0.3" />
                 </Button.Shadow>
             </Button>
+            <ActivityIndicator
+    x:Name="LoadingIndicator"
+    IsVisible="False"
+    IsRunning="True"
+    Color="{x:StaticResource MySecondPrimary}"
+    HeightRequest="50"
+    WidthRequest="50"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentView>

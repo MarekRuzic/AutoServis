@@ -27,6 +27,12 @@ public partial class MobileCars : ContentPage
     {
         API api = new API();
 
+        if (api.checkConnectivity())
+        {
+            await DisplayAlert("Oznámení", "Není pøipojení k internetu. Proto nemohli být naèteny data", "Zavøít");
+            return;
+        }
+
         HttpResponseMessage responseMessage = await api.client.GetAsync($"car/listcaruser?id={user.id}");
         if (responseMessage.IsSuccessStatusCode)
         {
