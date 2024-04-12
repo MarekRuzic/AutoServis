@@ -45,7 +45,8 @@
             </StackLayout>
 
 
-            <Border 
+            <Border
+                MaximumWidthRequest="1000"
                 x:Name="addNewCarButton"
                 Stroke="Black"
                 StrokeDashArray="8,8,10"

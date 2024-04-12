@@ -88,6 +88,7 @@ Margin="0, 0, 0, 0"/>
             </VerticalStackLayout>
 
             <Button 
+                x:Name="UpdateUserButton"
                 Text="Uložit změny" 
                 Clicked="UpdateUserDetailClick"
                 Margin="0, 12, 0, 20"
@@ -101,6 +102,13 @@ Margin="0, 0, 0, 0"/>
                         Opacity="0.4" />
                 </Button.Shadow>
             </Button>
+                <ActivityIndicator
+    x:Name="LoadingIndicator"
+    IsVisible="False"
+    IsRunning="True"
+    Color="{x:StaticResource MySecondPrimary}"
+    HeightRequest="50"
+    WidthRequest="50"/>
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="userPassword" IsVisible="false">
             <VerticalStackLayout Margin="0,12,0,0">
@@ -159,6 +167,7 @@ Margin="0, 0, 0, 0"/>
             </Grid>
 
             <Button 
+                x:Name="UpdatePasswordButton"
                 Text="Změnit heslo" 
                 Clicked="UpdatePasswordClick"
                 Margin="0, 12, 0, 20"
@@ -172,6 +181,13 @@ Margin="0, 0, 0, 0"/>
                 Opacity="0.4" />
                 </Button.Shadow>
             </Button>
+                <ActivityIndicator
+    x:Name="LoadingIndicator2"
+    IsVisible="False"
+    IsRunning="True"
+    Color="{x:StaticResource MySecondPrimary}"
+    HeightRequest="50"
+    WidthRequest="50"/>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>

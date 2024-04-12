@@ -42,6 +42,8 @@ public partial class LoginForm : ContentView
             showDialog("Varování", "Nemáte pøipojení k internetu, je potøeba pøipojení", "Ok");
             return;
         }
+        LoginButton.IsVisible = false;
+        LoadingIndicator.IsVisible = true;
 
         HttpResponseMessage response = await api.client.
             GetAsync($"user/getuser?email={emailInput}");
@@ -52,9 +54,12 @@ public partial class LoginForm : ContentView
             string getResponsestring = await response.Content.ReadAsStringAsync();
             User user = JsonSerializer.Deserialize<List<User>>(getResponsestring).FirstOrDefault();
 
-            if (!user.checkPassword(passwordInput))
+            // Kontrola uživatele a hesla
+            if (user == null || !user.checkPassword(passwordInput))
             {
-                showDialog("Oznámení", "Neplatné heslo", "Ok");
+                showDialog("Oznámení", "Neplatné uživatelské údaje", "Ok");
+                LoginButton.IsVisible = true;
+                LoadingIndicator.IsVisible = false;
                 return;
             }
 
@@ -70,6 +75,8 @@ public partial class LoginForm : ContentView
         {
             await App.Current.MainPage.DisplayAlert("Chyba", "Chyba pøi naèítání dat. Zkus te to znovu.", "Ok");
         }
+        LoginButton.IsVisible = true;
+        LoadingIndicator.IsVisible = false;
     }
 
     private void OnEmailCompleted(object sender, EventArgs e)

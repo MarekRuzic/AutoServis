@@ -49,15 +49,22 @@ public partial class UserInfoForm : ContentView
             return;
         }
 
+        UpdateUserButton.IsVisible = false;
+        LoadingIndicator.IsVisible = true;
+        
+
         HttpResponseMessage response = await api.client.PutAsJsonAsync("user/updateuser", user);
         if (response.IsSuccessStatusCode)
         {
-            await App.Current.MainPage.DisplayAlert("Oznámení", "Data o Vás byla úspìšnì zmìnìna", "OK");
+            App.Current.MainPage.DisplayAlert("Oznámení", "Data o Vás byla úspìšnì zmìnìna", "OK");
         }
         else
         {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+            App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
         }
+
+        UpdateUserButton.IsVisible = true;
+        LoadingIndicator.IsVisible = false;
     }
 
     private async void UpdatePasswordClick(object sender, EventArgs e)
@@ -96,15 +103,21 @@ public partial class UserInfoForm : ContentView
             return;
         }
 
+        UpdatePasswordButton.IsVisible = false;
+        LoadingIndicator2.IsVisible = true;
+
         HttpResponseMessage response = await api.client.PutAsJsonAsync("user/updatepassworduser", user);
         if (response.IsSuccessStatusCode)
         {
-            await App.Current.MainPage.DisplayAlert("Oznámení", "Heslo bylo úspìšnì zmìnìno", "OK");
+            App.Current.MainPage.DisplayAlert("Oznámení", "Heslo bylo úspìšnì zmìnìno", "OK");
         }
         else
         {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+            App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
         }
+
+        UpdatePasswordButton.IsVisible = true;
+        LoadingIndicator2.IsVisible = false;
     }
 
     private void SwitchOnChange(object sender, ToggledEventArgs e)
@@ -114,12 +127,10 @@ public partial class UserInfoForm : ContentView
             userInfo.IsVisible = false;
             userPassword.IsVisible = true;
             labelTitle.Text = "Zmìna hesla";
-            labelSwitch.Text = "Zmìnit uživateslké údaje";
             return;
         }
         userInfo.IsVisible = true;
         userPassword.IsVisible = false;
         labelTitle.Text = "Uživatelské údaje";
-        labelSwitch.Text = "Zmìnit heslo";
     }
 }

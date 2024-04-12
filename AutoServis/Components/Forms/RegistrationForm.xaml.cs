@@ -47,6 +47,9 @@ public partial class RegistrationForm : ContentView
             return;
         }
 
+        RegisterButton.IsVisible = false;
+        LoadingIndicator.IsVisible = true;
+
         // Nahrání všech uživatelù pro kontrolu jedineènosti emailu
         HttpResponseMessage response = await api.client.GetAsync("user/list?limit=99999");
         if (response.IsSuccessStatusCode)
@@ -66,12 +69,16 @@ public partial class RegistrationForm : ContentView
             if (!uniqueEmail)
             {
                 showDialog("Oznámení", "Tento email už nìkdo využívá zkuste prosím jiný.", "Ok");
+                RegisterButton.IsVisible = true;
+                LoadingIndicator.IsVisible = false;
                 return;
             }
         }
         else
         {
             showDialog("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+            RegisterButton.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
             return;
         }
 
@@ -82,6 +89,8 @@ public partial class RegistrationForm : ContentView
         {
             showDialog("Chyba", "Nejste pøipojeni k internetu.\n\n" +
                 "Je potøeba internetové pøipojení!", "Ok");
+            RegisterButton.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
             return;
         }
 
@@ -99,6 +108,8 @@ public partial class RegistrationForm : ContentView
         {
             showDialog("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
         }
+        RegisterButton.IsVisible = true;
+        LoadingIndicator.IsVisible = false;
     }
 
     private void InputComplete(object sender, EventArgs e)
