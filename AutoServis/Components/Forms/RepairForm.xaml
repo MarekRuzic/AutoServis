@@ -67,6 +67,22 @@
                         AutoSize="TextChanges"/>
                 </Frame>
             </VerticalStackLayout>
+            <!-- Název opravy -->
+            <VerticalStackLayout Margin="0,12,0,0">
+                <Label Text="Cena dílu*" Margin="0,0,0,5"/>
+                <Frame                    
+                    Padding="0">
+                    <Entry
+            x:Name="priceInput"
+            Placeholder="Cena dílu"
+            Keyboard="Default"
+            ReturnType="Next"
+            ClearButtonVisibility="WhileEditing"
+            HorizontalTextAlignment="Center"
+            MaxLength="255"
+                        TextChanged="OnEntryTextChange"/>
+                </Frame>
+            </VerticalStackLayout>
             <!-- Název dílu a odkaz na webovou stánku -->
             <Grid Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
@@ -108,18 +124,13 @@
 
 
 
-            <Button 
-                x:Name="BtnEndForm"
-                Text="Uložit opravu"
-                Clicked="saveRepairCar_Clicked"
-                Margin="0,20,0,30"
-                BackgroundColor="{x:StaticResource MySecondPrimary}">
+            <Button x:Name="BtnEndForm"
+                    Text="Uložit opravu"
+                    Clicked="saveRepairCar_Clicked"
+                    Margin="0,20,0,30"
+                    BackgroundColor="{x:StaticResource MySecondPrimary}">
                 <Button.Shadow>
-                    <Shadow 
-                        Brush="Black"
-                        Offset="2,5"
-                        Radius="3"
-                        Opacity="0.3" />
+                    <Shadow Brush="Black" Offset="2,5" Radius="3" Opacity="0.3" />
                 </Button.Shadow>
             </Button>
         </VerticalStackLayout>

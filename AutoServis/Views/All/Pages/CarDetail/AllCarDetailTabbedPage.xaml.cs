@@ -12,6 +12,7 @@ public partial class AllCarDetailTabbedPage : TabbedPage
         InitializeComponent();
 		this.car = car;
         ShowCarInfo(car);
+		ShowCarRepair();
     }
 
     public void ShowCarInfo(Car car)
@@ -47,16 +48,58 @@ public partial class AllCarDetailTabbedPage : TabbedPage
 		verticalViewCarInfo.Children.Add(carInfo);
 	}
 
+	private void ShowCarRepair()
+	{
+		verticalViewCarRepair.Children.Clear();
+		var carRepair = new CarRepair
+		{
+			Margin = 10,
+			RepairId = -1,
+			RepairName = "Destièky",
+			RepairDate = "25. 03. 2024",
+			RepairMileage = "160255 Km",
+			RepairPrice = "563 Kè"
+		};
+		verticalViewCarRepair.Children.Add(carRepair);
+        carRepair = new CarRepair
+        {
+            Margin = 10,
+            RepairId = -1,
+            RepairName = "Brzdové kotouèe pøední",
+            RepairDate = "25. 03. 2024",
+            RepairMileage = "160255 Km",
+            RepairPrice = "1499 Kè"
+        };
+        verticalViewCarRepair.Children.Add(carRepair);
+        carRepair = new CarRepair
+        {
+            Margin = 10,
+            RepairId = -1,
+            RepairName = "Motorový olej",
+            RepairDate = "19. 02. 2024",
+            RepairMileage = "157969 Km",
+            RepairPrice = "599 Kè"
+        };
+        verticalViewCarRepair.Children.Add(carRepair);
+        carRepair = new CarRepair
+        {
+            Margin = 10,
+            RepairId = -1,
+            RepairName = "Olejový filtr",
+            RepairDate = "19. 02. 2024",
+            RepairMileage = "157969 Km",
+            RepairPrice = "199 Kè"
+        };
+        verticalViewCarRepair.Children.Add(carRepair);
+    }
+
     private void OnCurrentPageChange(object sender, EventArgs e)
     {
-#if WINDOWS
-        if (this.CurrentPage == PrvniStrana)
-		{
-			if (this.car != null)
+		#if WINDOWS
+			if (this.CurrentPage == AboutCarPage)
 			{
-				ShowCarInfo(this.car);
+				if (this.car != null) ShowCarInfo(this.car);
 			}
-		}
-#endif
+		#endif
     }
 }

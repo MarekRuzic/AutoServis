@@ -23,15 +23,15 @@
         </Grid>
 
         <Grid IsVisible="{OnPlatform 'True', Android='False', iOS='False'}" Grid.Column="0" Grid.Row="2"  BackgroundColor="White">
-            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" MaximumWidthRequest="750">
+            <ScrollView VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" MaximumWidthRequest="750">
                 <controls:RepairForm Margin="10"/>
-            </StackLayout>
+            </ScrollView>
         </Grid>
 
         <Grid IsVisible="{OnPlatform 'False', Android='True', iOS='True'}" Grid.Column="0" Grid.Row="2" ColumnSpan="2"  BackgroundColor="White">
-            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" MaximumWidthRequest="750">
+            <ScrollView VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" MaximumWidthRequest="750">
                 <controls:RepairForm Margin="10"/>
-            </StackLayout>
+            </ScrollView>
         </Grid>
     </Grid>
 </ContentPage>

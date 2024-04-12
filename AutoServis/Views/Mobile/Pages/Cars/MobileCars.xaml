@@ -13,6 +13,7 @@
         <ToolbarItem 
             Text="O aplikaci"
             Order="Secondary"
+            Clicked="AboutApp"
             Priority="0"/>
         <ToolbarItem 
             Text="Uživatel"

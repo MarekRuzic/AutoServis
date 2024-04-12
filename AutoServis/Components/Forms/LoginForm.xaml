@@ -29,16 +29,10 @@
         ClearButtonVisibility="WhileEditing"
         Completed="OnPasswordCompleted"/>
 
-        <Button 
-        Text="Přihlásit se" 
-        Clicked="ClickLogin"
-        BackgroundColor="{StaticResource MySecondPrimary}">
+        <Button Text="Přihlásit se" Clicked="ClickLogin"
+                BackgroundColor="{StaticResource MySecondPrimary}">
             <Button.Shadow>
-                <Shadow 
-                Brush="Black"
-                Offset="0,10"
-                Radius="20"
-                Opacity="0.4" />
+                <Shadow  Brush="Black" Offset="0,10" Radius="20" Opacity="0.4" />
             </Button.Shadow>
         </Button>
         <HorizontalStackLayout Margin="15"></HorizontalStackLayout>
@@ -57,7 +51,6 @@
             TextColor="Blue">
             </Button>
         </HorizontalStackLayout>
-
 
     </VerticalStackLayout>
 </ContentView>

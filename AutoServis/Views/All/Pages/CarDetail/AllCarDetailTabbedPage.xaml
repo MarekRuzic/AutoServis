@@ -4,6 +4,7 @@
             x:Class="AutoServis.Views.All.Pages.CarDetail.AllCarDetailTabbedPage"
             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
             android:TabbedPage.ToolbarPlacement="Bottom"
+            android:TabbedPage.IsSwipePagingEnabled="False"
             xmlns:controls="clr-namespace:AutoServis.Views.All.Pages.CarDetail"
             xmlns:control="clr-namespace:AutoServis.Components.Templates"
             BarBackgroundColor="{x:StaticResource MyPrimary}"
@@ -15,17 +16,21 @@
     <ContentPage
         Title="Vozidlo"
         IconImageSource="sport_car.png"
-        x:Name="PrvniStrana">
+        x:Name="AboutCarPage">
         <ScrollView>
             <VerticalStackLayout x:Name="verticalViewCarInfo">
                 <!-- Vložení šablony CarInfo -->
             </VerticalStackLayout>            
         </ScrollView>
     </ContentPage>
-    <ContentPage 
+    <ContentPage
         Title="Opravy vozidla"
         IconImageSource="car_repair.png">
-        <Label Text="mami"/>
+        <ScrollView MaximumWidthRequest="1000">
+            <VerticalStackLayout x:Name="verticalViewCarRepair">
+                
+            </VerticalStackLayout>
+        </ScrollView>
     </ContentPage>
     <controls:AllCarDetailFormRepair IconImageSource="form.png"/>
 </TabbedPage>

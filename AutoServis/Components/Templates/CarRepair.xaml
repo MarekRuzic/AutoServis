@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AutoServis.Components.Templates.CarRepair"
+             x:Name="CarRepairTemplate">
+    
+    <SwipeView BindingContext="{Binding Source={x:Reference CarRepairTemplate}}">
+        <SwipeView.LeftItems>
+            <SwipeItems Mode="Reveal">
+                <SwipeItem 
+                    Text="Smazat"
+                    IconImageSource="delete.png"
+                    BackgroundColor="LightPink"
+                    Invoked="OnDeleteSwipeItemInvoked" />
+            </SwipeItems>
+        </SwipeView.LeftItems>
+        <SwipeView.RightItems>
+            <SwipeItems>
+                <SwipeItem 
+                    Text="Upravit"
+                    IconImageSource="edit.png"
+                    BackgroundColor="LightYellow"
+                    Invoked="OnEditSwipeItemInvoked" />
+            </SwipeItems>
+        </SwipeView.RightItems>        
+        <Border
+            Stroke="Black"
+            StrokeThickness="1"
+            Margin="10">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="5" />
+            </Border.StrokeShape>
+            <VerticalStackLayout>
+                <Label Text="{Binding RepairId}" IsVisible="false"/>
+                <Label 
+                    HorizontalOptions="Center"
+                    Text="{Binding RepairName}"
+                    FontSize="Large"
+                    Margin="5,15"/>            
+            <FlexLayout JustifyContent="SpaceEvenly" Margin="15" Wrap="Wrap">
+                <Border BackgroundColor="White" MinimumWidthRequest="{OnPlatform 130, Android=105, iOS=105}" Padding="10">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="5"/>
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow Brush="Black"
+                            Offset="10,10"
+                            Radius="15"
+                            Opacity="0.5" />
+                    </Border.Shadow>
+                    <VerticalStackLayout VerticalOptions="Center">
+                            <Image Source="date_repair.png" HeightRequest="48" WidthRequest="48"/>
+                            <Label Text="{Binding RepairDate}" 
+                                   FontSize="{OnPlatform 'Medium', Android='Small', iOS='Small'}" 
+                                   Margin="0, 8, 0, 0" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>                    
+                </Border>
+                    <Border BackgroundColor="White" MinimumWidthRequest="{OnPlatform 130, Android=105, iOS=105}" Padding="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="5"/>
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow Brush="Black"
+                                Offset="10,10"
+                                Radius="15"
+                                Opacity="0.5" />
+                        </Border.Shadow>
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Image Source="mileage_repair.png" HeightRequest="48" WidthRequest="48"/>
+                            <Label Text="{Binding RepairMileage}" 
+                                   FontSize="{OnPlatform 'Medium', Android='Small', iOS='Small'}" 
+                                   HorizontalOptions="Center" Margin="0, 8, 0, 0"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border BackgroundColor="White" MinimumWidthRequest="{OnPlatform 130, Android=105, iOS=105}" Padding="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="5"/>
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow Brush="Black"
+                                Offset="10,10"
+                                Radius="15"
+                                Opacity="0.5" />
+                        </Border.Shadow>
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Image Source="pay_repair.png" HeightRequest="48" WidthRequest="48"/>
+                            <Label Text="{Binding RepairPrice}" 
+                                   FontSize="{OnPlatform 'Medium', Android='Small', iOS='Small'}"
+                                   HorizontalOptions="Center" Margin="0, 8, 0, 0"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </FlexLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Mobilní zařízení -->
+                    <Grid Grid.Row="2" Grid.ColumnSpan="3" Padding="0" Margin="0" IsVisible="{OnPlatform False, Android=True, iOS=True}">
+                        <Button 
+        Text="Více info"
+                            
+        Margin="5"
+        Background="{x:StaticResource MySecondPrimary}"
+        />
+                    </Grid>
+                    <!-- Pro počítač -->
+                    <Grid Grid.Row="2" Grid.Column="0" Padding="0" Margin="0" IsVisible="{OnPlatform True, Android=False, iOS=False}">
+                        <Button 
+        Text="Upravit"
+        TextColor="Black"
+                            FontSize="Micro"
+        Margin="5"
+        BackgroundColor="LightYellow"
+        Clicked="OnEditSwipeItemInvoked">
+                            <Button.Shadow>
+                                <Shadow 
+Brush="Black"
+Offset="5,10"
+Radius="10"
+Opacity="0.4" />
+                            </Button.Shadow>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Padding="0" Margin="0" IsVisible="{OnPlatform True, Android=False, iOS=False}">
+                        <Button 
+                            Text="Více info"
+                            FontSize="Micro"
+                            Margin="5"
+                            Background="{x:StaticResource MySecondPrimary}">
+                            <Button.Shadow>
+                            <Shadow 
+Brush="Black"
+Offset="5,10"
+Radius="10"
+Opacity="0.4" />
+                            </Button.Shadow>
+                        </Button>
+                                
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="2" Padding="0" Margin="0" IsVisible="{OnPlatform True, Android=False, iOS=False}">
+                        <!-- Volání stejné metody jako ve SwipeView -->
+                        <Button 
+        Text="Smazat"
+                            TextColor="Black"
+                            FontSize="Micro"
+        Margin="5"
+        BackgroundColor="LightPink"
+        Clicked="OnDeleteSwipeItemInvoked">
+                            <Button.Shadow>
+                                <Shadow 
+            Brush="Black"
+            Offset="5,10"
+            Radius="10"
+            Opacity="0.4" />
+                            </Button.Shadow>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </VerticalStackLayout>            
+        </Border>
+    </SwipeView>      
+</ContentView>

@@ -143,4 +143,9 @@ public partial class MobileCars : ContentPage
 #endif
 
     }
+
+    private async void AboutApp(object sender, EventArgs e)
+    {
+        
+    }
 }

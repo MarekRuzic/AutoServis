@@ -59,33 +59,33 @@
         <FlexLayout JustifyContent="SpaceEvenly"
             Wrap="Wrap"
             Direction="Row">
-            <TableView Intent="Settings" Margin="5">
+            <TableView Intent="Data" Margin="5">
                 <TableRoot>
                     <TableSection Title="Další informace o vozidle">
                         <ImageCell 
-                Text="VIN"
-                Detail="{Binding CarVIN}"
-                ImageSource="vin_icon32.png"/>
+                            Text="VIN"
+                            Detail="{Binding CarVIN}"
+                            ImageSource="vin_icon32.png"/>
                         <ImageCell 
-                Text="Klimatizace"
-                Detail="{Binding CarAirCondition}"
-                ImageSource="aircondition_icon32.png"/>
+                            Text="Klimatizace"
+                            Detail="{Binding CarAirCondition}"
+                            ImageSource="aircondition_icon32.png"/>
                         <ImageCell 
-                Text="Sedadla / dveře"
-                Detail="{Binding CarSeatDoor}"
-                ImageSource="seats_icon32.png"/>
+                            Text="Sedadla / dveře"
+                            Detail="{Binding CarSeatDoor}"
+                            ImageSource="seats_icon32.png"/>
                         <ImageCell 
-                Text="Karoserie"
-                Detail="{Binding CarBody}"
-                ImageSource="body_icon32.png"/>
+                            Text="Karoserie"
+                            Detail="{Binding CarBody}"
+                            ImageSource="body_icon32.png"/>
                         <ImageCell 
-                Text="4x4"
-                Detail="{Binding CarDrive}"
-                ImageSource="allwheel_icon32.png"/>
+                            Text="4x4"
+                            Detail="{Binding CarDrive}"
+                            ImageSource="allwheel_icon32.png"/>
                         <ImageCell                         
-                Text="Barva"
-                Detail="{Binding CarColor}"
-                ImageSource="color_icon32.png"/>
+                            Text="Barva"
+                            Detail="{Binding CarColor}"
+                            ImageSource="color_icon32.png"/>
                     </TableSection>
                 </TableRoot>
             </TableView>
@@ -94,23 +94,23 @@
                 <TableRoot>
                     <TableSection Title="Informace o motoru">
                         <TextCell 
-                Text="Název motoru"
-                Detail="{Binding CarEngine}"/>
+                            Text="Název motoru"
+                            Detail="{Binding CarEngine}"/>
                         <TextCell 
-                Text="Kódové označení"
-                Detail="{Binding CarCode}"/>
+                            Text="Kódové označení"
+                            Detail="{Binding CarCode}"/>
                         <TextCell 
-                Text="Objem motoru"
-                Detail="{Binding CarDisplacement2}"/>
+                            Text="Objem motoru"
+                            Detail="{Binding CarDisplacement2}"/>
                         <TextCell 
-                Text="Výkon"
-                Detail="{Binding CarPower}"/>
+                            Text="Výkon"
+                            Detail="{Binding CarPower}"/>
                         <TextCell 
-                Text="Kroutící moment"
-                Detail="{Binding CarTorque}"/>
+                            Text="Kroutící moment"
+                            Detail="{Binding CarTorque}"/>
                         <TextCell 
-                Text="Kapacita olejové nádrže"
-                Detail="{Binding CarOil}"/>
+                            Text="Kapacita olejové nádrže"
+                            Detail="{Binding CarOil}"/>
                         <TextCell 
                             Text="Převodovka"
                             Detail="{Binding CarGearbox}"/>

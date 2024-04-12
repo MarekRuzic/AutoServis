@@ -13,7 +13,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
         <Grid Grid.Column="0" Grid.Row="0" Background="{StaticResource MyLightBlue}">
             
         </Grid>
@@ -25,7 +24,7 @@
             <ScrollView>
                 <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" MaximumWidthRequest="750">
                     <components:LoginForm Margin="20"/>
-            </StackLayout>
+                </StackLayout>
             </ScrollView>
         </Grid>
     </Grid>

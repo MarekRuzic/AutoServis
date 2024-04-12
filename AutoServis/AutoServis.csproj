@@ -78,6 +78,7 @@
 	  <None Remove="Resources\Images\car_repair.png" />
 	  <None Remove="Resources\Images\car_repair_form.png" />
 	  <None Remove="Resources\Images\color_icon32.png" />
+	  <None Remove="Resources\Images\date_repair.png" />
 	  <None Remove="Resources\Images\delete.png" />
 	  <None Remove="Resources\Images\ecofuel_icon.png" />
 	  <None Remove="Resources\Images\edit.png" />
@@ -89,6 +90,8 @@
 	  <None Remove="Resources\Images\gearbox_icon.png" />
 	  <None Remove="Resources\Images\licenseplate_icon.png" />
 	  <None Remove="Resources\Images\mileage_icon.png" />
+	  <None Remove="Resources\Images\mileage_repair.png" />
+	  <None Remove="Resources\Images\pay_repair.png" />
 	  <None Remove="Resources\Images\registation.png" />
 	  <None Remove="Resources\Images\seats_icon.png" />
 	  <None Remove="Resources\Images\seats_icon32.png" />
@@ -126,6 +129,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\Templates\CarInfo.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Templates\CarRepair.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\All\Pages\CarDetail\AllCarDetailFormRepair.xaml">
