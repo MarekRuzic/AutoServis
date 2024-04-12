@@ -5,10 +5,12 @@
     <ScrollView MaximumWidthRequest="1000">
         <VerticalStackLayout VerticalOptions="Center">
             <Label 
+                x:Name="titleName"
                 Text="Nová oprava vozidla"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 FontSize="Large"/>
+            <Label x:Name="idRepair" Text="" IsVisible="false" />
             <!-- Název opravy -->
             <VerticalStackLayout Margin="0,12,0,0">
                 <Label Text="Název opravy*" Margin="0,0,0,5"/>

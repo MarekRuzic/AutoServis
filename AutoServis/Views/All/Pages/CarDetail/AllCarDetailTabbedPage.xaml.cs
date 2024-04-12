@@ -94,52 +94,10 @@ public partial class AllCarDetailTabbedPage : TabbedPage
                 part_name = repair.part_name,
                 url = repair.url,
                 car_id = car.id,
+                AllCarDetailTabbedPage = this,
             };
             verticalViewCarRepair.Children.Add(carRepair);
         }
-
-
-
-        /*var carRepair = new CarRepair
-		{
-			Margin = 10,
-			RepairId = -1,
-			RepairName = "Destièky",
-			RepairDate = "25. 03. 2024",
-			RepairMileage = "160255 Km",
-			RepairPrice = "563 Kè"
-		};
-		verticalViewCarRepair.Children.Add(carRepair);
-        carRepair = new CarRepair
-        {
-            Margin = 10,
-            RepairId = -1,
-            RepairName = "Brzdové kotouèe pøední",
-            RepairDate = "25. 03. 2024",
-            RepairMileage = "160255 Km",
-            RepairPrice = "1499 Kè"
-        };
-        verticalViewCarRepair.Children.Add(carRepair);
-        carRepair = new CarRepair
-        {
-            Margin = 10,
-            RepairId = -1,
-            RepairName = "Motorový olej",
-            RepairDate = "19. 02. 2024",
-            RepairMileage = "157969 Km",
-            RepairPrice = "599 Kè"
-        };
-        verticalViewCarRepair.Children.Add(carRepair);
-        carRepair = new CarRepair
-        {
-            Margin = 10,
-            RepairId = -1,
-            RepairName = "Olejový filtr",
-            RepairDate = "19. 02. 2024",
-            RepairMileage = "157969 Km",
-            RepairPrice = "199 Kè"
-        };
-        verticalViewCarRepair.Children.Add(carRepair);*/
     }
 
     private void OnCurrentPageChange(object sender, EventArgs e)

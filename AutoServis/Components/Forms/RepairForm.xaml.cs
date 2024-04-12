@@ -1,5 +1,6 @@
 namespace AutoServis.Components.Forms;
 using AutoServis.Model;
+using AutoServis.Views.All.Pages.CarDetail;
 using Microsoft.Maui.ApplicationModel.Communication;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -62,10 +63,18 @@ public partial class RepairForm : ContentView
             return;
         }
 
+        int id = -1;
+        if (idRepair.Text != "")
+        {
+            id = Convert.ToInt32(idRepair.Text);
+        }
+
         // Vytvoøení opravy
-        Repair repair = new Repair(-1, name, date, mileage, description, price, part_name, url, CarId);
-                
-        HttpResponseMessage response = await api.client.PostAsJsonAsync("repair/create", repair);
+        Repair repair = new Repair(id, name, date, mileage, description, price, part_name, url, CarId);
+
+        HttpResponseMessage response = null;
+        if (id == -1) response = await api.client.PostAsJsonAsync("repair/create", repair);
+        else response = await api.client.PutAsJsonAsync("repair/update", repair);
 
         if (response.IsSuccessStatusCode)
         {
@@ -78,6 +87,16 @@ public partial class RepairForm : ContentView
             priceInput.Text = "";
             namepartInput.Text = "";
             urlInput.Text = "";
+
+            if (id != -1)
+            {
+                AllCarDetailFormRepair parentPage = FindParentMobileNewCar(this);
+                if (parentPage != null)
+                {
+                    parentPage?.AllCarDetailTabbedPage.LoadRepairsFromDatabase();
+                }
+                await Navigation.PopAsync();
+            }
         }
         else
         {
@@ -85,6 +104,22 @@ public partial class RepairForm : ContentView
         }
         BtnRepairForm.IsVisible = true;
         LoadingIndicator.IsVisible = false;        
+    }
+
+    private AllCarDetailFormRepair FindParentMobileNewCar(Element element)
+    {
+        // Rekurzivnì hledá rodièovskou stránku allCarDetailFormRepair
+        if (element.Parent is AllCarDetailFormRepair allCarDetailFormRepair)
+        {
+            return allCarDetailFormRepair;
+        }
+
+        if (element.Parent != null)
+        {
+            return FindParentMobileNewCar(element.Parent);
+        }
+
+        return null;
     }
 
 

@@ -14,9 +14,9 @@ namespace AutoServis.Model
         public API()
         {
             client = new HttpClient();
-            //client.BaseAddress = new Uri("http://localhost/projects/API_carService/index.php/");
+            client.BaseAddress = new Uri("http://localhost/projects/API_carService/index.php/");
             //client.BaseAddress = new Uri("http://192.168.1.186/projects/API_carService/index.php/");
-            client.BaseAddress = new Uri("http://ruzicka-marek.4fan.cz/API_carService/index.php/");
+            //client.BaseAddress = new Uri("http://ruzicka-marek.4fan.cz/API_carService/index.php/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("appliaciton/json"));

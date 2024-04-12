@@ -27,7 +27,7 @@
         x:Name="RepairCarpage"
         Title="Opravy vozidla"
         IconImageSource="car_repair.png">
-        <ScrollView MaximumWidthRequest="1000">
+        <ScrollView MaximumWidthRequest="1000">            
             <VerticalStackLayout x:Name="verticalViewCarRepair">
                 
             </VerticalStackLayout>

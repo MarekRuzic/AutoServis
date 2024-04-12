@@ -19,6 +19,8 @@ public partial class CarRepair : ContentView
     public string url { get; set; }
     public int car_id { get; set; }
 
+    public AllCarDetailTabbedPage AllCarDetailTabbedPage { get; set; }
+
     public int RepairId
     {
         get => (int)GetValue(RepairIdProperty);
@@ -54,7 +56,7 @@ public partial class CarRepair : ContentView
     {
         Repair repair = new Repair(RepairId, RepairName, Convert.ToDateTime(RepairDate), Convert.ToDouble(RepairMileage.Substring(0, RepairMileage.IndexOf(' '))),
             decription, RepairPrice.Substring(0, RepairPrice.IndexOf(' ')), part_name, url, car_id);
-        await Navigation.PushAsync(new AllCarDetailFormRepair(repair));
+        await Navigation.PushAsync(new AllCarDetailFormRepair(repair, AllCarDetailTabbedPage));
     }
 
     private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e)
