@@ -2,13 +2,13 @@ namespace AutoServis.Components.Forms;
 using AutoServis.Model;
 using Microsoft.Maui.ApplicationModel.Communication;
 using System.Net.Http.Json;
+using BCrypt.Net;
 
 public partial class UserInfoForm : ContentView
 {
-    private User user;
 	public UserInfoForm()
 	{
-		InitializeComponent();         
+		InitializeComponent();
 	}
 
     public int id { get; set; }
@@ -81,7 +81,7 @@ public partial class UserInfoForm : ContentView
         string newPassword = passwordInput.Text;
         string newPasswordRepeat = passwordRepeatInput.Text;
 
-        if (this.password != oldPassword)
+        if (!BCrypt.Verify(oldPassword, this.password))
         {
             App.Current.MainPage.DisplayAlert("Oznámení", "Pùvodní hesla se neshodují", "Ok");
             return;
@@ -91,9 +91,11 @@ public partial class UserInfoForm : ContentView
         {
             App.Current.MainPage.DisplayAlert("Oznámení", "Nová hesla se neshodují", "Ok");
             return;
-        }
+        }        
 
-        User user = new User(id, newPassword);
+        string newPasswordHash = BCrypt.HashPassword(newPassword);
+
+        User user = new User(id, newPasswordHash);
 
         API api = new API();
         if (api.checkConnectivity())
@@ -110,6 +112,7 @@ public partial class UserInfoForm : ContentView
         if (response.IsSuccessStatusCode)
         {
             App.Current.MainPage.DisplayAlert("Oznámení", "Heslo bylo úspìšnì zmìnìno", "OK");
+            await Navigation.PopAsync();
         }
         else
         {

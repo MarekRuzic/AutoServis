@@ -147,7 +147,6 @@ public partial class MobileCars : ContentPage
 #else
         await Navigation.PushAsync(new DesktopUserInfo(user));
 #endif
-
     }
 
     private async void AboutApp(object sender, EventArgs e)

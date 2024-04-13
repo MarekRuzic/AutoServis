@@ -1,6 +1,7 @@
 using AutoServis.Model;
 using System.Net.Http.Json;
 using System.Text.Json;
+using BCrypt.Net;
 
 namespace AutoServis.Components.Forms;
 
@@ -82,8 +83,10 @@ public partial class RegistrationForm : ContentView
             return;
         }
 
+        string hashPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
         // Vytvoøení nového uživatele
-        User user = new User(firstname, lastname, email, password);
+        User user = new User(firstname, lastname, email, hashPassword);
 
         if (api.checkConnectivity())
         {

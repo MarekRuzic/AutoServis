@@ -88,6 +88,11 @@ public partial class LoginForm : ContentView
         {
             await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
         }
+        finally
+        {
+            LoginButton.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
+        }
     }
 
     private void OnEmailCompleted(object sender, EventArgs e)
