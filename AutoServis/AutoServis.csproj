@@ -96,6 +96,7 @@
 	  <None Remove="Resources\Images\seats_icon.png" />
 	  <None Remove="Resources\Images\seats_icon32.png" />
 	  <None Remove="Resources\Images\sport_car.png" />
+	  <None Remove="Resources\Images\url.png" />
 	  <None Remove="Resources\Images\user.png" />
 	  <None Remove="Resources\Images\user_info.png" />
 	  <None Remove="Resources\Images\vin_icon.png" />
@@ -141,6 +142,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\All\Pages\CarForm\AllCarForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\All\Pages\RepairDetail\AllRepairDetail.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Desktop\Pages\Login\DesktopLogin.xaml">

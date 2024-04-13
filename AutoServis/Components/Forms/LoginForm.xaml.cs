@@ -45,38 +45,49 @@ public partial class LoginForm : ContentView
         LoginButton.IsVisible = false;
         LoadingIndicator.IsVisible = true;
 
-        HttpResponseMessage response = await api.client.
-            GetAsync($"user/getuser?email={emailInput}");
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            // Naètení dat do string s následný pøevod na Usera
-            string getResponsestring = await response.Content.ReadAsStringAsync();
-            User user = JsonSerializer.Deserialize<List<User>>(getResponsestring).FirstOrDefault();
+            HttpResponseMessage response = await api.client.
+                GetAsync($"user/getuser?email={emailInput}");
 
-            // Kontrola uživatele a hesla
-            if (user == null || !user.checkPassword(passwordInput))
+            if (response.IsSuccessStatusCode)
             {
-                showDialog("Oznámení", "Neplatné uživatelské údaje", "Ok");
-                LoginButton.IsVisible = true;
-                LoadingIndicator.IsVisible = false;
-                return;
-            }
+                // Naètení dat do string s následný pøevod na Usera
+                string getResponsestring = await response.Content.ReadAsStringAsync();
+                User user = JsonSerializer.Deserialize<List<User>>(getResponsestring).FirstOrDefault();
 
-            /*#if ANDROID || IOS
+                // Kontrola uživatele a hesla
+                if (user == null || !user.checkPassword(passwordInput))
+                {
+                    showDialog("Oznámení", "Neplatné uživatelské údaje", "Ok");
+                    LoginButton.IsVisible = true;
+                    LoadingIndicator.IsVisible = false;
+                    return;
+                }
+
+                /*#if ANDROID || IOS
+                    App.Current.MainPage = new NavigationPage(new MobileCars(user));
+                #else
+                   App.Current.MainPage = new NavigationPage(new MainPage());
+                #endif*/
+
                 App.Current.MainPage = new NavigationPage(new MobileCars(user));
-            #else
-               App.Current.MainPage = new NavigationPage(new MainPage());
-            #endif*/
-
-            App.Current.MainPage = new NavigationPage(new MobileCars(user));
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Chyba", "Chyba pøi naèítání dat. Zkus te to znovu.", "Ok");
+            }
+            LoginButton.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
         }
-        else
+        catch(HttpRequestException ex)
         {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba pøi naèítání dat. Zkus te to znovu.", "Ok");
+            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
         }
-        LoginButton.IsVisible = true;
-        LoadingIndicator.IsVisible = false;
+        catch(Exception ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
+        }
     }
 
     private void OnEmailCompleted(object sender, EventArgs e)

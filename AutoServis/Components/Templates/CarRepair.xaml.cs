@@ -1,6 +1,7 @@
 namespace AutoServis.Components.Templates;
 using AutoServis.Model;
 using AutoServis.Views.All.Pages.CarDetail;
+using AutoServis.Views.All.Pages.RepairDetail;
 
 public partial class CarRepair : ContentView
 {
@@ -112,5 +113,12 @@ public partial class CarRepair : ContentView
         }
 
         return null;
+    }
+
+    private async void ClickMoreInfo(object sender, EventArgs e)
+    {
+        Repair repair = new Repair(RepairId, RepairName, Convert.ToDateTime(RepairDate), Convert.ToDouble(RepairMileage.Substring(0, RepairMileage.IndexOf(' '))),
+            decription, RepairPrice.Substring(0, RepairPrice.IndexOf(' ')), part_name, url, car_id);
+        await Navigation.PushAsync(new AllRepairDetail(repair));
     }
 }

@@ -86,8 +86,8 @@ public partial class CarInfo : ContentView
 
     public string CarDisplacement2
     {
-        get => (string)GetValue(CarDisplacementProperty);
-        set => SetValue(CarDisplacementProperty, value);
+        get => (string)GetValue(CarDisplacement2Property);
+        set => SetValue(CarDisplacement2Property, value);
     }
 
     public string CarVIN

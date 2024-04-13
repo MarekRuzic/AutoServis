@@ -94,9 +94,9 @@ public partial class MobileCars : ContentPage
     {
         Car car = cars.FirstOrDefault(c => c.id == carId);
         MobileCars mobileCars = this;
-        await Navigation.PushAsync(new MobileNewCar(car, user.id, mobileCars));
+        await Navigation.PushAsync(new MobileNewCar(car, user.id, mobileCars));        
     }
-
+    
     public void SaveCarToList(Car car, bool isAdd)
     {
         if (isAdd)
@@ -123,8 +123,8 @@ public partial class MobileCars : ContentPage
     private async void addNewCarClick(object sender, EventArgs e)
     {
         MobileCars mobileCars = this;
-        //await Navigation.PushAsync(new MobileNewCar(user.id, mobileCars));
-        await Navigation.PushAsync(new AllCarForm());
+        await Navigation.PushAsync(new MobileNewCar(user.id, mobileCars));
+        //await Navigation.PushAsync(new AllCarForm());
     }
 
     private async void LogOut(object sender, EventArgs e)

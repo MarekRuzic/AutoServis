@@ -77,7 +77,7 @@
                 </VerticalStackLayout>
                 <!-- Stav tachometru -->
                 <VerticalStackLayout Grid.Column="1">
-                    <Label Text="Stav tachometru*" Margin="5,0,0,5"/>
+                    <Label Text="Stav tachometru (km)*" Margin="5,0,0,5"/>
                     <Frame                         
                     Padding="0"
                     Margin="5,0,0,0">
@@ -319,7 +319,7 @@
                 </VerticalStackLayout>
                 <!-- Výkon -->
                 <VerticalStackLayout Grid.Column="1">
-                    <Label Text="Výkon*" Margin="5,0,0,5"/>
+                    <Label Text="Výkon (kw)*" Margin="5,0,0,5"/>
                     <Frame                          
                         Padding="0"
                         Margin="5,0,0,0">
@@ -364,7 +364,7 @@
                 </VerticalStackLayout>
                 <!-- kódové označení -->
                 <VerticalStackLayout Grid.Column="1">
-                    <Label Text="Kódové označení" Margin="5,0,0,5"/>
+                    <Label Text="Kódové označení motoru" Margin="5,0,0,5"/>
                     <Frame                          
                         Padding="0"
                         Margin="5,0,0,0">

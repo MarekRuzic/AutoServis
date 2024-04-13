@@ -77,7 +77,7 @@
                     <Entry
             x:Name="priceInput"
             Placeholder="Cena dílu"
-            Keyboard="Default"
+            Keyboard="Numeric"
             ReturnType="Next"
             ClearButtonVisibility="WhileEditing"
             HorizontalTextAlignment="Center"

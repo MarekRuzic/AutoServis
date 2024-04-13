@@ -106,7 +106,7 @@
                     <Grid Grid.Row="2" Grid.ColumnSpan="3" Padding="0" Margin="0" IsVisible="{OnPlatform False, Android=True, iOS=True}">
                         <Button 
         Text="Více info"
-                            
+        Clicked="ClickMoreInfo"                    
         Margin="5"
         Background="{x:StaticResource MySecondPrimary}"
         />
@@ -133,6 +133,7 @@ Opacity="0.4" />
                         <Button 
                             Text="Více info"
                             FontSize="Micro"
+                            Clicked="ClickMoreInfo"   
                             Margin="5"
                             Background="{x:StaticResource MySecondPrimary}">
                             <Button.Shadow>
