@@ -20,8 +20,8 @@ namespace AutoServis.Model
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("appliaciton/json"));
-            byte[] encryptedApiKey = Encoding.ASCII.GetBytes("ahoj");
-            client.DefaultRequestHeaders.Add("KEYAPI", "ahoj");
+            // Zabezpečený API klíč pro komunikaci
+            client.DefaultRequestHeaders.Add("KEYAPI", "$2a$11$rKbwa1GLzIh74MOo4YQTuu7TP.VOj7t9GKJtj6EhpRUN/cjNI5OYy");
         }
 
         public bool checkConnectivity()

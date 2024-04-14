@@ -29,7 +29,16 @@
         IconImageSource="car_repair.png">
         <ScrollView MaximumWidthRequest="1000">            
             <VerticalStackLayout x:Name="verticalViewCarRepair">
-                
+                <ActivityIndicator 
+    Margin="5"
+    IsRunning="true"
+    Color="{x:StaticResource MySecondPrimary}"
+    HorizontalOptions="Center"/>
+                <Label 
+    Margin="5"
+    Text="Probíhá načítání dat z databáze" 
+    HorizontalOptions="Center"
+    FontSize="Large"/>
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage>

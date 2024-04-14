@@ -66,6 +66,14 @@ public partial class AllCarDetailTabbedPage : TabbedPage
             string getResponseString = await responseMessage.Content.ReadAsStringAsync();
             repairs = JsonSerializer.Deserialize<List<Repair>>(getResponseString);
 
+            if (!repairs.Any())
+            {
+                Label label = new Label { Text = "Nebyly nalezeny žádné opravy.", HorizontalTextAlignment = TextAlignment.Center, FontSize = 24 };
+                verticalViewCarRepair.Children.Clear();
+                verticalViewCarRepair.Children.Add(label);
+                return;
+            }
+
             ShowCarRepair(repairs);
         }
         else
