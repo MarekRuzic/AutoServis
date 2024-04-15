@@ -10,6 +10,7 @@ using AutoServis.Model.JSON;
 using System.Text.Json;
 using Microsoft.Maui.Controls;
 using AutoServis.Views.Mobile.Pages.UserInfo;
+using AutoServis.Views.All.Pages.AboutPage;
 
 public partial class MobileCars : ContentPage
 {
@@ -149,8 +150,8 @@ public partial class MobileCars : ContentPage
 #endif
     }
 
-    private async void AboutApp(object sender, EventArgs e)
+    private async void AboutAppClick(object sender, EventArgs e)
     {
-        
+        await Navigation.PushAsync(new AllAboutPage());
     }
 }

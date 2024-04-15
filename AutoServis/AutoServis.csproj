@@ -136,6 +136,9 @@
 	  <MauiXaml Update="Components\Templates\CarRepair.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\All\Pages\AboutPage\AllAboutPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\All\Pages\CarDetail\AllCarDetailFormRepair.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
