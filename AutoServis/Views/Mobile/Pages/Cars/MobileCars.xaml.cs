@@ -162,6 +162,8 @@ public partial class MobileCars : ContentPage
             "Doporuèuje se, pokud jste pøihlášeni souèasnì na dvou zaøízeních a na jednom z nich provedete zmìny.", "Ano", "Ne");
         if (answer)
         {
+            verticalLayout.Children.Clear();
+            verticalLayout.Children.Add(LoadingIndicator);
             LoadUserCars();
         }
     }
