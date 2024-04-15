@@ -7,6 +7,10 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem 
+            Text="Aktualizovat seznam"
+            IconImageSource="refresh.png"
+            Clicked="refreshContentClick"/>
+        <ToolbarItem 
             Text="Přidat vozidlo"
             IconImageSource="add.png"
             Clicked="addNewCarClick"/>

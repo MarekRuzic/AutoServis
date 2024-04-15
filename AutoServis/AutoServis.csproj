@@ -92,6 +92,7 @@
 	  <None Remove="Resources\Images\mileage_icon.png" />
 	  <None Remove="Resources\Images\mileage_repair.png" />
 	  <None Remove="Resources\Images\pay_repair.png" />
+	  <None Remove="Resources\Images\refresh.png" />
 	  <None Remove="Resources\Images\registation.png" />
 	  <None Remove="Resources\Images\seats_icon.png" />
 	  <None Remove="Resources\Images\seats_icon32.png" />

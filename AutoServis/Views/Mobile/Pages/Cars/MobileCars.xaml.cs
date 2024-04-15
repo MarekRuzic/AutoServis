@@ -154,4 +154,15 @@ public partial class MobileCars : ContentPage
     {
         await Navigation.PushAsync(new AllAboutPage());
     }
+
+    private async void refreshContentClick(object sender, EventArgs e)
+    {
+        bool answer = await DisplayAlert("Aktualizovat seznam", "Opravdu si pøejete aktualizovat seznam vozidel?\n\n" +
+            "Tato akce mùže chvíli trvat.\n\n" +
+            "Doporuèuje se, pokud jste pøihlášeni souèasnì na dvou zaøízeních a na jednom z nich provedete zmìny.", "Ano", "Ne");
+        if (answer)
+        {
+            LoadUserCars();
+        }
+    }
 }

@@ -3,16 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Views.All.Pages.AboutPage.AllAboutPage"
              Title="O aplikaci">
-    <VerticalStackLayout>
+    <VerticalStackLayout HorizontalOptions="Center">
         <Label
             FontSize="Large"
             Text="O aplikaci"
             HorizontalOptions="Center" />
         <Label 
-            Margin="0,100"
+            Padding="10, 100"
             FontSize="Medium"
-            Text="Aplikaci vytvořil Marek Růžička jako ukázkový projekt k doprovodu své bakalářské práce."
-            VerticalOptions="Center"
-            HorizontalOptions="Center"/>
+            Text="Aplikaci vytvořil Marek Růžička jako ukázkový projekt k doprovodu své bakalářské práce."            
+            HorizontalTextAlignment="Center"/>
     </VerticalStackLayout>
 </ContentPage>
