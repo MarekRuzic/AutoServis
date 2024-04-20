@@ -12,6 +12,7 @@ public partial class LoginForm : ContentView
 		InitializeComponent();
 	}
 
+
     private async void showDialog(string title, string message, string buttons)
     {
         await App.Current.MainPage.DisplayAlert(title, message, buttons);
@@ -86,7 +87,7 @@ public partial class LoginForm : ContentView
         }
         catch(Exception ex)
         {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
+            await App.Current.MainPage.DisplayAlert("Chyba", "Neznámá chyba nastala.", "Ok");
         }
         finally
         {

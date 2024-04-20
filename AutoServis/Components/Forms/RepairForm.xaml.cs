@@ -72,38 +72,52 @@ public partial class RepairForm : ContentView
         // Vytvoøení opravy
         Repair repair = new Repair(id, name, date, mileage, description, price, part_name, url, CarId);
 
-        HttpResponseMessage response = null;
-        if (id == -1) response = await api.client.PostAsJsonAsync("repair/create", repair);
-        else response = await api.client.PutAsJsonAsync("repair/update", repair);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            App.Current.MainPage.DisplayAlert("Oznámení", "Uložení opravy probìhlo úspìšnì.", "OK");
-            // Vyèištìní vstupních polí
-            nameInput.Text = "";
-            repairDate.Date = DateTime.Now;
-            mileageInput.Text = "";
-            descriptionInput.Text = "";
-            priceInput.Text = "";
-            namepartInput.Text = "";
-            urlInput.Text = "";
+            HttpResponseMessage response = null;
+            if (id == -1) response = await api.client.PostAsJsonAsync("repair/create", repair);
+            else response = await api.client.PutAsJsonAsync("repair/update", repair);
 
-            if (id != -1)
+            if (response.IsSuccessStatusCode)
             {
-                AllCarDetailFormRepair parentPage = FindParentMobileNewCar(this);
-                if (parentPage != null)
+                App.Current.MainPage.DisplayAlert("Oznámení", "Uložení opravy probìhlo úspìšnì.", "OK");
+                // Vyèištìní vstupních polí
+                nameInput.Text = "";
+                repairDate.Date = DateTime.Now;
+                mileageInput.Text = "";
+                descriptionInput.Text = "";
+                priceInput.Text = "";
+                namepartInput.Text = "";
+                urlInput.Text = "";
+
+                if (id != -1)
                 {
-                    parentPage?.AllCarDetailTabbedPage.LoadRepairsFromDatabase();
+                    AllCarDetailFormRepair parentPage = FindParentMobileNewCar(this);
+                    if (parentPage != null)
+                    {
+                        parentPage?.AllCarDetailTabbedPage.LoadRepairsFromDatabase();
+                    }
+                    await Navigation.PopAsync();
                 }
-                await Navigation.PopAsync();
+            }
+            else
+            {
+                App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
             }
         }
-        else
+        catch (HttpRequestException ex)
         {
-            App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
         }
-        BtnRepairForm.IsVisible = true;
-        LoadingIndicator.IsVisible = false;        
+        catch (Exception ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Neznámá chyba nastala.", "Ok");
+        }
+        finally
+        {
+            BtnRepairForm.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
+        }
     }
 
     private AllCarDetailFormRepair FindParentMobileNewCar(Element element)

@@ -61,7 +61,7 @@ public partial class NewCarForm : ContentView
         else airConditioningLabel.Text = "Klimatizace - Ne";
     }
 
-    private async void newCar(object sender, EventArgs e)
+    private async void newCarClick(object sender, EventArgs e)
     {
         if (IsInputEmpty(brandInput.Text) &&
             IsInputEmpty(modelInput.Text) &&
@@ -73,7 +73,7 @@ public partial class NewCarForm : ContentView
             App.Current.MainPage.DisplayAlert("Oznámení", "Nějaký z povinných údajů nebyl vyplněn.", "Ok");
             return;
         }
-
+        // Kontrola zda bylo do vstupního pole zadané pouze číslo
         double mileage = 0;
         if (!Double.TryParse(mileageInput.Text, out mileage))
         {
@@ -81,7 +81,7 @@ public partial class NewCarForm : ContentView
             return;
         }
 
-        // Programový kód
+        // Kontrola zda byl zvolen prvek v komponentě picker
         if (fuelPicker.SelectedIndex == -1 || bodyPicker.SelectedIndex == -1)
         {
             App.Current.MainPage.DisplayAlert("Oznámení", "Nebyly vyplněny všechny údaje", "Ok");
@@ -120,12 +120,7 @@ public partial class NewCarForm : ContentView
 
         // C# kód zobrazení ActivityIndicator s Label
         LoadingIndicator.IsVisible = true;
-        BtnEndForm.IsVisible = false;
-
-        Car car = new Car(-1, brand, model, manufature, mileage, fuel, body,
-            color, drive4x4, doors, seats, airCondition, vin, spz, nickname, 
-            name_engine, code, displacement, power, torque, oil_capacity, transmition,
-            id);
+        BtnEndForm.IsVisible = false;        
 
         API api = new API();
         if (api.checkConnectivity())
@@ -135,54 +130,68 @@ public partial class NewCarForm : ContentView
             return;
         }
 
-        HttpResponseMessage response;
-
-        // Nalezne rodiče a zavolá metodu SaveToList
-        MobileNewCar parentPage = FindParentMobileNewCar(this);        
-
-        if (BtnEndForm.Text.Trim() == "Uložit změny")
+        try
         {
-            car.id = Convert.ToInt32(idCar.Text);
-            response = await api.client.PutAsJsonAsync("car/update", car);
+            HttpResponseMessage response;
+            /* Nalezení rodičovské stránky, 
+             * po uspěšném uložení do db se zavolá metodu SaveToList 
+             * Ta uloží nová data do listu na úvodní stráně */
+            MobileNewCar parentPage = FindParentMobileNewCar(this);
 
-            LoadingIndicator.IsVisible = false;
-            BtnEndForm.IsVisible = true;
+            Car car = new Car(-1, brand, model, manufature, mileage, fuel, body,
+                color, drive4x4, doors, seats, airCondition, vin, spz, nickname,
+                name_engine, code, displacement, power, torque, oil_capacity, transmition,
+                id);
 
+            if (BtnEndForm.Text.Trim() == "Uložit změny")
+            {
+                car.id = Convert.ToInt32(idCar.Text);
+                response = await api.client.PutAsJsonAsync("car/update", car);
+                if (response.IsSuccessStatusCode)
+                {
+                    // Přidání do hlavního listu upravené vozidlo
+                    if (parentPage != null)
+                    {
+                        parentPage?.SaveToList(car, false);
+                    }
+                    await App.Current.MainPage.DisplayAlert("Oznámení", "U vozidla byla úspěšně změněna data" +
+                        "\n\nPo stisku tlačítka budete přesměrování na úvodní stránku 😊", "OK");
+                    await Navigation.PopAsync();
+                }
+                else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neočkávaná chyba. Zkus se to znovu", "Ok");
+                // Zobrazení zpět tlačítka pro uložení
+                LoadingIndicator.IsVisible = false;
+                BtnEndForm.IsVisible = true;
+                return;
+            }
+
+            response = await api.client.PostAsJsonAsync("car/create", car);
             if (response.IsSuccessStatusCode)
             {
-                // Přidání do hlavního listu upravené vozidlo
+                // Přidání nového vozidla do listu
                 if (parentPage != null)
                 {
-                    parentPage?.SaveToList(car, false);
+                    parentPage?.SaveToList(null, true);
                 }
-                await App.Current.MainPage.DisplayAlert("Oznámení", "U vozidla byla úspěšně změněna data" +
-                    "\n\nPo stisku tlačítka budete přesměrování na úvodní stránku 😊", "OK");                
+                await App.Current.MainPage.DisplayAlert("Oznámení", "Vozidlo bylo úspěšně vytvořeno." +
+                    "\n\nPo stisku tlačítka budete přesměrování na úvodní stránku 😊", "OK");
                 await Navigation.PopAsync();
             }
             else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neočkávaná chyba. Zkus se to znovu", "Ok");
-            LoadingIndicator.IsVisible = false;
-            BtnEndForm.IsVisible = true;
-            return;
         }
-
-        response = await api.client.PostAsJsonAsync("car/create", car);
-
-        if (response.IsSuccessStatusCode)
+        catch (HttpRequestException ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+        }
+        catch (Exception ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Neznámá chyba nastala.", "Ok");
+        }
+        finally
         {
             LoadingIndicator.IsVisible = false;
             BtnEndForm.IsVisible = true;
-            // Přidání nového vozidla do listu
-            if (parentPage != null)
-            {
-                parentPage?.SaveToList(null, true);
-            }
-            await App.Current.MainPage.DisplayAlert("Oznámení", "Vozidlo bylo úspěšně vytvořeno." +
-                "\n\nPo stisku tlačítka budete přesměrování na úvodní stránku 😊", "OK");            
-            await Navigation.PopAsync();
         }
-        else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neočkávaná chyba. Zkus se to znovu", "Ok");
-        LoadingIndicator.IsVisible = false;
-        BtnEndForm.IsVisible = true;
     }
 
     private void doorsChange(object sender, CheckedChangedEventArgs e)

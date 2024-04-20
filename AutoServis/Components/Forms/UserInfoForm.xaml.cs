@@ -51,20 +51,32 @@ public partial class UserInfoForm : ContentView
 
         UpdateUserButton.IsVisible = false;
         LoadingIndicator.IsVisible = true;
-        
 
-        HttpResponseMessage response = await api.client.PutAsJsonAsync("user/updateuser", user);
-        if (response.IsSuccessStatusCode)
+        try
         {
-            App.Current.MainPage.DisplayAlert("Oznámení", "Data o Vás byla úspìšnì zmìnìna", "OK");
+            HttpResponseMessage response = await api.client.PutAsJsonAsync("user/updateuser", user);
+            if (response.IsSuccessStatusCode)
+            {
+                App.Current.MainPage.DisplayAlert("Oznámení", "Data o Vás byla úspìšnì zmìnìna", "OK");
+            }
+            else
+            {
+                App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+            }
         }
-        else
+        catch (HttpRequestException ex)
         {
-            App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
         }
-
-        UpdateUserButton.IsVisible = true;
-        LoadingIndicator.IsVisible = false;
+        catch (Exception ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
+        }
+        finally
+        {
+            UpdateUserButton.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
+        }
     }
 
     private async void UpdatePasswordClick(object sender, EventArgs e)
@@ -108,19 +120,33 @@ public partial class UserInfoForm : ContentView
         UpdatePasswordButton.IsVisible = false;
         LoadingIndicator2.IsVisible = true;
 
-        HttpResponseMessage response = await api.client.PutAsJsonAsync("user/updatepassworduser", user);
-        if (response.IsSuccessStatusCode)
+        try
         {
-            App.Current.MainPage.DisplayAlert("Oznámení", "Heslo bylo úspìšnì zmìnìno", "OK");
-            await Navigation.PopAsync();
-        }
-        else
-        {
-            App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
-        }
 
-        UpdatePasswordButton.IsVisible = true;
-        LoadingIndicator2.IsVisible = false;
+            HttpResponseMessage response = await api.client.PutAsJsonAsync("user/updatepassworduser", user);
+            if (response.IsSuccessStatusCode)
+            {
+                App.Current.MainPage.DisplayAlert("Oznámení", "Heslo bylo úspìšnì zmìnìno", "OK");
+                await Navigation.PopAsync();
+            }
+            else
+            {
+                App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+        }
+        catch (Exception ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
+        }
+        finally
+        {
+            UpdatePasswordButton.IsVisible = true;
+            LoadingIndicator2.IsVisible = false;
+        }
     }
 
     private void SwitchOnChange(object sender, ToggledEventArgs e)

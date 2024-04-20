@@ -34,21 +34,32 @@ public partial class MobileCars : ContentPage
             return;
         }
 
-        HttpResponseMessage responseMessage = await api.client.GetAsync($"car/listcaruser?id={user.id}");
-        if (responseMessage.IsSuccessStatusCode)
+        try
         {
-            JsonSerializerOptions options = new JsonSerializerOptions
+            HttpResponseMessage responseMessage = await api.client.GetAsync($"car/listcaruser?id={user.id}");
+            if (responseMessage.IsSuccessStatusCode)
             {
-                Converters = { new BoolConverter() },
-            };
-            string getResponseString = await responseMessage.Content.ReadAsStringAsync();
-            cars = JsonSerializer.Deserialize<List<Car>>(getResponseString, options);
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    Converters = { new BoolConverter() },
+                };
+                string getResponseString = await responseMessage.Content.ReadAsStringAsync();
+                cars = JsonSerializer.Deserialize<List<Car>>(getResponseString, options);
 
-            ShowUserCars();
+                ShowUserCars();
+            }
+            else
+            {
+                await DisplayAlert("Oznámení", "Pøi naèítání dat z databáze došlo k chybì.", "Zavøít");
+            }
         }
-        else
+        catch (HttpRequestException ex)
         {
-            await DisplayAlert("Oznámení", "Pøi naèítání dat z databáze došlo k chybì.", "Zavøít");
+            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+        }
+        catch (Exception ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
         }
     }
 

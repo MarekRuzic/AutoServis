@@ -46,9 +46,8 @@ public partial class AllRepairDetail : ContentPage
             }
         }
         catch (Exception ex)
-        {
-            await DisplayAlert("Oznámení", "Pøi otvírání stránky došlo k chybì", "ok");
-            // An unexpected error occurred. No browser may be installed on the device.
+        { // An unexpected error occurred. No browser may be installed on the device.
+            await DisplayAlert("Oznámení", "Pøi otvírání prohlížeèe došlo k chybì", "ok");            
         }
     }
 }

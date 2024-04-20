@@ -62,11 +62,9 @@ public partial class CarRepair : ContentView
 
     private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e)
     {
+        // Kontrola zda chce opravdu daný záznam smazat
         bool answer = await App.Current.MainPage.DisplayAlert("Smazat", $"Opravdu si pøejete opravu {RepairName}?", "Ano", "Ne");
-        if (!answer)
-        {
-            return;
-        }
+        if (!answer) return;
 
         API api = new API();
 
@@ -76,26 +74,38 @@ public partial class CarRepair : ContentView
             return;
         }
 
-        HttpResponseMessage response = await api.client.DeleteAsync($"repair/delete?id={RepairId}");
-        if (response.IsSuccessStatusCode)
+        try
         {
-            await App.Current.MainPage.DisplayAlert("Oznámení", $"Oprava byla uspìšnì smazán.", "Ok");
-
-            // Získání reference na rodièovskou stránku
-            AllCarDetailTabbedPage parentPage = FindParentMobileCars(this);
-
-            // Kontrola nalezení rodièovské stránky
-            if (parentPage == null)
+            // HTTP požadavek na smazání opravy vozidla
+            HttpResponseMessage response = await api.client.DeleteAsync($"repair/delete?id={RepairId}");
+            if (response.IsSuccessStatusCode)
             {
-                App.Current.MainPage.DisplayAlert("Oznámení", $"V souèasné chvíli nelze smazat požadovéné vozidlo.", "Ok");
-                return;
-            }
-            parentPage?.LoadRepairsFromDatabase();
+                await App.Current.MainPage.DisplayAlert("Oznámení", $"Oprava byla uspìšnì smazán.", "Ok");
 
+                // Získání reference na rodièovskou stránku
+                AllCarDetailTabbedPage parentPage = FindParentMobileCars(this);
+
+                // Kontrola nalezení rodièovské stránky
+                if (parentPage == null)
+                {
+                    App.Current.MainPage.DisplayAlert("Oznámení", $"V souèasné chvíli nelze smazat požadovéné vozidlo.", "Ok");
+                    return;
+                }
+                parentPage?.LoadRepairsFromDatabase();
+
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Oznámení", $"Došlo k chybì pøi mazání opravy.", "Ok");
+            }
         }
-        else
+        catch (HttpRequestException ex)
         {
-            await App.Current.MainPage.DisplayAlert("Oznámení", $"Došlo k chybì pøi mazání opravy.", "Ok");
+            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+        }
+        catch (Exception ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
         }
     }
 

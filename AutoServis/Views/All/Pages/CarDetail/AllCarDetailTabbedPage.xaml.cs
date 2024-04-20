@@ -60,25 +60,36 @@ public partial class AllCarDetailTabbedPage : TabbedPage
             return;
         }
         List<Repair> repairs = new List<Repair>();
-        HttpResponseMessage responseMessage = await api.client.GetAsync($"repair/list?id={car.id}");
-        if (responseMessage.IsSuccessStatusCode)
+        try
         {
-            string getResponseString = await responseMessage.Content.ReadAsStringAsync();
-            repairs = JsonSerializer.Deserialize<List<Repair>>(getResponseString);
-
-            if (!repairs.Any())
+            HttpResponseMessage responseMessage = await api.client.GetAsync($"repair/list?id={car.id}");
+            if (responseMessage.IsSuccessStatusCode)
             {
-                Label label = new Label { Text = "Nebyly nalezeny žádné opravy.", HorizontalTextAlignment = TextAlignment.Center, FontSize = 24 };
-                verticalViewCarRepair.Children.Clear();
-                verticalViewCarRepair.Children.Add(label);
-                return;
-            }
+                string getResponseString = await responseMessage.Content.ReadAsStringAsync();
+                repairs = JsonSerializer.Deserialize<List<Repair>>(getResponseString);
 
-            ShowCarRepair(repairs);
+                if (!repairs.Any())
+                {
+                    Label label = new Label { Text = "Nebyly nalezeny žádné opravy.", HorizontalTextAlignment = TextAlignment.Center, FontSize = 24 };
+                    verticalViewCarRepair.Children.Clear();
+                    verticalViewCarRepair.Children.Add(label);
+                    return;
+                }
+
+                ShowCarRepair(repairs);
+            }
+            else
+            {
+                await DisplayAlert("Oznámení", "Pøi naèítání dat z databáze došlo k chybì.", "Zavøít");
+            }
         }
-        else
+        catch (HttpRequestException ex)
         {
-            await DisplayAlert("Oznámení", "Pøi naèítání dat z databáze došlo k chybì.", "Zavøít");
+            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+        }
+        catch (Exception ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
         }
     }
 

@@ -134,26 +134,37 @@ public partial class CarDetail : ContentView
             return;
         }
 
-        HttpResponseMessage response = await api.client.DeleteAsync($"car/delete?id={CarId}");
-        if (response.IsSuccessStatusCode)
+        try
         {
-            await App.Current.MainPage.DisplayAlert("Oznámení", $"Auto bylo uspìšnì smazáno.", "Ok");
-
-            // Získání reference na rodièovskou stránku
-            MobileCars parentPage = FindParentMobileCars(this);
-
-            // Kontrola nalezení rodièovské stránky
-            if (parentPage == null)
+            HttpResponseMessage response = await api.client.DeleteAsync($"car/delete?id={CarId}");
+            if (response.IsSuccessStatusCode)
             {
-                App.Current.MainPage.DisplayAlert("Oznámení", $"V souèasné chvíli nelze smazat požadovéné vozidlo.", "Ok");
-                return;
+                await App.Current.MainPage.DisplayAlert("Oznámení", $"Auto bylo uspìšnì smazáno.", "Ok");
+
+                // Získání reference na rodièovskou stránku
+                MobileCars parentPage = FindParentMobileCars(this);
+
+                // Kontrola nalezení rodièovské stránky
+                if (parentPage == null)
+                {
+                    App.Current.MainPage.DisplayAlert("Oznámení", $"V souèasné chvíli nelze smazat požadovéné vozidlo.", "Ok");
+                    return;
+                }
+                // Zavolání metody pro smazání auta z List<Car>
+                parentPage?.DeleteCar(CarId);
             }
-            // Zavolání metody pro smazání auta z List<Car>
-            parentPage?.DeleteCar(CarId);
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Oznámení", $"Došlo k chybì pøi mazání vozidla.", "Ok");
+            }
         }
-        else
+        catch (HttpRequestException ex)
         {
-            await App.Current.MainPage.DisplayAlert("Oznámení", $"Došlo k chybì pøi mazání vozidla.", "Ok");
+            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+        }
+        catch (Exception ex)
+        {
+            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
         }
     }
 
