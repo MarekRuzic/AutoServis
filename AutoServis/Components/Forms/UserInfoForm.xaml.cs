@@ -3,6 +3,7 @@ using AutoServis.Model;
 using Microsoft.Maui.ApplicationModel.Communication;
 using System.Net.Http.Json;
 using BCrypt.Net;
+using AutoServis.Views.Mobile.Pages.Cars;
 
 public partial class UserInfoForm : ContentView
 {
@@ -11,6 +12,7 @@ public partial class UserInfoForm : ContentView
 		InitializeComponent();
 	}
 
+    public MobileCars mobileCars { get; set; }
     public int id { get; set; }
     public string password { get; set; }
 
@@ -58,6 +60,8 @@ public partial class UserInfoForm : ContentView
             if (response.IsSuccessStatusCode)
             {
                 App.Current.MainPage.DisplayAlert("Oznámení", "Data o Vás byla úspìšnì zmìnìna", "OK");
+                if (mobileCars != null) mobileCars.SaveNewCredits(firstname, lastname, email);
+                await Navigation.PopAsync();
             }
             else
             {
@@ -127,6 +131,7 @@ public partial class UserInfoForm : ContentView
             if (response.IsSuccessStatusCode)
             {
                 App.Current.MainPage.DisplayAlert("Oznámení", "Heslo bylo úspìšnì zmìnìno", "OK");
+                if (mobileCars != null) mobileCars.SaveNewPassword(newPasswordHash);
                 await Navigation.PopAsync();
             }
             else

@@ -6,18 +6,19 @@ using AutoServis.Components.Forms;
 
 public partial class DesktopUserInfo : ContentPage
 {
-	public DesktopUserInfo(User user)
+	public DesktopUserInfo(User user, MobileCars mobileCars)
 	{
 		InitializeComponent();
-		SetValuesInForm(user);
+		SetValuesInForm(user, mobileCars);
     }
 
-	private void SetValuesInForm(User user)
+	private void SetValuesInForm(User user, MobileCars mobileCars)
 	{
 		userInfo.id = user.id;
 		userInfo.password = user.password;
+        userInfo.mobileCars = mobileCars;
 
-		Entry firstnameEntry = (Entry)userInfo.FindByName("FirstnameInput");
+        Entry firstnameEntry = (Entry)userInfo.FindByName("FirstnameInput");
 		Entry lastnameEntry = (Entry)userInfo.FindByName("lastnameInput");
 		Entry emailEntry = (Entry)userInfo.FindByName("emailInput");
 

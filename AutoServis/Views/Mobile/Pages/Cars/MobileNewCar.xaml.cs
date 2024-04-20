@@ -5,7 +5,7 @@ public partial class MobileNewCar : ContentPage
 {
     private MobileCars mobileCars;
     // Pro editaci stávajícího vozidla
-	public MobileNewCar(Car car, int user_id, MobileCars mobileCars)
+	public MobileNewCar(Car car, int user_id, MobileCars mobileCars, string title)
 	{
 		InitializeComponent();
         Button btnEndForm = (Button)NewCarForm.FindByName("BtnEndForm");
@@ -16,10 +16,12 @@ public partial class MobileNewCar : ContentPage
         this.mobileCars = mobileCars;
         NewCarForm.id = user_id;
         SetValuesInForm(car);
+        Title = title;
     }
 
     private void SetValuesInForm(Car car)
     {
+        Label headerLabel = (Label)NewCarForm.FindByName("headerLabel");
         // Naètení všech inputù
         Entry brandInput = (Entry)NewCarForm.FindByName("brandInput");
         Entry modelInput = (Entry)NewCarForm.FindByName("modelInput");
@@ -47,7 +49,7 @@ public partial class MobileNewCar : ContentPage
         Entry oilInput = (Entry)NewCarForm.FindByName("oilInput");
         Label idCarLabel = (Label)NewCarForm.FindByName("idCar");
 
-
+        headerLabel.Text = "Editace vozidla";
         // Nastavení hodnot inputùm
         idCarLabel.Text = car.id.ToString();
         brandInput.Text = car.brand;

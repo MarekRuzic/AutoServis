@@ -6,6 +6,7 @@
         <VerticalStackLayout VerticalOptions="Center">
             <Label x:Name="idCar" Text="" IsVisible="false" />
             <Label
+                x:Name="headerLabel"
             Text="Přídání nového auta"
             VerticalOptions="Center" 
             HorizontalOptions="Center"

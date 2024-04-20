@@ -23,6 +23,18 @@ public partial class MobileCars : ContentPage
         LoadUserCars();
 	}
 
+    public void SaveNewCredits(string firstname, string lastname, string email)
+    {
+        user.firstname = firstname; 
+        user.lastname = lastname; 
+        user.email = email;
+    }
+
+    public void SaveNewPassword(string password)
+    {
+        user.password = password;
+    }
+
     // Naète data z databáze pomocí API
     private async void LoadUserCars()
     {
@@ -106,7 +118,7 @@ public partial class MobileCars : ContentPage
     {
         Car car = cars.FirstOrDefault(c => c.id == carId);
         MobileCars mobileCars = this;
-        await Navigation.PushAsync(new MobileNewCar(car, user.id, mobileCars));        
+        await Navigation.PushAsync(new MobileNewCar(car, user.id, mobileCars, "Editace vozidla"));        
     }
     
     public void SaveCarToList(Car car, bool isAdd)
@@ -155,9 +167,9 @@ public partial class MobileCars : ContentPage
     private async void userInfoClick(object sender, EventArgs e)
     {
 #if ANDROID || IOS
-        await Navigation.PushAsync(new MobileUserInfo(user));
+        await Navigation.PushAsync(new MobileUserInfo(user, this));
 #else
-        await Navigation.PushAsync(new DesktopUserInfo(user));
+        await Navigation.PushAsync(new DesktopUserInfo(user, this));
 #endif
     }
 
