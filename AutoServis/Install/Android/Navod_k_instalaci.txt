@@ -1,0 +1,4 @@
+1. Nahrajte soubor na mobilní zařízení
+2. V nastavení mobilního zařízení, povolte instalaci z neznámých zdrojů
+3. Klikněte na instalační soubor s příponou .apk (Nainstaluje se aplikace)
+4. Nyní můžete aplikaci používat
