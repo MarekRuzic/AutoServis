@@ -10,8 +10,6 @@ namespace AutoServis
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
@@ -120,18 +118,6 @@ namespace AutoServis
             {
                 await DisplayAlert("Fuj", "No fuj co se to stalo", "Yes", "No");
             }
-        }
-
-        private void OnCounterClicked(object sender, EventArgs e)
-        {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
         }
 
         private void LogOut(object sender, EventArgs e)

@@ -2,26 +2,110 @@
 using AutoServis.Model;
 using System.Net.Http.Json;
 using AutoServis.Views.Mobile.Pages.Cars;
+using AutoServis.Services;
+using AutoServis.Repository;
 namespace AutoServis.Components.Forms;
 
 public partial class NewCarForm : ContentView
 {
+    private Int32 userId;
+    private ICarService carService;
+    private ICarsRepository carsRepository;
+    private char doors = '5';
+    private string transmition = "Manuální";
+
     public NewCarForm()
     {
         InitializeComponent();
     }
-    public Int32 id { get; set;}
-    private char doors = '5';
-    private string transmition = "Manuální";
 
-    public void setDoors(char doors)
+    public NewCarForm(int userId, ICarService carService, ICarsRepository carsRepository)
     {
-        this.doors = doors;
+        InitializeComponent();
+        this.userId = userId;
+        this.carService = carService;
+        this.carsRepository = carsRepository;
     }
 
-    public void setTransmition(string transmition)
+    public NewCarForm(Car car, ICarService carService,  ICarsRepository carsRepository)
     {
-        this.transmition = transmition;
+        InitializeComponent();
+        // Incializace proměnných
+        this.carService = carService;
+        this.carsRepository = carsRepository;
+        this.userId = car.user_id;
+        SetAllInputs(car);        
+    }
+
+    private void SetAllInputs(Car car)
+    {
+        headerLabel.Text = "Editace vozidla";
+        BtnEndForm.Text = "Uložit změny";
+
+        // Nastavení hodnot inputům
+        idCar.Text = car.id.ToString();
+        brandInput.Text = car.brand;
+        modelInput.Text = car.model;
+        spzInput.Text = car.spz;
+        manufactureDate.Date = car.manufacture;
+        mileageInput.Text = car.mileage.ToString();
+        colorInput.Text = car.color;
+        sliderSeat.Value = car.seats - 48;
+        displayLabel.Text = $"Počet míst k sezení: {car.seats}";
+        airConditioningSwitch.IsToggled = car.aircondition;
+        checkbox_4x4.IsChecked = car.drive4x4;
+        nicknameInput.Text = car.nickname;
+        vinInput.Text = car.vin;
+        nameEngineInput.Text = car.name_engine;
+        powerInput.Text = car.power;
+        codeInput.Text = car.code;
+        displacementInput.Text = car.displacement;
+        torqueInput.Text = car.torque;
+        oilInput.Text = car.oil_capacity;
+        // RadioButton dveře
+        doors = (car.doors - 48).ToString()[0];
+        findAndSelectRadioButton(doorRBFlex, (car.doors - 48).ToString());
+
+        // RadioButton převodovka
+        transmition = car.transmition;
+        findAndSelectRadioButton(gearboxRBFlex, car.transmition);
+
+        //Pickery
+        SetPicker(fuelPicker, car.fuel);
+        SetPicker(bodyPicker, car.body);
+    }
+
+
+    private void findAndSelectRadioButton(FlexLayout flex, string content)
+    {
+        foreach (View child in flex.Children)
+        {
+            if (child is RadioButton radioButton)
+            {
+                if (radioButton.Content.ToString() == content)
+                {
+                    radioButton.IsChecked = true;
+                    if (FindByName("doorsRBFlex") == flex) this.doors = content[0];
+                    else this.transmition = content;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Vybrání správné hodnoty v Pickeru
+    private void SetPicker(Picker picker, string item)
+    {
+        if (picker.ItemsSource is IList<string> fuelItems)
+        {
+            int index = fuelItems.IndexOf(item);
+
+            // Zkontrolujte, zda hodnota byla nalezena ve zdroji dat
+            if (index != -1)
+            {
+                picker.SelectedIndex = index;
+            }
+        }
     }
 
     private bool IsInputEmpty(String text)
@@ -113,85 +197,42 @@ public partial class NewCarForm : ContentView
         string oil_capacity = "";
         if (!IsInputEmpty(oilInput.Text)) oil_capacity = oilInput.Text.Trim();
 
-        if (id.Equals(null))
+        if (userId.Equals(null))
         {
             return;
         }
 
         // C# kód zobrazení ActivityIndicator s Label
         LoadingIndicator.IsVisible = true;
-        BtnEndForm.IsVisible = false;        
+        BtnEndForm.IsVisible = false;
 
-        API api = new API();
-        if (api.checkConnectivity())
-        {
-            App.Current.MainPage.DisplayAlert("Chyba", "Nejste připojeni k internetu.\n\n" +
-                "Je potřeba internetové připojení!", "Ok");
-            return;
-        }
-
-        try
-        {
-            HttpResponseMessage response;
-            /* Nalezení rodičovské stránky, 
-             * po uspěšném uložení do db se zavolá metodu SaveToList 
-             * Ta uloží nová data do listu na úvodní stráně */
-            MobileNewCar parentPage = FindParentMobileNewCar(this);
-
-            Car car = new Car(-1, brand, model, manufature, mileage, fuel, body,
+        Car car = new Car(-1, brand, model, manufature, mileage, fuel, body,
                 color, drive4x4, doors, seats, airCondition, vin, spz, nickname,
                 name_engine, code, displacement, power, torque, oil_capacity, transmition,
-                id);
+                userId);
 
-            if (BtnEndForm.Text.Trim() == "Uložit změny")
+        if (BtnEndForm.Text.Trim() == "Uložit změny")
+        {
+            car.id = Convert.ToInt32(idCar.Text);
+            if (await carService.UpdateCar(car))
             {
-                car.id = Convert.ToInt32(idCar.Text);
-                response = await api.client.PutAsJsonAsync("car/update", car);
-                if (response.IsSuccessStatusCode)
-                {
-                    // Přidání do hlavního listu upravené vozidlo
-                    if (parentPage != null)
-                    {
-                        parentPage?.SaveToList(car, false);
-                    }
-                    await App.Current.MainPage.DisplayAlert("Oznámení", "U vozidla byla úspěšně změněna data" +
-                        "\n\nPo stisku tlačítka budete přesměrování na úvodní stránku 😊", "OK");
-                    await Navigation.PopAsync();
-                }
-                else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neočkávaná chyba. Zkus se to znovu", "Ok");
-                // Zobrazení zpět tlačítka pro uložení
-                LoadingIndicator.IsVisible = false;
-                BtnEndForm.IsVisible = true;
-                return;
-            }
-
-            response = await api.client.PostAsJsonAsync("car/create", car);
-            if (response.IsSuccessStatusCode)
-            {
-                // Přidání nového vozidla do listu
-                if (parentPage != null)
-                {
-                    parentPage?.SaveToList(null, true);
-                }
-                await App.Current.MainPage.DisplayAlert("Oznámení", "Vozidlo bylo úspěšně vytvořeno." +
-                    "\n\nPo stisku tlačítka budete přesměrování na úvodní stránku 😊", "OK");
+                carsRepository.UpdateCar(car);
+                carsRepository.dataChange = true;
                 await Navigation.PopAsync();
             }
-            else App.Current.MainPage.DisplayAlert("Chyba", "Nastala neočkávaná chyba. Zkus se to znovu", "Ok");
         }
-        catch (HttpRequestException ex)
+        else
         {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+            if (await carService.InsertNewCar(car))
+            {
+                carsRepository.AddCar(car);
+                carsRepository.dataChange = true;
+                await Navigation.PopAsync();
+            }
         }
-        catch (Exception ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Neznámá chyba nastala.", "Ok");
-        }
-        finally
-        {
-            LoadingIndicator.IsVisible = false;
-            BtnEndForm.IsVisible = true;
-        }
+
+        LoadingIndicator.IsVisible = false;
+        BtnEndForm.IsVisible = true;        
     }
 
     private void doorsChange(object sender, CheckedChangedEventArgs e)
@@ -212,35 +253,15 @@ public partial class NewCarForm : ContentView
         }
     }
 
-    private MobileNewCar FindParentMobileNewCar(Element element)
+    private void OnEntryTextChange(object sender, TextChangedEventArgs e)
     {
-        // Rekurzivně hledá rodičovskou stránku MobileCars
-        if (element.Parent is MobileNewCar mobileNewCar)
+        string text = ((Entry)sender).Text;
+        string result = "";
+        for (int i = 0; i < text.Length; i++)
         {
-            return mobileNewCar;
+            if (text[i] >= '0' && text[i] <= '9' || text[i] == ' ') 
+                result += text[i];
         }
-
-        if (element.Parent != null)
-        {
-            // Pokračuj v hledání v rodičovském prvku
-            return FindParentMobileNewCar(element.Parent);
-        }
-
-        // Nenalezena žádná rodičovská stránka MobileCars
-        return null;
-    }
-
-    private void OnEntryTextChange(
-        object sender, 
-        TextChangedEventArgs e)
-    {
-     string text = ((Entry)sender).Text;
-     string result = "";
-     for(int i = 0; i < text.Length; i++)
-     {
-      if (text[i] >= '0' && text[i] <= '9' 
-      || text[i] == ' ') result += text[i];
-     }
-     ((Entry)sender).Text = result;
+        ((Entry)sender).Text = result;    
     }
 }

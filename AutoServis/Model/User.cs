@@ -48,9 +48,21 @@ namespace AutoServis.Model
             this.password = password;
         }
 
+        /// <summary>
+        /// Používá Bcrypt.Verify, pro kontrolu zda nové heslo uživatele je stejné jako předchozí heslo
+        /// </summary>
+        /// <param name="password">Heslo ke kontrole</param>
+        /// <returns>Pokud jsou stejná vrací true</returns>
         public bool checkPassword(string password)
         {
             return BCrypt.Net.BCrypt.Verify(password, this.password);
+        }
+
+        public void UpdateUserCredits(string firstname, string lastname, string email)
+        {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.email = email;
         }
     }
 }

@@ -177,9 +177,6 @@
 	  <MauiXaml Update="Views\Mobile\Pages\Cars\MobileCars.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Mobile\Pages\Cars\MobileNewCar.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\Mobile\Pages\Login\MobileLogin.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

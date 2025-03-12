@@ -4,9 +4,12 @@ using AutoServis.Views.Mobile.Pages.Registration;
 using System.Text.Json;
 using AutoServis.Model;
 using AutoServis.Views.Mobile.Pages.Cars;
+using AutoServis.Repository;
+using AutoServis.Services;
 
 public partial class LoginForm : ContentView
 {
+    private UserService _userService = new UserService();
 	public LoginForm()
 	{
 		InitializeComponent();
@@ -21,79 +24,40 @@ public partial class LoginForm : ContentView
     private async void ClickLogin(object sender, EventArgs e)
     {
         // Kontrola inputù
-        if (email.Text == "" || email.Text == null)
+        if (this.email.Text == "" || this.email.Text == null)
         {
             showDialog("Oznámení", "Nebyl zadán email", "Ok");
             return;
         }
-        string emailInput = email.Text.Trim();
 
-        if (password.Text == "" || password.Text == null)
+        if (this.password.Text == "" || this.password.Text == null)
         {
             showDialog("Oznámení", "Nebylo zadáno heslo", "Ok");
             return;
         }
-        string passwordInput = password.Text.Trim();
 
-        //Naètení usera podle emailu
-        API api = new API();
-
-        if (api.checkConnectivity())
-        {
-            showDialog("Varování", "Nemáte pøipojení k internetu, je potøeba pøipojení", "Ok");
-            return;
-        }
         LoginButton.IsVisible = false;
         LoadingIndicator.IsVisible = true;
 
-        try
+        // Naètení inputù do promìnných
+        string email = this.email.Text.Trim();
+        string password = this.password.Text.Trim();
+
+        (User? user, string? message) = await _userService.UserLogin(email, password);
+
+        if (user == null)
         {
-            HttpResponseMessage response = await api.client.
-                GetAsync($"user/getuser?email={emailInput}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                // Naètení dat do string s následný pøevod na Usera
-                string getResponsestring = await response.Content.ReadAsStringAsync();
-                User user = JsonSerializer.Deserialize<List<User>>(getResponsestring).FirstOrDefault();
-
-                // Kontrola uživatele a hesla
-                if (user == null || !user.checkPassword(passwordInput))
-                {
-                    showDialog("Oznámení", "Neplatné uživatelské údaje", "Ok");
-                    LoginButton.IsVisible = true;
-                    LoadingIndicator.IsVisible = false;
-                    return;
-                }
-
-                /*#if ANDROID || IOS
-                    App.Current.MainPage = new NavigationPage(new MobileCars(user));
-                #else
-                   App.Current.MainPage = new NavigationPage(new MainPage());
-                #endif*/
-
-                App.Current.MainPage = new NavigationPage(new MobileCars(user));
-            }
-            else
-            {
-                await App.Current.MainPage.DisplayAlert("Chyba", "Chyba pøi naèítání dat. Zkus te to znovu.", "Ok");
-            }
+            showDialog("Oznámení", message, "Ok");
             LoginButton.IsVisible = true;
             LoadingIndicator.IsVisible = false;
+            return;
         }
-        catch(HttpRequestException ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
-        }
-        catch(Exception ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Neznámá chyba nastala.", "Ok");
-        }
-        finally
-        {
-            LoginButton.IsVisible = true;
-            LoadingIndicator.IsVisible = false;
-        }
+
+        // Pøesmìrování na novou stránku
+        App.Current.MainPage = new NavigationPage(new MobileCars(user));
+
+        LoginButton.IsVisible = true;
+        LoadingIndicator.IsVisible = false;  
     }
 
     private void OnEmailCompleted(object sender, EventArgs e)

@@ -50,7 +50,7 @@
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1" Padding="0" Margin="10">
                     <VerticalStackLayout>
-                        <Label Text="{Binding CarManufacture}"/>
+                        <Label Text="{Binding CarManufacture, Mode=OneWay}"/>
                         <Label Text="{Binding CarMileage}"/>
                         <Label Text="{Binding CarColor}"/>
                         <Label Text="{Binding CarSPZ}"/>

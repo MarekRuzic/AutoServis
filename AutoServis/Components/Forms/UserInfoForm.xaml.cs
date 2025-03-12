@@ -4,17 +4,27 @@ using Microsoft.Maui.ApplicationModel.Communication;
 using System.Net.Http.Json;
 using BCrypt.Net;
 using AutoServis.Views.Mobile.Pages.Cars;
+using AutoServis.Components.Templates;
+using System.ComponentModel;
+using AutoServis.Services;
 
 public partial class UserInfoForm : ContentView
 {
-	public UserInfoForm()
+    private UserService _userService = new UserService();
+
+    public UserInfoForm()
 	{
 		InitializeComponent();
 	}
 
-    public MobileCars mobileCars { get; set; }
-    public int id { get; set; }
-    public string password { get; set; }
+    public User user { get; set; }
+
+    public void SetEntryValues(User user)
+    {
+        FirstnameInput.Text = user.firstname;
+        lastnameInput.Text = user.lastname;
+        emailInput.Text = user.email;
+    }
 
     private bool IsInputEmpty(String text)
     {
@@ -37,50 +47,46 @@ public partial class UserInfoForm : ContentView
             return;
         }
 
+        UpdateUserButton.IsVisible = false;
+        LoadingIndicator.IsVisible = true;
+
         string firstname = FirstnameInput.Text.Trim();
         string lastname = lastnameInput.Text.Trim();
         string email = emailInput.Text.Trim();
 
-        User user = new User(id, firstname, lastname, email);
+        (bool? success, string message) = await _userService.ExistUserInDatabase(email);
 
-        API api = new API();
-        if (api.checkConnectivity())
+        if (success == null || success == true)
         {
-            string[] message = api.GetConnectionMessage();
-            App.Current.MainPage.DisplayAlert(message[0], message[1], message[2]);
+            App.Current.MainPage.DisplayAlert("Chyba", message, "Ok");
+            UpdateUserButton.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
             return;
         }
 
-        UpdateUserButton.IsVisible = false;
-        LoadingIndicator.IsVisible = true;
+        this.user.UpdateUserCredits(firstname, lastname, email);
+        (success, message) = await _userService.UpdateUserDetail(user);
 
-        try
+
+        if (success == false)
         {
-            HttpResponseMessage response = await api.client.PutAsJsonAsync("user/updateuser", user);
-            if (response.IsSuccessStatusCode)
-            {
-                App.Current.MainPage.DisplayAlert("Oznámení", "Data o Vás byla úspìšnì zmìnìna", "OK");
-                if (mobileCars != null) mobileCars.SaveNewCredits(firstname, lastname, email);
-                await Navigation.PopAsync();
-            }
-            else
-            {
-                App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
-        }
-        catch (Exception ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
-        }
-        finally
-        {
+            App.Current.MainPage.DisplayAlert("Chyba", message, "Ok");
             UpdateUserButton.IsVisible = true;
             LoadingIndicator.IsVisible = false;
+            return;
         }
+
+        if (success == true)
+        {
+            App.Current.MainPage.DisplayAlert("Oznámení", message, "Ok");
+            UpdateUserButton.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
+            await Navigation.PopAsync();
+            return;
+        }
+
+        UpdateUserButton.IsVisible = true;
+        LoadingIndicator.IsVisible = false;        
     }
 
     private async void UpdatePasswordClick(object sender, EventArgs e)
@@ -97,7 +103,7 @@ public partial class UserInfoForm : ContentView
         string newPassword = passwordInput.Text;
         string newPasswordRepeat = passwordRepeatInput.Text;
 
-        if (!BCrypt.Verify(oldPassword, this.password))
+        if (!BCrypt.Verify(oldPassword, this.user.password))
         {
             App.Current.MainPage.DisplayAlert("Oznámení", "Pùvodní hesla se neshodují", "Ok");
             return;
@@ -107,51 +113,36 @@ public partial class UserInfoForm : ContentView
         {
             App.Current.MainPage.DisplayAlert("Oznámení", "Nová hesla se neshodují", "Ok");
             return;
-        }        
-
-        string newPasswordHash = BCrypt.HashPassword(newPassword);
-
-        User user = new User(id, newPasswordHash);
-
-        API api = new API();
-        if (api.checkConnectivity())
-        {
-            string[] message = api.GetConnectionMessage();
-            App.Current.MainPage.DisplayAlert(message[0], message[1], message[2]);
-            return;
         }
 
         UpdatePasswordButton.IsVisible = false;
         LoadingIndicator2.IsVisible = true;
 
-        try
-        {
+        string newPasswordHash = BCrypt.HashPassword(newPassword);
+        User user = new User(this.user.id, newPasswordHash);
 
-            HttpResponseMessage response = await api.client.PutAsJsonAsync("user/updatepassworduser", user);
-            if (response.IsSuccessStatusCode)
-            {
-                App.Current.MainPage.DisplayAlert("Oznámení", "Heslo bylo úspìšnì zmìnìno", "OK");
-                if (mobileCars != null) mobileCars.SaveNewPassword(newPasswordHash);
-                await Navigation.PopAsync();
-            }
-            else
-            {
-                App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
-            }
-        }
-        catch (HttpRequestException ex)
+        (bool success, string message) = await _userService.UpdateUserPassword(user);
+
+        if (success == false)
         {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+            App.Current.MainPage.DisplayAlert("Chyba", message, "Ok");
+            UpdateUserButton.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
+            return;
         }
-        catch (Exception ex)
+
+        if (success == true)
         {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
+            App.Current.MainPage.DisplayAlert("Oznámení", message, "Ok");
+            UpdateUserButton.IsVisible = true;
+            LoadingIndicator.IsVisible = false;
+            this.user.password = newPasswordHash;
+            await Navigation.PopAsync();
+            return;
         }
-        finally
-        {
-            UpdatePasswordButton.IsVisible = true;
-            LoadingIndicator2.IsVisible = false;
-        }
+
+        UpdateUserButton.IsVisible = true;
+        LoadingIndicator.IsVisible = false;
     }
 
     private void SwitchOnChange(object sender, ToggledEventArgs e)

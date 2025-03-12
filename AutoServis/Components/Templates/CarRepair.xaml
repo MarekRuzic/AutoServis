@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Components.Templates.CarRepair"
              x:Name="CarRepairTemplate">
-    
+
     <SwipeView BindingContext="{Binding Source={x:Reference CarRepairTemplate}}">
         <SwipeView.LeftItems>
             <SwipeItems Mode="Reveal">
@@ -11,7 +11,7 @@
                     Text="Smazat"
                     IconImageSource="delete.png"
                     BackgroundColor="LightPink"
-                    Invoked="OnDeleteSwipeItemInvoked" />
+                    Invoked="OnDeleteSwipeItemInvoked" />                    
             </SwipeItems>
         </SwipeView.LeftItems>
         <SwipeView.RightItems>

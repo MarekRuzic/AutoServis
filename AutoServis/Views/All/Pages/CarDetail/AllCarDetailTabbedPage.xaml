@@ -5,12 +5,14 @@
             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
             android:TabbedPage.ToolbarPlacement="Bottom"
             android:TabbedPage.IsSwipePagingEnabled="False"
+            xmlns:templates="clr-namespace:AutoServis.Components.Templates"
             xmlns:controls="clr-namespace:AutoServis.Views.All.Pages.CarDetail"
             xmlns:control="clr-namespace:AutoServis.Components.Templates"
+            xmlns:model="clr-namespace:AutoServis.Model"
             BarBackgroundColor="{x:StaticResource MyPrimary}"
             BarTextColor="White"
             SelectedTabColor="White"
-            UnselectedTabColor="Black"            
+            UnselectedTabColor="Black"
             CurrentPageChanged="OnCurrentPageChange">
     
     <ContentPage
@@ -19,7 +21,7 @@
         x:Name="AboutCarPage">
         <ScrollView>
             <VerticalStackLayout x:Name="verticalViewCarInfo">
-                <!-- Vložení šablony CarInfo -->
+                <templates:CarInfo x:Name="carInfoView"/>
             </VerticalStackLayout>            
         </ScrollView>
     </ContentPage>
@@ -30,17 +32,17 @@
         <ScrollView MaximumWidthRequest="1000">            
             <VerticalStackLayout x:Name="verticalViewCarRepair">
                 <ActivityIndicator 
-    Margin="5"
-    IsRunning="true"
-    Color="{x:StaticResource MySecondPrimary}"
-    HorizontalOptions="Center"/>
+                    Margin="5"
+                    IsRunning="true"
+                    Color="{x:StaticResource MySecondPrimary}"
+                    HorizontalOptions="Center"/>
                 <Label 
-    Margin="5"
-    Text="Probíhá načítání dat z databáze" 
-    HorizontalOptions="Center"
-    FontSize="Large"/>
+                    Margin="5"
+                    Text="Probíhá načítání dat z databáze" 
+                    HorizontalOptions="Center"
+                    FontSize="Large"/>
             </VerticalStackLayout>
-        </ScrollView>
+        </ScrollView>        
     </ContentPage>
     <controls:AllCarDetailFormRepair x:Name="AllCarDetailFormRepair" IconImageSource="form.png"/>
 </TabbedPage>

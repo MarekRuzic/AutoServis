@@ -29,7 +29,9 @@
         ClearButtonVisibility="WhileEditing"
         Completed="OnPasswordCompleted"/>
 
-        <Button x:Name="LoginButton" Text="Přihlásit se" Clicked="ClickLogin"
+        <Button x:Name="LoginButton" 
+                Text="Přihlásit se" 
+                Clicked="ClickLogin"
                 BackgroundColor="{StaticResource MySecondPrimary}">
             <Button.Shadow>
                 <Shadow  Brush="Black" Offset="0,10" Radius="20" Opacity="0.4" />

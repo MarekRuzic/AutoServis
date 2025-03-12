@@ -5,24 +5,10 @@ using AutoServis.Views.Mobile.Pages.Cars;
 
 public partial class MobileUserInfo : ContentPage
 {
-	public MobileUserInfo(User user, MobileCars mobileCars)
+	public MobileUserInfo(User user)
 	{
 		InitializeComponent();
-        SetValuesInForm(user, mobileCars);        
-    }
-
-    private void SetValuesInForm(User user, MobileCars mobileCars)
-    {
-        userInfo.id = user.id;
-        userInfo.password = user.password;
-        userInfo.mobileCars = mobileCars;
-
-        Entry firstnameEntry = (Entry)userInfo.FindByName("FirstnameInput");
-        Entry lastnameEntry = (Entry)userInfo.FindByName("lastnameInput");
-        Entry emailEntry = (Entry)userInfo.FindByName("emailInput");
-
-        firstnameEntry.Text = user.firstname;
-        lastnameEntry.Text = user.lastname;
-        emailEntry.Text = user.email;
-    }
+        userInfo.user = user;
+        userInfo.SetEntryValues(user);        
+    }   
 }

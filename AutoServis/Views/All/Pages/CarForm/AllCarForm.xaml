@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Views.All.Pages.CarForm.AllCarForm"
              xmlns:components="clr-namespace:AutoServis.Components.Forms"
-             Title="Formulář vozidlo">
+             Title="Nové vozidlo">
 
-    <components:NewCarForm x:Name="NewCarForm" Margin="10"/>
 </ContentPage>

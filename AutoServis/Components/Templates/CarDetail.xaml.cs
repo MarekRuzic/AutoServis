@@ -1,15 +1,28 @@
-namespace AutoServis.Components.Templates;
+ï»¿namespace AutoServis.Components.Templates;
 using AutoServis.Model;
 using AutoServis.Views.Mobile.Pages.Cars;
 using AutoServis.Views.All.Pages.CarDetail;
+using AutoServis.Views.All.Pages.CarForm;
 using Microsoft.VisualBasic.FileIO;
+using AutoServis.Services;
+using AutoServis.Repository;
 
 public partial class CarDetail : ContentView
 {
-	public CarDetail()
+    private readonly ICarsRepository carsRepository;
+    private readonly ICarService carService;
+
+    public CarDetail()
 	{
 		InitializeComponent();
 	}
+
+    public CarDetail(ICarsRepository carsRepository, ICarService carService)
+    {
+        InitializeComponent();
+        this.carsRepository = carsRepository;
+        this.carService = carService;
+    }
 
     public static readonly BindableProperty CarIdProperty = BindableProperty.Create(nameof(CarId), typeof(int), typeof(CarDetail), -1);
     public static readonly BindableProperty CarNameProperty = BindableProperty.Create(nameof(CarName), typeof(string), typeof(CarDetail), string.Empty);
@@ -91,92 +104,54 @@ public partial class CarDetail : ContentView
 
     private async void MoreCarInfoClicked(object sender, EventArgs e)
     {
-        // Získání id daného
-        //await Navigation.PushAsync(new AllCarDetailTabbedPage(CarId));
-
-
-        MobileCars parentPage = FindParentMobileCars(this);
-
-        await Navigation.PushAsync(new AllCarDetailTabbedPage(parentPage.LoadCar(CarId)));
-    }
-
-    private MobileCars FindParentMobileCars(Element element)
-    {
-        // Rekurzivnì hledá rodièovskou stránku MobileCars
-        if (element.Parent is MobileCars mobileCars)
-        {
-            return mobileCars;
-        }
-
-        if (element.Parent != null)
-        {
-            // Pokraèuj v hledání v rodièovském prvku
-            return FindParentMobileCars(element.Parent);
-        }
-
-        // Nenalezena ádná rodièovská stránka MobileCars
-        return null;
-    }
+        // OtevÅ™enÃ­ novÃ© strÃ¡nky s detailem vozidla
+        Car car = carsRepository.GetCar(CarId);
+        if (car != null)
+            await Navigation.PushAsync(new AllCarDetailTabbedPage(car));    
+    }   
 
     private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e)
     {
-        bool answer = await App.Current.MainPage.DisplayAlert("Smazat", $"Opravdu si pøejete smazat {CarName}?", "Ano", "Ne");
+        bool answer = await App.Current.MainPage.DisplayAlert("Smazat", $"Opravdu si pÅ™ejete smazat {CarName}?", "Ano", "Ne");
         if (!answer)
         {
             return;
-        }
+        }        
 
-        API api = new API();
-
-        if (api.checkConnectivity())
+        if(await carService.DeleteCar(CarId))
         {
-            await App.Current.MainPage.DisplayAlert("Varování", "Nemáte pøipojení k internetu, je potøeba pøipojení", "Ok");
-            return;
-        }
+            carsRepository.RemoveCar(CarId);
+            carsRepository.dataChange = true;
 
-        try
-        {
-            HttpResponseMessage response = await api.client.DeleteAsync($"car/delete?id={CarId}");
-            if (response.IsSuccessStatusCode)
+            if (FindParentPage() is MobileCars parentPage)
             {
-                await App.Current.MainPage.DisplayAlert("Oznámení", $"Auto bylo uspìšnì smazáno.", "Ok");
-
-                // Získání reference na rodièovskou stránku
-                MobileCars parentPage = FindParentMobileCars(this);
-
-                // Kontrola nalezení rodièovské stránky
-                if (parentPage == null)
-                {
-                    App.Current.MainPage.DisplayAlert("Oznámení", $"V souèasné chvíli nelze smazat poadovéné vozidlo.", "Ok");
-                    return;
-                }
-                // Zavolání metody pro smazání auta z List<Car>
-                parentPage?.DeleteCar(CarId);
+                parentPage.TriggerOnAppearing(); // ZavolÃ¡ metodu na strÃ¡nce MobileCars
             }
-            else
+            else App.Current.MainPage.DisplayAlert("Chyba", $"PÅ™i mazÃ¡nÃ­ doÅ¡lo k chybÄ›! ğŸ˜…\n\n" +
+                $"Aktualizujte seznam vozidel pomocÃ­ naÄÃ­taÄÃ­ho tlaÄÃ­tka v hornÃ­m menu (Aktualizovat seznam)", "Ano", "Ne");
+        }
+    }
+
+    private Page FindParentPage()
+    {
+        Element parent = this.Parent; // ZaÄneme od aktuÃ¡lnÃ­ho rodiÄe
+
+        while (parent != null)
+        {
+            if (parent is Page page)
             {
-                await App.Current.MainPage.DisplayAlert("Oznámení", $"Došlo k chybì pøi mazání vozidla.", "Ok");
+                return page; // Jakmile najdeme ContentPage, vrÃ¡tÃ­me ji
             }
+            parent = parent.Parent; // PokraÄujeme nahoru ve stromu
         }
-        catch (HttpRequestException ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
-        }
-        catch (Exception ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
-        }
+
+        return null; // Pokud nenalezeno, vrÃ¡tÃ­ null
     }
 
     private async void OnEditSwipeItemInvoked(object sender, EventArgs e)
     {
-        MobileCars parentPage = FindParentMobileCars(this);
-        // Kontrola nalezení rodièovské stránky
-        if (parentPage == null)
-        {
-            App.Current.MainPage.DisplayAlert("Oznámení", $"V souèasné chvíli nelze smazat poadovéné vozidlo.", "Ok");
-            return;
-        }
-        parentPage?.EditCar(CarId);        
+        Car car = carsRepository.GetCar(CarId);
+        if (car != null)
+            await Navigation.PushAsync(new AllCarForm(car, car.user_id, carsRepository, carService, "Editace vozidla"));
     }
 }

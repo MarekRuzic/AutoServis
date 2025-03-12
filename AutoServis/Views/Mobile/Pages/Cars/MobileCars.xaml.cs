@@ -9,19 +9,46 @@ using AutoServis.Model;
 using AutoServis.Model.JSON;
 using System.Text.Json;
 using Microsoft.Maui.Controls;
-using AutoServis.Views.Mobile.Pages.UserInfo;
 using AutoServis.Views.All.Pages.AboutPage;
+using AutoServis.Repository;
+using AutoServis.Services;
+using System.Collections.Generic;
 
 public partial class MobileCars : ContentPage
 {
-	User user;
-    List<Car> cars = new List<Car>();
-	public MobileCars(User user)
-	{
-		InitializeComponent();
+    private API api;
+	private User user;
+    private ICarService carService;
+    private ICarsRepository carsRepository;
+
+    public MobileCars(User user)
+    {
+        InitializeComponent();
         this.user = user;
-        LoadUserCars();
-	}
+        this.carService = new CarService();
+        this.api = new API();
+        InitializeAsyncFunction();
+    }
+
+    private async void InitializeAsyncFunction()
+    {
+        carsRepository = new CarsRepository(await carService.LoadUserCars(user.id, api));
+        ShowUserCars(carsRepository.GetCars());
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (carsRepository != null && carsRepository.dataChange)
+        {
+            carsRepository.dataChange = false;
+            ShowUserCars(carsRepository.GetCars());
+        }
+
+    }
+
+    public void TriggerOnAppearing() => OnAppearing();
 
     public void SaveNewCredits(string firstname, string lastname, string email)
     {
@@ -33,51 +60,16 @@ public partial class MobileCars : ContentPage
     public void SaveNewPassword(string password)
     {
         user.password = password;
-    }
-
-    // Naète data z databáze pomocí API
-    private async void LoadUserCars()
-    {
-        API api = new API();
-
-        if (api.checkConnectivity())
-        {
-            await DisplayAlert("Oznámení", "Není pøipojení k internetu. Proto nemohli být naèteny data", "Zavøít");
-            return;
-        }
-
-        try
-        {
-            HttpResponseMessage responseMessage = await api.client.GetAsync($"car/listcaruser?id={user.id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                JsonSerializerOptions options = new JsonSerializerOptions
-                {
-                    Converters = { new BoolConverter() },
-                };
-                string getResponseString = await responseMessage.Content.ReadAsStringAsync();
-                cars = JsonSerializer.Deserialize<List<Car>>(getResponseString, options);
-
-                ShowUserCars();
-            }
-            else
-            {
-                await DisplayAlert("Oznámení", "Pøi naèítání dat z databáze došlo k chybì.", "Zavøít");
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
-        }
-        catch (Exception ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
-        }
-    }
+    }    
 
     // Zobrazení jednotlivých vozidel uživatele
-    private void ShowUserCars()
+    public void ShowUserCars(List<Car> cars)
     {
+        if (cars == null || !cars.Any())
+        {
+            LoadingIndicator.IsVisible = false;
+            return;
+        }
         verticalLayout.Children.Clear();
         int margin = 0;
         if (DevicePlatform.WinUI == DeviceInfo.Platform) margin = 10;
@@ -85,7 +77,7 @@ public partial class MobileCars : ContentPage
         {
             string carImage = "gas_car.png";
             if (car.fuel == "Elektro" || car.fuel == "Hybrid") carImage = "electro_car.png";
-            var carView = new CarDetail
+            var carView = new CarDetail(carsRepository, carService)
             {
                 Padding = margin,
                 MaximumWidthRequest = 1000,
@@ -106,49 +98,9 @@ public partial class MobileCars : ContentPage
         verticalLayout.Children.Add(addNewCarButton);
     }
 
-    public void DeleteCar(int carId)
-    {
-        //Odstraní všechny prvky s daným ID za pomoci lambda výrazu
-        cars.RemoveAll(c => c.id == carId);
-        // Znovu zobrazení List<Car>
-        ShowUserCars();
-    }
-
-    public async void EditCar(int carId)
-    {
-        Car car = cars.FirstOrDefault(c => c.id == carId);
-        MobileCars mobileCars = this;
-        await Navigation.PushAsync(new MobileNewCar(car, user.id, mobileCars, "Editace vozidla"));        
-    }
-    
-    public void SaveCarToList(Car car, bool isAdd)
-    {
-        if (isAdd)
-        {
-            LoadUserCars();
-        }
-        else
-        {
-            int index = cars.FindIndex(carList => carList.id == car.id);
-            if (index != -1)
-            {
-                cars[index] = car;
-            }
-        }        
-        ShowUserCars();
-    }
-
-    public Car LoadCar(int id)
-    {
-        int index = cars.FindIndex(carList => carList.id == id);
-        return cars[index];
-    }
-
     private async void addNewCarClick(object sender, EventArgs e)
     {
-        MobileCars mobileCars = this;
-        await Navigation.PushAsync(new MobileNewCar(user.id, mobileCars));
-        //await Navigation.PushAsync(new AllCarForm());
+        await Navigation.PushAsync(new AllCarForm(user.id, carService, carsRepository));
     }
 
     private async void LogOut(object sender, EventArgs e)
@@ -167,9 +119,9 @@ public partial class MobileCars : ContentPage
     private async void userInfoClick(object sender, EventArgs e)
     {
 #if ANDROID || IOS
-        await Navigation.PushAsync(new MobileUserInfo(user, this));
+        await Navigation.PushAsync(new MobileUserInfo(user));
 #else
-        await Navigation.PushAsync(new DesktopUserInfo(user, this));
+        await Navigation.PushAsync(new DesktopUserInfo(user));
 #endif
     }
 
@@ -187,7 +139,7 @@ public partial class MobileCars : ContentPage
         {
             verticalLayout.Children.Clear();
             verticalLayout.Children.Add(LoadingIndicator);
-            LoadUserCars();
+            InitializeAsyncFunction();
         }
     }
 }
