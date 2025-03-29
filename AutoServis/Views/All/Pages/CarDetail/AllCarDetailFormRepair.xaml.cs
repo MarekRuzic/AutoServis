@@ -1,30 +1,43 @@
 namespace AutoServis.Views.All.Pages.CarDetail;
 using AutoServis.Components.Forms;
 using AutoServis.Model;
+using AutoServis.Repository;
 
 public partial class AllCarDetailFormRepair : ContentPage
 {
-	public int CarId { get; set; }
-	public AllCarDetailTabbedPage AllCarDetailTabbedPage { get; set; }
 	public AllCarDetailFormRepair()
 	{
-		InitializeComponent();
+		InitializeComponent();        
     }
 
-    public AllCarDetailFormRepair(Repair repair, AllCarDetailTabbedPage allCarDetailTabbedPage)
+	public AllCarDetailFormRepair(int carId, RepairsRepository repairsRepository)
+	{
+        InitializeComponent();
+		RepairForm repairForm = new RepairForm(carId, repairsRepository);
+		formAddToView(repairForm);
+    }
+
+    public AllCarDetailFormRepair(Repair repair, RepairsRepository repairsRepository)
     {
         InitializeComponent();
-		this.AllCarDetailTabbedPage = allCarDetailTabbedPage;
-		RepairForm repairForm;
-		#if ANDROID || IOS
-			repairForm = RepairFormMobile;
-		#else
-			repairForm = RepairFormWindows;
-		#endif
+        RepairForm repairForm = new RepairForm(repair.car_id, repairsRepository);
+        formAddToView(repairForm);
 		fillRepairForm(repairForm, repair);
     }
 
-	private void fillRepairForm(RepairForm repairForm, Repair repair)
+	private void formAddToView(RepairForm repairForm)
+	{
+
+#if ANDROID || IOS
+        MobileFormView.Children.Clear();
+        MobileFormView.Children.Add(repairForm);
+#else
+		WindowsFormView.Children.Clear();
+        WindowsFormView.Children.Add(repairForm);
+#endif
+    }
+
+    private void fillRepairForm(RepairForm repairForm, Repair repair)
 	{
 		Label title = (Label)repairForm.FindByName("titleName");
 		Label repairId = (Label)repairForm.FindByName("idRepair");
@@ -47,15 +60,5 @@ public partial class AllCarDetailFormRepair : ContentPage
 		namepartInput.Text = repair.part_name;
 		urlInput.Text = repair.url;
 		button.Text = "Uložit zmìny";
-    }
-
-    protected override void OnAppearing()
-	{
-		base.OnAppearing();											
-		#if ANDROID || IOS
-			RepairFormMobile.CarId = CarId;
-		#else
-			RepairFormWindows.CarId = CarId;
-		#endif
     }
 }

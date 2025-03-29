@@ -3,48 +3,61 @@ namespace AutoServis.Views.All.Pages.CarDetail;
 using AutoServis.Components.Templates;
 using AutoServis.Model;
 using AutoServis.Model.JSON;
+using AutoServis.Repository;
 using AutoServis.Services;
+using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 
 public partial class AllCarDetailTabbedPage : TabbedPage
 {
-	private Car car;
+    public ObservableCollection<CarRepair> CarRepairs { get; set; } = new ObservableCollection<CarRepair>();
+
+
+    private Car car;
 	private CarInfo carInfo = null;
+    private RepairsRepository repairsRepository = new RepairsRepository();
+    private RepairService repairService;
+
     public AllCarDetailTabbedPage(Car car)
     {
         InitializeComponent();
-		this.car = car;
-        ShowCarInfo(car);
-        AllCarDetailFormRepair.CarId = car.id;
-        //Task.Run(() => neco());
-        List<Repair> repairs = null;
-        RepairService repairService = new RepairService();
-        Task.Run(async () =>
+        RepairCarpage.BindingContext = this;
+
+        repairService = new RepairService();
+
+        var repairPage = new AllCarDetailFormRepair(car.id, repairsRepository)
         {
-            repairs = await repairService.GetRepairs(car.id);
-            if (repairs != null || !repairs.Any())
-            {
-                ShowCarRepair(repairs);
-            }
-        });
-            
+            Title = "Fomuláø", // Nastavíme titulek tabulky
+            IconImageSource = "form.png"
+        };
+        this.Children.Add(repairPage);
+
+        this.car = car;
+        ShowCarInfo(car);
+        
+        InitializeAsync();
     }
 
-    private async void neco()
+    private async void InitializeAsync()
     {
-        for(int i = 0; i < 3; i++)
+        await LoadCarRepairs(car, repairService);        
+    }
+
+    private async Task LoadCarRepairs(Car car, RepairService repairService)
+    {
+        List<Repair>? repairs = null;
+        repairs = await repairService.GetRepairs(car.id);
+        if (repairs != null || !repairs.Any())
         {
-            await MainThread.InvokeOnMainThreadAsync(async () =>
-            {
-                await DisplayAlert("Ahoj", "ahoj", "Ok");
-            });
-            await Task.Delay(5000);
+            repairsRepository.NewList(repairs);
+            repairsRepository.ClearCarRepairTemplateList();
+            ShowCarRepair(repairsRepository.Repairs);
         }
     }
 
     public void ShowCarInfo(Car car)
 	{
-		//Car car = LoadCarFromDatabase(carId);
 		verticalViewCarInfo.Children.Clear();
         string carImage = "fuel_icon.png";
         if (car.fuel == "Elektro" || car.fuel == "Hybrid") carImage = "ecofuel_icon.png";
@@ -75,65 +88,18 @@ public partial class AllCarDetailTabbedPage : TabbedPage
         verticalViewCarInfo.Children.Add(carInfo);
 	}
 
-    public async void LoadRepairsFromDatabase()
-    {
-        API api = new API();
-
-        if (api.checkConnectivity())
-        {
-            await DisplayAlert("Oznámení", "Není pøipojení k internetu. Proto nemohli být naèteny data", "Zavøít");
-            return;
-        }
-        List<Repair> repairs = new List<Repair>();
-        try
-        {
-            HttpResponseMessage responseMessage = await api.client.GetAsync($"repair/list?id={car.id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                string getResponseString = await responseMessage.Content.ReadAsStringAsync();
-                repairs = JsonSerializer.Deserialize<List<Repair>>(getResponseString);
-
-                if (!repairs.Any())
-                {
-                    Label label = new Label { Text = "Nebyly nalezeny žádné opravy.", HorizontalTextAlignment = TextAlignment.Center, FontSize = 24 };
-                    verticalViewCarRepair.Children.Clear();
-                    verticalViewCarRepair.Children.Add(label);
-                    return;
-                }
-
-                ShowCarRepair(repairs);
-            }
-            else
-            {
-                await DisplayAlert("Oznámení", "Pøi naèítání dat z databáze došlo k chybì.", "Zavøít");
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
-        }
-        catch (Exception ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
-        }
-    }
-
-    private async void ShowCarRepair(List<Repair> repairs)
+    private void ShowCarRepair(List<Repair> repairs)
 	{
-        await Task.Delay(200);
-
-        verticalViewCarRepair.Children.Clear();
-        foreach (Repair repair in repairs)
+        CarRepairs.Clear();
+        foreach (var repair in repairs)
         {
-            verticalViewCarRepair.Children.Add(CreateNewRepairForView(repair));
+            CarRepairs.Add(CreateNewRepairForView(repair));
         }
     }
 
     private CarRepair CreateNewRepairForView(Repair repair)
     {
-        string carImage = "gas_car.png";
-        if (car.fuel == "Elektro" || car.fuel == "Hybrid") carImage = "electro_car.png";
-        CarRepair carRepair = new CarRepair
+        CarRepair carRepair = new CarRepair()
         {
             Margin = 3,
             MaximumWidthRequest = 1000,
@@ -146,25 +112,35 @@ public partial class AllCarDetailTabbedPage : TabbedPage
             part_name = repair.part_name,
             url = repair.url,
             car_id = car.id,
-            AllCarDetailTabbedPage = this,
+            RepairsRepository = this.repairsRepository,
         };
+        repairsRepository.AddCarRepairTemplate(carRepair);
         return carRepair;
     }
 
-    private void OnCurrentPageChange(object sender, EventArgs e)
+    public void DeleteCarRepair(int repairId)
     {
-        // TODO doøešit zobrazování tabulky pro Windows
-		#if WINDOWS
+        var repairToRemove = CarRepairs.FirstOrDefault(r => r.RepairId == repairId);
+        if (repairToRemove != null)
+        {
+            CarRepairs.Remove(repairToRemove);
+        }
+    }
+
+    private async void OnCurrentPageChange(object sender, EventArgs e)
+    {
+
+#if WINDOWS
 			if (this.CurrentPage == AboutCarPage)
 			{
 				if (this.car != null) ShowCarInfo(this.car);
 				return;
 			}
-		#endif
-        /*
-		if (this.CurrentPage == RepairCarpage)
-		{
-            //LoadRepairsFromDatabase();
-        }*/
+#endif
+        if (this.CurrentPage == RepairCarpage && repairsRepository.addNewRepair)
+        {
+            repairsRepository.addNewRepair = false;
+            InitializeAsync();
+        }
     }
 }

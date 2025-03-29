@@ -28,21 +28,28 @@
     <ContentPage
         x:Name="RepairCarpage"
         Title="Opravy vozidla"
-        IconImageSource="car_repair.png">
-        <ScrollView MaximumWidthRequest="1000">            
-            <VerticalStackLayout x:Name="verticalViewCarRepair">
-                <ActivityIndicator 
-                    Margin="5"
-                    IsRunning="true"
-                    Color="{x:StaticResource MySecondPrimary}"
-                    HorizontalOptions="Center"/>
-                <Label 
-                    Margin="5"
-                    Text="Probíhá načítání dat z databáze" 
-                    HorizontalOptions="Center"
-                    FontSize="Large"/>
-            </VerticalStackLayout>
-        </ScrollView>        
+        IconImageSource="car_repair.png">        
+        <Grid>
+            <CollectionView 
+            x:Name="collectionViewCarRepairs"
+            ItemsSource="{Binding CarRepairs}"
+            RemainingItemsThreshold="5"
+            SelectionMode="None"
+            VerticalOptions="FillAndExpand"
+                MaximumWidthRequest="1000">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <control:CarRepair 
+                            RepairId="{Binding RepairId}" 
+                            RepairName="{Binding RepairName}"
+                            RepairDate="{Binding RepairDate}"
+                            RepairMileage="{Binding RepairMileage}"
+                            RepairPrice="{Binding RepairPrice}"
+                            RepairsRepository="{Binding RepairsRepository}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
     </ContentPage>
-    <controls:AllCarDetailFormRepair x:Name="AllCarDetailFormRepair" IconImageSource="form.png"/>
+    <!--<controls:AllCarDetailFormRepair x:Name="AllCarDetailFormRepair" IconImageSource="form.png"/>-->
 </TabbedPage>

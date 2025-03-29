@@ -1,14 +1,29 @@
-namespace AutoServis.Components.Templates;
+ï»¿namespace AutoServis.Components.Templates;
 using AutoServis.Model;
+using AutoServis.Repository;
+using AutoServis.Services;
 using AutoServis.Views.All.Pages.CarDetail;
 using AutoServis.Views.All.Pages.RepairDetail;
+using System.Security.Cryptography;
 
 public partial class CarRepair : ContentView
 {
-	public CarRepair()
+    //private RepairsRepository repairsRepository;
+    private RepairService repairService = new RepairService();
+
+    public event Action<CarRepair>? OnDeleteRequested;
+
+    public CarRepair()
 	{
 		InitializeComponent();
 	}
+
+    public static readonly BindableProperty RepairsRepositoryProperty =
+    BindableProperty.Create(
+        nameof(RepairsRepository),
+        typeof(RepairsRepository),
+        typeof(CarRepair),
+        null);    
 
     public static readonly BindableProperty RepairIdProperty = BindableProperty.Create(nameof(RepairId), typeof(int), typeof(CarRepair), -1);
     public static readonly BindableProperty RepairNameProperty = BindableProperty.Create(nameof(RepairName), typeof(string), typeof(CarRepair), string.Empty);
@@ -52,61 +67,50 @@ public partial class CarRepair : ContentView
         set => SetValue(RepairPriceProperty, value);
     }
 
+    public RepairsRepository RepairsRepository
+    {
+        get => (RepairsRepository)GetValue(RepairsRepositoryProperty);
+        set => SetValue(RepairsRepositoryProperty, value);
+    }
+
 
     private async void OnEditSwipeItemInvoked(object sender, EventArgs e)
     {
-        Repair repair = new Repair(RepairId, RepairName, Convert.ToDateTime(RepairDate), Convert.ToDouble(RepairMileage.Substring(0, RepairMileage.IndexOf(' '))),
-            decription, RepairPrice.Substring(0, RepairPrice.IndexOf(' ')), part_name, url, car_id);
-        await Navigation.PushAsync(new AllCarDetailFormRepair(repair, AllCarDetailTabbedPage));
+        Repair? repair = RepairsRepository.GetRepair(RepairId);
+        if (repair != null)
+        {
+            await Navigation.PushAsync(new AllCarDetailFormRepair(repair, RepairsRepository));
+            return;
+        }
+        await App.Current.MainPage.DisplayAlert("Chyba", "Oprava nebyla nalezena.", "Ok");
     }
 
     private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e)
     {
-        // Kontrola zda chce opravdu daný záznam smazat
-        bool answer = await App.Current.MainPage.DisplayAlert("Smazat", $"Opravdu si pøejete opravu {RepairName}?", "Ano", "Ne");
+        // Kontrola zda chce opravdu danÃ½ zÃ¡znam smazat
+        bool answer = await App.Current.MainPage.DisplayAlert("Smazat", $"Opravdu si pÅ™ejete opravu {RepairName}?", "Ano", "Ne");
         if (!answer) return;
 
-        API api = new API();
+        (bool? success, string message) = await repairService.RemoveRepair(RepairId);
 
-        if (api.checkConnectivity())
+        if (success == null || success == false)
         {
-            await App.Current.MainPage.DisplayAlert("Varování", "Nemáte pøipojení k internetu, je potøeba pøipojení", "Ok");
+            await App.Current.MainPage.DisplayAlert("Chyba", message, "Ok");
             return;
         }
 
-        try
-        {
-            // HTTP požadavek na smazání opravy vozidla
-            HttpResponseMessage response = await api.client.DeleteAsync($"repair/delete?id={RepairId}");
-            if (response.IsSuccessStatusCode)
-            {
-                await App.Current.MainPage.DisplayAlert("Oznámení", $"Oprava byla uspìšnì smazán.", "Ok");
+        RepairsRepository.RemoveRepair(RepairId);
+        RepairsRepository.dataChange = true;
+        await App.Current.MainPage.DisplayAlert("OznÃ¡menÃ­", message, "Ok");
 
-                // Získání reference na rodièovskou stránku
-                AllCarDetailTabbedPage parentPage = FindParentMobileCars(this);
-
-                // Kontrola nalezení rodièovské stránky
-                if (parentPage == null)
-                {
-                    App.Current.MainPage.DisplayAlert("Oznámení", $"V souèasné chvíli nelze smazat požadovéné vozidlo.", "Ok");
-                    return;
-                }
-                parentPage?.LoadRepairsFromDatabase();
-
-            }
-            else
-            {
-                await App.Current.MainPage.DisplayAlert("Oznámení", $"Došlo k chybì pøi mazání opravy.", "Ok");
-            }
-        }
-        catch (HttpRequestException ex)
+        CarRepair? carRepair = RepairsRepository.GetCarRepairTemplate(RepairId);
+        if (carRepair != null)
         {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+            RepairsRepository.RemoveCarRepairTemplate(RepairId);
         }
-        catch (Exception ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Nenámá chyba nastala.", "Ok");
-        }
+
+        AllCarDetailTabbedPage parentPage = FindParentMobileCars(this);
+        parentPage?.DeleteCarRepair(RepairId);
     }
 
     private AllCarDetailTabbedPage FindParentMobileCars(Element element)
@@ -118,17 +122,22 @@ public partial class CarRepair : ContentView
 
         if (element.Parent != null)
         {
-            // Pokraèuj v hledání v rodièovském prvku
+            // PokraÃ¨uj v hledÃ¡nÃ­ v rodiÃ¨ovskÃ©m prvku
             return FindParentMobileCars(element.Parent);
         }
 
         return null;
     }
 
+
     private async void ClickMoreInfo(object sender, EventArgs e)
     {
-        Repair repair = new Repair(RepairId, RepairName, Convert.ToDateTime(RepairDate), Convert.ToDouble(RepairMileage.Substring(0, RepairMileage.IndexOf(' '))),
-            decription, RepairPrice.Substring(0, RepairPrice.IndexOf(' ')), part_name, url, car_id);
-        await Navigation.PushAsync(new AllRepairDetail(repair));
+        Repair? repair = RepairsRepository.GetRepair(RepairId);
+        if (repair != null)
+        {
+            await Navigation.PushAsync(new AllRepairDetail(repair, RepairsRepository));
+            return;
+        }
+        await App.Current.MainPage.DisplayAlert("Chyba", "Oprava nebyla nalezena.", "Ok");
     }
 }

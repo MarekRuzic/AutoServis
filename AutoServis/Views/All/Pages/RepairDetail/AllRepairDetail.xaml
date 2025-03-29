@@ -3,6 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AutoServis.Views.All.Pages.RepairDetail.AllRepairDetail"
              Title="Detail opravy">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Upravit"
+                     IconImageSource="edit.png"
+                     Clicked="EditRepair_Clicked"/>
+    </ContentPage.ToolbarItems>
+
+
     <ScrollView MaximumWidthRequest="1000">
         <VerticalStackLayout>
             <Label x:Name="nameRepair" FontSize="Large" HorizontalOptions="Center"/>

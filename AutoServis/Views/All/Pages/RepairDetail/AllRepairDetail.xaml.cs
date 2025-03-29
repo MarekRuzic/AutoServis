@@ -1,13 +1,21 @@
 namespace AutoServis.Views.All.Pages.RepairDetail;
 using AutoServis.Model;
+using AutoServis.Repository;
+using AutoServis.Views.All.Pages.CarDetail;
+using AutoServis.Components.Templates;
 
 public partial class AllRepairDetail : ContentPage
 {
+    private Repair repair { get; set; }
     private string url = "";
-	public AllRepairDetail(Repair repair)
+    private RepairsRepository repairsRepository;
+
+	public AllRepairDetail(Repair repair, RepairsRepository repairsRepository)
 	{
-		InitializeComponent();
+        InitializeComponent();
         LoadDataToComponents(repair);
+        this.repair = repair;
+        this.repairsRepository = repairsRepository;
 	}
 
     private void LoadDataToComponents(Repair repair)
@@ -49,5 +57,22 @@ public partial class AllRepairDetail : ContentPage
         { // An unexpected error occurred. No browser may be installed on the device.
             await DisplayAlert("Oznámení", "Pøi otvírání prohlížeèe došlo k chybì", "ok");            
         }
+    }
+
+    private async void EditRepair_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new AllCarDetailFormRepair(repair, repairsRepository));
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        Repair? repair = repairsRepository.GetRepair(this.repair.id);
+        if (repair != null)
+        {
+            this.repair = repair;
+            LoadDataToComponents(repair);
+        }
+        
     }
 }

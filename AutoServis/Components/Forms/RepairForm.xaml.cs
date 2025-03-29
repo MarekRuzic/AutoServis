@@ -1,5 +1,7 @@
 namespace AutoServis.Components.Forms;
 using AutoServis.Model;
+using AutoServis.Repository;
+using AutoServis.Services;
 using AutoServis.Views.All.Pages.CarDetail;
 using Microsoft.Maui.ApplicationModel.Communication;
 using System.Net.Http.Json;
@@ -7,11 +9,20 @@ using System.Text.Json;
 
 public partial class RepairForm : ContentView
 {
+    RepairService repairService = new RepairService();
+    public RepairsRepository repairsRepository { get; set; }
     public int CarId { get; set; }
 	public RepairForm()
 	{
         InitializeComponent();
 	}
+
+    public RepairForm(int carId, RepairsRepository repairsRepository)
+    {
+        InitializeComponent();
+        this.repairsRepository = repairsRepository;
+        this.CarId = carId;
+    }
 
     private void OnEntryTextChange(object sender, TextChangedEventArgs e)
     {
@@ -50,18 +61,7 @@ public partial class RepairForm : ContentView
         string url = urlInput.Text;
 
         BtnRepairForm.IsVisible = false;
-        LoadingIndicator.IsVisible = true;
-
-        API api = new API();
-
-        if (api.checkConnectivity())
-        {
-            App.Current.MainPage.DisplayAlert("Chyba", "Nejste pøipojeni k internetu.\n\n" +
-                "Je potøeba internetové pøipojení!", "Ok");
-            BtnRepairForm.IsVisible = true;
-            LoadingIndicator.IsVisible = false;
-            return;
-        }
+        LoadingIndicator.IsVisible = true;        
 
         int id = -1;
         if (idRepair.Text != "")
@@ -71,70 +71,41 @@ public partial class RepairForm : ContentView
 
         // Vytvoøení opravy
         Repair repair = new Repair(id, name, date, mileage, description, price, part_name, url, CarId);
+        bool? success;
+        string message;
 
-        try
-        {
-            HttpResponseMessage response = null;
-            if (id == -1) response = await api.client.PostAsJsonAsync("repair/create", repair);
-            else response = await api.client.PutAsJsonAsync("repair/update", repair);
+        if (id == -1) (success, message) = await repairService.InsertRepair(repair);
+        else (success, message) = await repairService.UpdateRepair(repair);
 
-            if (response.IsSuccessStatusCode)
-            {
-                App.Current.MainPage.DisplayAlert("Oznámení", "Uložení opravy probìhlo úspìšnì.", "OK");
-                // Vyèištìní vstupních polí
-                nameInput.Text = "";
-                repairDate.Date = DateTime.Now;
-                mileageInput.Text = "";
-                descriptionInput.Text = "";
-                priceInput.Text = "";
-                namepartInput.Text = "";
-                urlInput.Text = "";
+        if (success == null || success == false)
+        {
+            App.Current.MainPage.DisplayAlert("Chyba", message, "OK");
+            return;
+        }        
 
-                if (id != -1)
-                {
-                    AllCarDetailFormRepair parentPage = FindParentMobileNewCar(this);
-                    if (parentPage != null)
-                    {
-                        parentPage?.AllCarDetailTabbedPage.LoadRepairsFromDatabase();
-                    }
-                    await Navigation.PopAsync();
-                }
-            }
-            else
-            {
-                App.Current.MainPage.DisplayAlert("Chyba", "Nastala neoèkávaná chyba. Zkus se to znovu", "Ok");
-            }
-        }
-        catch (HttpRequestException ex)
+        // Vyèištìní vstupních polí
+        nameInput.Text = "";
+        repairDate.Date = DateTime.Now;
+        mileageInput.Text = "";
+        descriptionInput.Text = "";
+        priceInput.Text = "";
+        namepartInput.Text = "";
+        urlInput.Text = "";
+
+        BtnRepairForm.IsVisible = true;
+        LoadingIndicator.IsVisible = false;
+
+        repairsRepository.dataChange = true;
+        await App.Current.MainPage.DisplayAlert("Oznámení", message, "OK");
+        if (id != -1)
         {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Chyba se spojením.", "Ok");
+            repairsRepository.UpdateRepair(repair);    
+            repairsRepository.UpdateCarRepairTemplate(repair);
+            await Navigation.PopAsync();
+            return;
         }
-        catch (Exception ex)
-        {
-            await App.Current.MainPage.DisplayAlert("Chyba", "Neznámá chyba nastala.", "Ok");
-        }
-        finally
-        {
-            BtnRepairForm.IsVisible = true;
-            LoadingIndicator.IsVisible = false;
-        }
+        repairsRepository.AddRepair(repair);
+        repairsRepository.AddCarRepairTemplate(repair, repairsRepository, repairService);
+        repairsRepository.addNewRepair = true;
     }
-
-    private AllCarDetailFormRepair FindParentMobileNewCar(Element element)
-    {
-        // Rekurzivnì hledá rodièovskou stránku allCarDetailFormRepair
-        if (element.Parent is AllCarDetailFormRepair allCarDetailFormRepair)
-        {
-            return allCarDetailFormRepair;
-        }
-
-        if (element.Parent != null)
-        {
-            return FindParentMobileNewCar(element.Parent);
-        }
-
-        return null;
-    }
-
-
 }
